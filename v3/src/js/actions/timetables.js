@@ -46,6 +46,16 @@ export function removeModule(semester: Semester, moduleCode: ModuleCode): FSA {
   };
 }
 
+export const REMOVE_ALL_MODULES: string = 'REMOVE_ALL_MODULES';
+export function removeAllModules(semester: Semester): FSA {
+  return {
+    type: REMOVE_ALL_MODULES,
+    payload: {
+      semester,
+    },
+  };
+}
+
 export const MODIFY_LESSON: string = 'MODIFY_LESSON';
 export function modifyLesson(activeLesson: Lesson): FSA {
   return {

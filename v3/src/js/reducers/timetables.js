@@ -12,7 +12,7 @@ import type {
 
 import _ from 'lodash';
 
-import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON } from 'actions/timetables';
+import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON, REMOVE_ALL_MODULES } from 'actions/timetables';
 
 // Map of LessonType to ClassNo.
 const defaultModuleLessonConfig: ModuleLessonConfig = {};
@@ -43,6 +43,9 @@ function moduleLessonConfig(state: ModuleLessonConfig = defaultModuleLessonConfi
 const defaultSemTimetableConfig: SemTimetableConfig = {};
 
 function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig, action: FSA): SemTimetableConfig {
+  if (action.type === REMOVE_ALL_MODULES) {
+    return {};
+  }
   if (!action.payload) {
     return state;
   }
@@ -79,6 +82,7 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
     case ADD_MODULE:
     case REMOVE_MODULE:
     case CHANGE_LESSON:
+    case REMOVE_ALL_MODULES:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),

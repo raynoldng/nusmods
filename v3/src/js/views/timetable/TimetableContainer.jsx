@@ -32,6 +32,7 @@ import {
   changeLesson,
   modifyLesson,
   removeModule,
+  removeAllModules,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -57,7 +58,6 @@ type Props = {
   activeLesson: ModifiableLesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: Array<ModuleCode>,
-
   addModule: Function,
   removeModule: Function,
   modifyLesson: Function,
@@ -66,6 +66,7 @@ type Props = {
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
   downloadAsIcal: Function,
+  removeAllModules: Function,
 };
 
 export class TimetableContainer extends Component {
@@ -195,6 +196,15 @@ export class TimetableContainer extends Component {
                 >
                   <i className="fa fa-calendar" />
                 </button>
+                <button type="button"
+                  className="btn btn-outline-primary"
+                  onClick={() => {
+                    this.props.removeAllModules(this.props.semester);
+                  }
+                  }
+                >
+                  <i className="fa fa-trash" />
+                </button>
               </div>
               <div className="row">
                 <div className="col-md-12">
@@ -267,5 +277,6 @@ export default connect(
     toggleTimetableOrientation,
     downloadAsJpeg,
     downloadAsIcal,
+    removeAllModules,
   },
 )(TimetableContainer);

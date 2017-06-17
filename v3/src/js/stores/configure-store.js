@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
@@ -18,5 +18,6 @@ export default function configureStore(defaultState) {
     });
     middlewares.push(logger);
   }
-  return createStore(rootReducer, defaultState, applyMiddleware(...middlewares));
+  return createStore(rootReducer, defaultState, compose(
+    applyMiddleware(...middlewares), window.devToolsExtension ? window.devToolsExtension() : f => f));
 }

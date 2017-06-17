@@ -8,7 +8,7 @@ import type {
 } from 'types/reducers';
 
 import _ from 'lodash';
-import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
+import { ADD_MODULE, REMOVE_MODULE, REMOVE_ALL_MODULES } from 'actions/timetables';
 import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 
 import {
@@ -57,6 +57,8 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
       };
     case REMOVE_MODULE:
       return _.omit(state, action.payload.moduleCode);
+    case REMOVE_ALL_MODULES:
+      return {};
     case SELECT_MODULE_COLOR:
       return {
         ...state,
@@ -72,6 +74,7 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
     case ADD_MODULE:
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
+    case REMOVE_ALL_MODULES:
       return {
         ...state,
         colors: colors(state.colors, action),

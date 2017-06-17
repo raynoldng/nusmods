@@ -91,6 +91,12 @@ export class AppContainer extends Component {
                     <span className="nm-link-title"> Settings</span>
                   </Link>
                 </li>
+                <li role="presentation" className="nm-nav-item">
+                  <Link className="nav-link" activeClassName="active" to="/projectdescription">
+                    <i className="fa fa-fw fa-lg fa-file-pdf-o" />
+                    <span className="nm-link-title"> Project Description</span>
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="col-md-10 main-content">
