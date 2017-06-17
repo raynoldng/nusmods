@@ -1,4 +1,11 @@
-import { ADD_MODULE_AUTOBUILD_COMP, ADD_MODULE_AUTOBUILD_OPT } from 'actions/autobuild';
+/* eslint no-unused-vars: 0 */
+
+import { ADD_MODULE_AUTOBUILD_COMP,
+         ADD_MODULE_AUTOBUILD_OPT,
+         REMOVE_MODULE_AUTOBUILD,
+} from 'actions/autobuild';
+
+import _ from 'lodash';
 
 // even though we only need array, using object to maintain type compatibility
 function semTimetable(state = {}, action) {
@@ -20,6 +27,8 @@ function semTimetable(state = {}, action) {
         ...state,
         [moduleCode]: 'opt',
       };
+    case REMOVE_MODULE_AUTOBUILD:
+      return _.omit(state, [moduleCode]);
     default:
       return state;
   }
@@ -29,6 +38,7 @@ function autobuild(state = {}, action) {
   switch (action.type) {
     case ADD_MODULE_AUTOBUILD_COMP:
     case ADD_MODULE_AUTOBUILD_OPT:
+    case REMOVE_MODULE_AUTOBUILD:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),

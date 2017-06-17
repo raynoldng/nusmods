@@ -37,6 +37,7 @@ import {
 import {
   addModuleAutobuildComp,
   addModuleAutobuildOpt,
+  removeModuleAutobuild,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -74,7 +75,8 @@ type Props = {
   removeAllModules: Function,
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
-  autobuild: Object
+  autobuild: Object,
+  removeModuleAutobuild: Function,
 };
 
 export class TimetableContainer extends Component {
@@ -236,7 +238,7 @@ export class TimetableContainer extends Component {
                     horizontalOrientation={isHorizontalOrientation}
                     semester={this.props.semester}
                     onRemoveModule={(moduleCode) => {
-                      this.props.removeModule(this.props.semester, moduleCode);
+                      this.props.removeModuleAutobuild(this.props.semester, moduleCode);
                     }}
                   />
                 </div>
@@ -263,7 +265,7 @@ export class TimetableContainer extends Component {
                     horizontalOrientation={isHorizontalOrientation}
                     semester={this.props.semester}
                     onRemoveModule={(moduleCode) => {
-                      this.props.removeModule(this.props.semester, moduleCode);
+                      this.props.removeModuleAutobuild(this.props.semester, moduleCode);
                     }}
                   />
                 </div>
@@ -317,5 +319,6 @@ export default connect(
     removeAllModules,
     addModuleAutobuildComp,
     addModuleAutobuildOpt,
+    removeModuleAutobuild,
   },
 )(TimetableContainer);
