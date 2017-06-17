@@ -12,6 +12,7 @@ import timetables from './timetables';
 import app from './app';
 import theme from './theme';
 import settings from './settings';
+import autobuild from './autobuild';
 
 type State = {
   entities: Object,
@@ -35,5 +36,6 @@ export default function (state: State = defaultState, action: FSA) {
     app: app(state.app, action),
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
+    autobuild: autobuild(state.autobuild, action),
   };
 }

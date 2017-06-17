@@ -29,6 +29,7 @@ store.subscribe(_.throttle(() => {
     timetables: storeState.timetables,
     theme: storeState.theme,
     settings: storeState.settings,
+    autobuild: storeState.autobuild,
   });
 }, 1000));
 
