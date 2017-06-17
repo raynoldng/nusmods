@@ -3,7 +3,7 @@ import DocumentTitle from 'react-document-title';
 
 export default function ProjectDescriptionContainer() {
   return (
-    <DocumentTitle title="About NUSMods">
+    <DocumentTitle title="Project Description">
       <div className="row">
         <div className="col-md-8 offset-md-1">
           <h2>Introduction</h2>

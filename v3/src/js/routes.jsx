@@ -15,6 +15,8 @@ import ModulePageContainer from 'views/browse/ModulePageContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import TeamContainer from 'views/static/TeamContainer';
 import ProjectDescriptionContainer from 'views/static/ProjectDescriptionContainer';
+import AutobuildContainer from 'views/autobuild/AutobuildContainer';
+import AutobuildGuideContainer from 'views/static/AutobuildGuideContainer';
 
 /* eslint-disable react/prop-types */
 export default function ({ store, history }) {
@@ -33,6 +35,8 @@ export default function ({ store, history }) {
           <Route path="/settings" component={SettingsContainer} />
           <Route path="/team" component={TeamContainer} />
           <Route path="/projectdescription" component={ProjectDescriptionContainer} />
+          <Route path="/autobuild" component={AutobuildContainer} />
+          <Route path="/autobuild-guide" component={AutobuildGuideContainer} />
           <Route path="*" component={NotFoundPage} />
         </Route>
       </Router>
