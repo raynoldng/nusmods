@@ -34,6 +34,10 @@ import {
   removeModule,
   removeAllModules,
 } from 'actions/timetables';
+import {
+  addModuleAutobuildComp,
+  addModuleAutobuildOpt,
+} from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import {
@@ -67,6 +71,8 @@ type Props = {
   downloadAsJpeg: Function,
   downloadAsIcal: Function,
   removeAllModules: Function,
+  addModuleAutobuildComp: Function,
+  addModuleAutobuildOpt: Function,
 };
 
 export class TimetableContainer extends Component {
@@ -210,7 +216,7 @@ export class TimetableContainer extends Component {
                 <div className="col-md-12">
                   <ModulesSelect moduleList={this.props.semModuleList}
                     onChange={(moduleCode) => {
-                      this.props.addModule(this.props.semester, moduleCode.value);
+                      this.props.addModuleAutobuildComp(this.props.semester, moduleCode.value);
                     }}
                     placeholder="Add compuslory module to timetable"
                   />
@@ -237,7 +243,7 @@ export class TimetableContainer extends Component {
                 <div className="col-md-12">
                   <ModulesSelect moduleList={this.props.semModuleList}
                     onChange={(moduleCode) => {
-                      this.props.addModule(this.props.semester, moduleCode.value);
+                      this.props.addModuleAutobuildOpt(this.props.semester, moduleCode.value);
                     }}
                     placeholder="Add optional module to timetable"
                   />
@@ -305,5 +311,7 @@ export default connect(
     downloadAsJpeg,
     downloadAsIcal,
     removeAllModules,
+    addModuleAutobuildComp,
+    addModuleAutobuildOpt,
   },
 )(TimetableContainer);

@@ -13,7 +13,12 @@ function semTimetable(state = {}, action) {
     case ADD_MODULE_AUTOBUILD_COMP:
       return {
         ...state,
-        [moduleCode]: true,
+        [moduleCode]: 'comp',
+      };
+    case ADD_MODULE_AUTOBUILD_OPT:
+      return {
+        ...state,
+        [moduleCode]: 'opt',
       };
     default:
       return state;
