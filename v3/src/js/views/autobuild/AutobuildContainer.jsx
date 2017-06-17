@@ -40,6 +40,7 @@ import {
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
+import { isCompMod, isOptMod } from 'utils/autobuild';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -73,6 +74,7 @@ type Props = {
   removeAllModules: Function,
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
+  autobuild: Object
 };
 
 export class TimetableContainer extends Component {
@@ -222,7 +224,7 @@ export class TimetableContainer extends Component {
                   />
                   <br />
                   <TimetableModulesTable modules={
-                    Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
+                    Object.keys(_.pickBy(this.props.autobuild, isCompMod)).sort((a, b) => {
                       return a.localeCompare(b);
                     }).map((moduleCode) => {
                       const module = this.props.modules[moduleCode] || {};
@@ -249,7 +251,7 @@ export class TimetableContainer extends Component {
                   />
                   <br />
                   <TimetableModulesTable modules={
-                    Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
+                    Object.keys(_.pickBy(this.props.autobuild, isOptMod)).sort((a, b) => {
                       return a.localeCompare(b);
                     }).map((moduleCode) => {
                       const module = this.props.modules[moduleCode] || {};
@@ -285,6 +287,7 @@ function mapStateToProps(state) {
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
   const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
+  const autobuild = state.autobuild[semester] || {};
 
   return {
     semester,
@@ -296,6 +299,7 @@ function mapStateToProps(state) {
     colors: state.theme.colors,
     timetableOrientation: state.theme.timetableOrientation,
     hiddenInTimetable,
+    autobuild,
   };
 }
 
