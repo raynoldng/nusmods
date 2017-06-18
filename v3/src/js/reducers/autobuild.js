@@ -3,7 +3,9 @@
 import { ADD_MODULE_AUTOBUILD_COMP,
          ADD_MODULE_AUTOBUILD_OPT,
          REMOVE_MODULE_AUTOBUILD,
+         TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
 } from 'actions/autobuild';
+
 
 import _ from 'lodash';
 
@@ -11,6 +13,12 @@ import _ from 'lodash';
 function semTimetable(state = {}, action) {
   if (!action.payload) {
     return state;
+  }
+  if (action.type === TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD) {
+    return {
+      ...state,
+      checked: !state.checked,
+    };
   }
   const moduleCode = action.payload.moduleCode;
   if (!moduleCode) {
@@ -39,6 +47,7 @@ function autobuild(state = {}, action) {
     case ADD_MODULE_AUTOBUILD_COMP:
     case ADD_MODULE_AUTOBUILD_OPT:
     case REMOVE_MODULE_AUTOBUILD:
+    case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),

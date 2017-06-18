@@ -1,5 +1,6 @@
 // @flow
 /* eslint-disable no-duplicate-imports */
+import Checkbox from 'react-checkbox';
 import type {
   ThemeState,
   TimetableOrientation,
@@ -38,6 +39,7 @@ import {
   addModuleAutobuildComp,
   addModuleAutobuildOpt,
   removeModuleAutobuild,
+  toggleFreedayAutobuild,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -75,8 +77,10 @@ type Props = {
   removeAllModules: Function,
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
+  toggleFreedayAutobuild: Function,
   autobuild: Object,
   removeModuleAutobuild: Function,
+  semModuleListAutobuild: Array<Object>,
 };
 
 export class TimetableContainer extends Component {
@@ -218,7 +222,7 @@ export class TimetableContainer extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
-                  <ModulesSelect moduleList={this.props.semModuleList}
+                  <ModulesSelect moduleList={this.props.semModuleListAutobuild}
                     onChange={(moduleCode) => {
                       this.props.addModuleAutobuildComp(this.props.semester, moduleCode.value);
                     }}
@@ -245,7 +249,7 @@ export class TimetableContainer extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
-                  <ModulesSelect moduleList={this.props.semModuleList}
+                  <ModulesSelect moduleList={this.props.semModuleListAutobuild}
                     onChange={(moduleCode) => {
                       this.props.addModuleAutobuildOpt(this.props.semester, moduleCode.value);
                     }}
@@ -270,6 +274,15 @@ export class TimetableContainer extends Component {
                   />
                 </div>
               </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <Checkbox checked={this.props.autobuild.checked}
+                    onChange={() => {
+                      this.props.toggleFreedayAutobuild(this.props.semester);
+                    }}
+                  /> I want a free day!
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -290,6 +303,7 @@ function mapStateToProps(state) {
   const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
   const autobuild = state.autobuild[semester] || {};
+  const semModuleListAutobuild = getSemModuleSelectList(state.entities.moduleBank, semester, autobuild);
 
   return {
     semester,
@@ -302,6 +316,7 @@ function mapStateToProps(state) {
     timetableOrientation: state.theme.timetableOrientation,
     hiddenInTimetable,
     autobuild,
+    semModuleListAutobuild,
   };
 }
 
@@ -320,5 +335,6 @@ export default connect(
     addModuleAutobuildComp,
     addModuleAutobuildOpt,
     removeModuleAutobuild,
+    toggleFreedayAutobuild,
   },
 )(TimetableContainer);

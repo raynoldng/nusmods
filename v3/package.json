@@ -3,7 +3,7 @@
   "version": "3.0.0-alpha",
   "description": "NUSMods v3",
   "scripts": {
-  "start": "cross-env NODE_ENV=development babel-node scripts/start",
+    "start": "cross-env NODE_ENV=development babel-node scripts/start",
     "build": "cross-env NODE_ENV=production babel-node scripts/build",
     "build:dll": "cross-env NODE_ENV=development webpack --config=webpack/webpack.config.dll.js",
     "postinstall": "npm run build:dll && flow-scripts stub",
@@ -85,6 +85,7 @@
     "react": "^15.5.4",
     "react-addons-shallow-compare": "^15.5.2",
     "react-autobind": "^1.0.6",
+    "react-checkbox": "^0.1.3",
     "react-disqus-thread": "^0.4.0",
     "react-document-title": "^2.0.3",
     "react-dom": "^15.5.4",
