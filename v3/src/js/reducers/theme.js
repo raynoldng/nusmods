@@ -10,6 +10,7 @@ import type {
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE, REMOVE_ALL_MODULES } from 'actions/timetables';
 import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
+import { ADD_MODULE_AUTOBUILD_COMP, REMOVE_MODULE_AUTOBUILD } from 'actions/autobuild';
 
 import {
   VERTICAL,
@@ -51,11 +52,13 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
   }
   switch (action.type) {
     case ADD_MODULE:
+    case ADD_MODULE_AUTOBUILD_COMP:
       return {
         ...state,
         [action.payload.moduleCode]: getNewColor(_.values(state)),
       };
     case REMOVE_MODULE:
+    case REMOVE_MODULE_AUTOBUILD:
       return _.omit(state, action.payload.moduleCode);
     case REMOVE_ALL_MODULES:
       return {};
@@ -78,6 +81,12 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
       return {
         ...state,
         colors: colors(state.colors, action),
+      };
+    case ADD_MODULE_AUTOBUILD_COMP:
+    case REMOVE_MODULE_AUTOBUILD:
+      return {
+        ...state,
+        autobuildcolors: colors(state.autobuildcolors, action),
       };
     case SELECT_THEME:
       return {

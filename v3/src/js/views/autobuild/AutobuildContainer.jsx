@@ -60,6 +60,7 @@ type Props = {
   modules: Module,
   theme: string,
   colors: ThemeState,
+  autobuildcolors: ThemeState,
   activeLesson: ModifiableLesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: Array<ModuleCode>,
@@ -142,7 +143,7 @@ export class AutobuildContainer extends Component {
 
     // Inject color index into lessons.
     timetableLessons = timetableLessons.map((lesson) => {
-      return { ...lesson, colorIndex: this.props.colors[lesson.ModuleCode] };
+      return { ...lesson, colorIndex: this.props.autobuildcolors[lesson.ModuleCode] };
     });
 
     // inject hidden into lessons.
@@ -234,7 +235,7 @@ export class AutobuildContainer extends Component {
                     }).map((moduleCode) => {
                       const module = this.props.modules[moduleCode] || {};
                       // Inject color index.
-                      module.colorIndex = this.props.colors[moduleCode];
+                      module.colorIndex = this.props.autobuildcolors[moduleCode];
                       module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
                       return module;
                     })}
@@ -309,6 +310,7 @@ function mapStateToProps(state) {
     activeLesson: state.app.activeLesson,
     theme: state.theme.id,
     colors: state.theme.colors,
+    autobuildcolors: state.theme.autobuildcolors,
     timetableOrientation: state.theme.timetableOrientation,
     hiddenInTimetable,
     autobuild,
