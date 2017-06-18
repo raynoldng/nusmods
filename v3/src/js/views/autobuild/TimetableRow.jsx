@@ -1,5 +1,6 @@
 // @flow
 /* eslint-disable no-alert */
+/* eslint-disable no-unused-vars */
 
 import type { Lesson, LessonTime, ModifiableLesson } from 'types/modules';
 
@@ -53,7 +54,7 @@ function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
         <TimetableCell key={i}
           size={1 * cellSize}
           styleProp={cellOrientationStyleProp}
-          lesson={dummyLesson}
+          // lesson={dummyLesson}
           onModifyCell={alertwow}
         />,
       );

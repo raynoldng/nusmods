@@ -6,6 +6,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
          CHANGE_WORKLOAD_AUTOBUILD,
          CHANGE_LESSON_AUTOBUILD,
+         TOGGLE_LOCKING_MODE,
 } from 'actions/autobuild';
 
 import _ from 'lodash';
@@ -49,6 +50,12 @@ function semTimetable(state = {}, action) {
       checked: !state.checked,
     };
   }
+  if (action.type === TOGGLE_LOCKING_MODE) {
+    return {
+      ...state,
+      lockingMode: !state.lockingMode,
+    };
+  }
   const moduleCode = action.payload.moduleCode;
   if (!moduleCode) {
     return state;
@@ -89,6 +96,7 @@ function autobuild(state = {}, action) {
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
     case CHANGE_WORKLOAD_AUTOBUILD:
     case CHANGE_LESSON_AUTOBUILD:
+    case TOGGLE_LOCKING_MODE:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),

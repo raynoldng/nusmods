@@ -95,3 +95,13 @@ export function changeLessonAutobuild(semester: Semester, lesson: Lesson): FSA {
     },
   };
 }
+
+export const TOGGLE_LOCKING_MODE: string = 'TOGGLE_LOCKING_MODE';
+export function toggleLockingMode(semester: Semester): FSA {
+  return {
+    type: TOGGLE_LOCKING_MODE,
+    payload: {
+      semester,
+    },
+  };
+}

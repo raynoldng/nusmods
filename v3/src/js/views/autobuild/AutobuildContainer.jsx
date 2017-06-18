@@ -38,6 +38,7 @@ import {
   toggleFreedayAutobuild,
   changeWorkloadAutobuild,
   changeLessonAutobuild,
+  toggleLockingMode,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -80,6 +81,7 @@ type Props = {
   changeWorkloadAutobuild: Function,
   semModuleListAutobuild: Array<Object>,
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
+  toggleLockingMode: Function,
 };
 
 export class AutobuildContainer extends Component {
@@ -189,6 +191,12 @@ export class AutobuildContainer extends Component {
               'col-md-4': !isHorizontalOrientation,
             })}>
               <div className="timetable-action-row text-xs-right">
+                <button type="button"
+                  className="btn btn-outline-primary"
+                  onClick={this.props.toggleTimetableOrientation}
+                >
+                  <i className="fa fa-lock" />
+                </button>
                 <button type="button"
                   className="btn btn-outline-primary"
                   onClick={this.props.toggleTimetableOrientation}
@@ -312,6 +320,7 @@ function mapStateToProps(state) {
   const semModuleListAutobuild = getSemModuleSelectList(state.entities.moduleBank, semester, autobuild);
   const semTimetableWithLessonsAutobuild = hydrateSemTimetableWithLessons(
     autobuildToSemTimetableConfig(autobuild), modules, semester);
+  // const isLockingMode = state.autobuild.lockingMode || false;
 
   return {
     semester,
@@ -325,6 +334,7 @@ function mapStateToProps(state) {
     autobuild,
     semModuleListAutobuild,
     semTimetableWithLessonsAutobuild,
+    // isLockingMode,
   };
 }
 
@@ -343,5 +353,6 @@ export default connect(
     removeModuleAutobuild,
     toggleFreedayAutobuild,
     changeWorkloadAutobuild,
+    toggleLockingMode,
   },
 )(AutobuildContainer);
