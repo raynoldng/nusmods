@@ -2,30 +2,40 @@
 /* eslint no-unused-vars: 0 */
 
 import type {
-  // Module,
+  Module,
   ModuleCode,
   Semester,
-  // RawLesson,
+  RawLesson,
   // Lesson,
 } from 'types/modules';
 
 import { loadModule } from 'actions/moduleBank';
+import { randomModuleLessonConfig } from 'utils/timetables';
+import { getModuleTimetable } from 'utils/modules';
 
 export const ADD_MODULE_AUTOBUILD_COMP: string = 'ADD_MODULE_AUTOBUILD_COMP';
 export function addModuleAutobuildComp(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: Function) => {
     return dispatch(loadModule(moduleCode)).then(() => {
+      const module: Module = getState().entities.moduleBank.modules[moduleCode];
+      const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
+      let moduleLessonConfig: ModuleLessonConfig = {};
+      if (lessons) { // Module may not have lessons.
+        moduleLessonConfig = randomModuleLessonConfig(lessons);
+      }
       return dispatch({
         type: ADD_MODULE_AUTOBUILD_COMP,
         payload: {
           semester,
           moduleCode,
+          moduleLessonConfig,
         },
       });
     });
   };
 }
 
+// no need for moduleLessonConfig in optional module
 export const ADD_MODULE_AUTOBUILD_OPT: string = 'ADD_MODULE_AUTOBUILD_OPT';
 export function addModuleAutobuildOpt(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: Function) => {

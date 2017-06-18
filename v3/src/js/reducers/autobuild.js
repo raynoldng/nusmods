@@ -28,12 +28,17 @@ function semTimetable(state = {}, action) {
     case ADD_MODULE_AUTOBUILD_COMP:
       return {
         ...state,
-        [moduleCode]: 'comp',
+        [moduleCode]: {
+          ...action.payload.moduleLessonConfig,
+          status: 'comp',
+        },
       };
     case ADD_MODULE_AUTOBUILD_OPT:
       return {
         ...state,
-        [moduleCode]: 'opt',
+        [moduleCode]: {
+          status: 'opt',
+        },
       };
     case REMOVE_MODULE_AUTOBUILD:
       return _.omit(state, [moduleCode]);
