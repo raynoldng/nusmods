@@ -1,5 +1,6 @@
 // @flow
 /* eslint-disable no-duplicate-imports */
+/* eslint-disable no-unused-vars */
 import Checkbox from 'react-checkbox';
 import type {
   ThemeState,
@@ -39,6 +40,7 @@ import {
   addModuleAutobuildOpt,
   removeModuleAutobuild,
   toggleFreedayAutobuild,
+  changeWorkloadAutobuild,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -51,9 +53,11 @@ import {
   lessonsForLessonType,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
+import AutobuildWorkloadSelect from 'views/components/AutobuildWorkloadSelect';
 
 import Timetable from '../timetable/Timetable';
 import TimetableModulesTable from '../timetable/TimetableModulesTable';
+
 
 type Props = {
   semester: number,
@@ -78,6 +82,7 @@ type Props = {
   toggleFreedayAutobuild: Function,
   autobuild: Object,
   removeModuleAutobuild: Function,
+  changeWorkloadAutobuild: Function,
   semModuleListAutobuild: Array<Object>,
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
 };
@@ -276,6 +281,15 @@ export class AutobuildContainer extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
+                  <AutobuildWorkloadSelect onChange={(selectedWorkload) => {
+                    this.props.changeWorkloadAutobuild(this.props.semester, selectedWorkload);
+                  }} placeholder={this.props.autobuild.workload}
+                  /> Select intended workload:
+                </div>
+              </div>
+              <br />
+              <div className="row">
+                <div className="col-md-12">
                   <Checkbox checked={this.props.autobuild.checked}
                     onChange={() => {
                       this.props.toggleFreedayAutobuild(this.props.semester);
@@ -335,5 +349,6 @@ export default connect(
     addModuleAutobuildOpt,
     removeModuleAutobuild,
     toggleFreedayAutobuild,
+    changeWorkloadAutobuild,
   },
 )(AutobuildContainer);

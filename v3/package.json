@@ -92,6 +92,7 @@
     "react-redux": "^5.0.4",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.8",
+    "react-select": "^1.0.0-rc.5",
     "react-select-fast-filter-options": "^0.2.1",
     "react-virtualized-select": "^2.1.0",
     "redux": "^3.5.2",

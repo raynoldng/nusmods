@@ -4,6 +4,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          ADD_MODULE_AUTOBUILD_OPT,
          REMOVE_MODULE_AUTOBUILD,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
+         CHANGE_WORKLOAD_AUTOBUILD,
 } from 'actions/autobuild';
 
 
@@ -13,6 +14,12 @@ import _ from 'lodash';
 function semTimetable(state = {}, action) {
   if (!action.payload) {
     return state;
+  }
+  if (action.type === CHANGE_WORKLOAD_AUTOBUILD) {
+    return {
+      ...state,
+      workload: action.payload.workload,
+    };
   }
   if (action.type === TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD) {
     return {
@@ -53,6 +60,7 @@ function autobuild(state = {}, action) {
     case ADD_MODULE_AUTOBUILD_OPT:
     case REMOVE_MODULE_AUTOBUILD:
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
+    case CHANGE_WORKLOAD_AUTOBUILD:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),

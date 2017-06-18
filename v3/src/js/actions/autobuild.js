@@ -71,3 +71,14 @@ export function toggleFreedayAutobuild(semester: Semester): FSA {
     },
   };
 }
+
+export const CHANGE_WORKLOAD_AUTOBUILD: string = 'CHANGE_WORKLOAD_AUTOBUILD';
+export function changeWorkloadAutobuild(semester: Semester, workload): FSA {
+  return {
+    type: CHANGE_WORKLOAD_AUTOBUILD,
+    payload: {
+      semester,
+      workload: workload.value,
+    },
+  };
+}
