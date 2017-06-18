@@ -82,3 +82,16 @@ export function changeWorkloadAutobuild(semester: Semester, workload): FSA {
     },
   };
 }
+
+export const CHANGE_LESSON_AUTOBUILD: string = 'CHANGE_LESSON_AUTOBUILD';
+export function changeLessonAutobuild(semester: Semester, lesson: Lesson): FSA {
+  return {
+    type: CHANGE_LESSON_AUTOBUILD,
+    payload: {
+      semester,
+      moduleCode: lesson.ModuleCode,
+      lessonType: lesson.LessonType,
+      classNo: lesson.ClassNo,
+    },
+  };
+}

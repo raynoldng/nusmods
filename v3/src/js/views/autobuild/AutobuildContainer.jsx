@@ -1,6 +1,5 @@
 // @flow
 /* eslint-disable no-duplicate-imports */
-/* eslint-disable no-unused-vars */
 import Checkbox from 'react-checkbox';
 import type {
   ThemeState,
@@ -28,11 +27,8 @@ import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
-  addModule,
   cancelModifyLesson,
-  changeLesson,
   modifyLesson,
-  removeModule,
   removeAllModules,
 } from 'actions/timetables';
 import {
@@ -41,6 +37,7 @@ import {
   removeModuleAutobuild,
   toggleFreedayAutobuild,
   changeWorkloadAutobuild,
+  changeLessonAutobuild,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -55,7 +52,7 @@ import {
 import ModulesSelect from 'views/components/ModulesSelect';
 import AutobuildWorkloadSelect from 'views/components/AutobuildWorkloadSelect';
 
-import Timetable from '../timetable/Timetable';
+import Timetable from './Timetable';
 import TimetableModulesTable from '../timetable/TimetableModulesTable';
 
 
@@ -68,10 +65,8 @@ type Props = {
   activeLesson: ModifiableLesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: Array<ModuleCode>,
-  addModule: Function,
-  removeModule: Function,
   modifyLesson: Function,
-  changeLesson: Function,
+  changeLessonAutobuild: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
@@ -106,7 +101,7 @@ export class AutobuildContainer extends Component {
 
   modifyCell(lesson: ModifiableLesson) {
     if (lesson.isAvailable) {
-      this.props.changeLesson(this.props.semester, lesson);
+      this.props.changeLessonAutobuild(this.props.semester, lesson);
     } else if (lesson.isActive) {
       this.props.cancelModifyLesson();
     } else {
@@ -336,10 +331,8 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    addModule,
-    removeModule,
     modifyLesson,
-    changeLesson,
+    changeLessonAutobuild,
     cancelModifyLesson,
     toggleTimetableOrientation,
     downloadAsJpeg,

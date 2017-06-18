@@ -8,6 +8,9 @@ import {
   CANCEL_MODIFY_LESSON,
 } from 'actions/timetables';
 import {
+  CHANGE_LESSON_AUTOBUILD,
+} from 'actions/autobuild';
+import {
   MODIFY_MODULE_COLOR,
   CANCEL_MODIFY_MODULE_COLOR,
   SELECT_MODULE_COLOR,
@@ -35,6 +38,7 @@ function app(state: AppState = defaultAppState, action: FSA): AppState {
       };
     case CANCEL_MODIFY_LESSON:
     case CHANGE_LESSON:
+    case CHANGE_LESSON_AUTOBUILD:
       return {
         ...state,
         activeLesson: null,

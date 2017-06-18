@@ -5,10 +5,32 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          REMOVE_MODULE_AUTOBUILD,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
          CHANGE_WORKLOAD_AUTOBUILD,
+         CHANGE_LESSON_AUTOBUILD,
 } from 'actions/autobuild';
 
-
 import _ from 'lodash';
+
+function moduleLessonConfig(state = {}, action) {
+  switch (action.type) {
+    case CHANGE_LESSON_AUTOBUILD:
+      return (() => {
+        if (!action.payload) {
+          return state;
+        }
+        const classNo = action.payload.classNo;
+        const lessonType = action.payload.lessonType;
+        if (!(classNo && lessonType)) {
+          return state;
+        }
+        return {
+          ...state,
+          [lessonType]: classNo,
+        };
+      })();
+    default:
+      return state;
+  }
+}
 
 // even though we only need array, using object to maintain type compatibility
 function semTimetable(state = {}, action) {
@@ -49,6 +71,11 @@ function semTimetable(state = {}, action) {
       };
     case REMOVE_MODULE_AUTOBUILD:
       return _.omit(state, [moduleCode]);
+    case CHANGE_LESSON_AUTOBUILD:
+      return {
+        ...state,
+        [moduleCode]: moduleLessonConfig(state[moduleCode], action),
+      };
     default:
       return state;
   }
@@ -61,6 +88,7 @@ function autobuild(state = {}, action) {
     case REMOVE_MODULE_AUTOBUILD:
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
     case CHANGE_WORKLOAD_AUTOBUILD:
+    case CHANGE_LESSON_AUTOBUILD:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),
