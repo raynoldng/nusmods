@@ -1,4 +1,6 @@
 // @flow
+/* eslint-disable no-alert */
+
 import type { ModifiableLesson } from 'types/modules';
 
 import React from 'react';

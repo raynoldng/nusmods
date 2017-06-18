@@ -1,4 +1,6 @@
 // @flow
+/* eslint-disable no-alert */
+
 import type { Lesson, LessonTime, ModifiableLesson } from 'types/modules';
 
 import React from 'react';
@@ -6,6 +8,20 @@ import _ from 'lodash';
 
 import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 import TimetableCell from './TimetableCell';
+
+function alertwow(lesson) {
+  if (lesson) {
+    alert('wow');
+  } else {
+    alert('wowow');
+  }
+}
+
+const dummyLesson = {
+  ModuleCode: 'edit-me',
+  // colorIndex: 5,
+  isModifiable: true,
+};
 
 function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
   cellSize: number, cellOrientationStyleProp: string,
@@ -33,7 +49,14 @@ function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
       );
       i += (size - 1);
     } else {
-      cells.push(<TimetableCell key={i} />);
+      cells.push(
+        <TimetableCell key={i}
+          size={1 * cellSize}
+          styleProp={cellOrientationStyleProp}
+          lesson={dummyLesson}
+          onModifyCell={alertwow}
+        />,
+      );
     }
   }
   return cells;
