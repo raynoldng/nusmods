@@ -13,7 +13,6 @@ import type {
   Lesson,
   Module,
   ModuleCode,
-  ModuleCondensed,
   RawLesson,
 } from 'types/modules';
 import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
@@ -43,7 +42,7 @@ import {
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
-import { isCompMod, isOptMod } from 'utils/autobuild';
+import { isCompMod, isOptMod, autobuildToSemTimetableConfig } from 'utils/autobuild';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -58,8 +57,6 @@ import TimetableModulesTable from '../timetable/TimetableModulesTable';
 
 type Props = {
   semester: number,
-  semModuleList: Array<ModuleCondensed>,
-  semTimetableWithLessons: SemTimetableConfig,
   modules: Module,
   theme: string,
   colors: ThemeState,
@@ -81,9 +78,10 @@ type Props = {
   autobuild: Object,
   removeModuleAutobuild: Function,
   semModuleListAutobuild: Array<Object>,
+  semTimetableWithLessonsAutobuild: SemTimetableConfig,
 };
 
-export class TimetableContainer extends Component {
+export class AutobuildContainer extends Component {
 
   constructor(props: Props) {
     super(props);
@@ -111,7 +109,8 @@ export class TimetableContainer extends Component {
   }
 
   render() {
-    let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(this.props.semTimetableWithLessons);
+    let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(
+      this.props.semTimetableWithLessonsAutobuild);
     if (this.props.activeLesson) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
@@ -206,7 +205,7 @@ export class TimetableContainer extends Component {
                 <button type="button"
                   className="btn btn-outline-primary"
                   onClick={() => this.props.downloadAsIcal(
-                    this.props.semester, this.props.semTimetableWithLessons, this.props.modules)}
+                    this.props.semester, this.props.semTimetableWithLessonsAutobuild, this.props.modules)}
                 >
                   <i className="fa fa-calendar" />
                 </button>
@@ -291,24 +290,21 @@ export class TimetableContainer extends Component {
   }
 }
 
-TimetableContainer.contextTypes = {
+AutobuildContainer.contextTypes = {
   router: PropTypes.object,
 };
 
 function mapStateToProps(state) {
   const modules = state.entities.moduleBank.modules;
   const semester = config.semester;
-  const semTimetable = state.timetables[semester] || {};
-  const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
-  const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
   const autobuild = state.autobuild[semester] || {};
   const semModuleListAutobuild = getSemModuleSelectList(state.entities.moduleBank, semester, autobuild);
+  const semTimetableWithLessonsAutobuild = hydrateSemTimetableWithLessons(
+    autobuildToSemTimetableConfig(autobuild), modules, semester);
 
   return {
     semester,
-    semModuleList,
-    semTimetableWithLessons,
     modules,
     activeLesson: state.app.activeLesson,
     theme: state.theme.id,
@@ -317,6 +313,7 @@ function mapStateToProps(state) {
     hiddenInTimetable,
     autobuild,
     semModuleListAutobuild,
+    semTimetableWithLessonsAutobuild,
   };
 }
 
@@ -337,4 +334,4 @@ export default connect(
     removeModuleAutobuild,
     toggleFreedayAutobuild,
   },
-)(TimetableContainer);
+)(AutobuildContainer);
