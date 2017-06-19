@@ -15,7 +15,7 @@ RawLesson,
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import { solve } from '../utils/smtSolver';
+import { solve, parseOutput, slotsFromModel } from '../utils/smtSolver';
 
 
 export const ADD_MODULE_AUTOBUILD_COMP: string = 'ADD_MODULE_AUTOBUILD_COMP';
@@ -132,8 +132,11 @@ export function fetchQuery(autobuild) {
     // console.log('there is the query:');
     // console.log(data);
     const result = solve(data);
-    console.log(result);
-    console.log('result of SMT computation:');
-    console.log(result);
+    return result;
+    // console.log('result of SMT computation:');
+    // console.log(parseOutput(result));
+  }).then((result) => {
+    console.log(parseOutput(result));
+    slotsFromModel(result, compMods, optMods, workload);
   });
 }
