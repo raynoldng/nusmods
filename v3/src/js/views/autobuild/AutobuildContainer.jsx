@@ -41,6 +41,7 @@ import {
   changeWorkloadAutobuild,
   changeLessonAutobuild,
   toggleLockingMode,
+  fetchQuery,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -84,6 +85,7 @@ type Props = {
   semModuleListAutobuild: Array<Object>,
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
   toggleLockingMode: Function,
+  fetchQuery: Function,
 };
 
 export class AutobuildContainer extends Component {
@@ -306,7 +308,8 @@ export class AutobuildContainer extends Component {
                 <button type="button" className="btn btn-info"
                   onClick={() => {
                     // should do something
-                    alert('Coming soon....');
+                    // alert('Coming soon....');
+                    this.props.fetchQuery(this.props.autobuild);
                   }}>Generate Timetable</button>
               </div>
             </div>
@@ -363,5 +366,6 @@ export default connect(
     toggleFreedayAutobuild,
     changeWorkloadAutobuild,
     toggleLockingMode,
+    fetchQuery,
   },
 )(AutobuildContainer);

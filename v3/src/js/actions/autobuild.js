@@ -1,5 +1,7 @@
 // @flow
 /* eslint no-unused-vars: 0 */
+/* eslint-disable no-console */
+import fetch from 'isomorphic-fetch';
 
 import type {
   Module,
@@ -12,6 +14,7 @@ import type {
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
+import NUSModsPlannerApi from 'apis/nusmodsplanner';
 
 export const ADD_MODULE_AUTOBUILD_COMP: string = 'ADD_MODULE_AUTOBUILD_COMP';
 export function addModuleAutobuildComp(semester: Semester, moduleCode: ModuleCode) {
@@ -104,4 +107,18 @@ export function toggleLockingMode(semester: Semester): FSA {
       semester,
     },
   };
+}
+
+export const FETCH_QUERY: string = 'FETCH_QUERY';
+export function fetchQuery(autobuild) {
+  // first filter out the mods
+  const mods = Object.keys(autobuild).filter(k => autobuild[k].status);
+  const compMods = mods.filter(m => autobuild[m].status === 'comp');
+  const optMods = mods.filter(m => autobuild[m].status === 'opt');
+  const workload = autobuild.workload ? autobuild.workload : 5;
+
+  const url = NUSModsPlannerApi.plannerQueryUrl(compMods, optMods, workload);
+  console.log(`url: ${url}`);
+
+  fetch(url).then(req => req.text()).then(data => console.log(data));
 }
