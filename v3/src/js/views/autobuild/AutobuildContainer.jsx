@@ -1,5 +1,7 @@
 // @flow
 /* eslint-disable no-duplicate-imports */
+/* eslint-disable no-alert */
+
 import Checkbox from 'react-checkbox';
 import type {
   ThemeState,
@@ -299,6 +301,13 @@ export class AutobuildContainer extends Component {
                     }}
                   /> I want a free day!
                 </div>
+              </div>
+              <div className="row">
+                <button type="button" className="btn btn-info"
+                  onClick={() => {
+                    // should do something
+                    alert('Coming soon....');
+                  }}>Generate Timetable</button>
               </div>
             </div>
           </div>
