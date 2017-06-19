@@ -119,14 +119,20 @@ export function fetchQuery(autobuild) {
   const optMods = mods.filter(m => autobuild[m].status === 'opt');
   const workload = autobuild.workload ? autobuild.workload : 5;
 
+  // console.log('compMods:');
+  // console.log(compMods);
+  // console.log('optMods:');
+  // console.log(optMods);
+
   const url = NUSModsPlannerApi.plannerQueryUrl(compMods, optMods, workload);
-  console.log(`url: ${url}`);
+  // console.log(`url: ${url}`);
 
   // fetch(url).then(req => req.text()).then(data => console.log(data));
   fetch(url).then(req => req.text()).then((data) => {
-    console.log('there is the query:');
-    console.log(data);
+    // console.log('there is the query:');
+    // console.log(data);
     const result = solve(data);
+    console.log(result);
     console.log('result of SMT computation:');
     console.log(result);
   });

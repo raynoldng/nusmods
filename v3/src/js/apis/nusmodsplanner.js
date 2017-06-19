@@ -7,8 +7,8 @@ const NUSModsPlannerApi = {
   plannerBaseUrl: (): string => plannerBaseUrl,
 
   plannerQueryUrl: (compModuleCodes: Array<ModuleCode>, optModuleCodes: Array<ModuleCode>, numMods: number): string => {
-    const compMods = compModuleCodes ? compModuleCodes.join(',') : 'null';
-    const optMods = optModuleCodes ? optModuleCodes.join(',') : 'null';
+    const compMods = compModuleCodes.length !== 0 ? compModuleCodes.join(',') : 'null';
+    const optMods = optModuleCodes.length !== 0 ? optModuleCodes.join(',') : 'null';
     return `${plannerBaseUrl}/${numMods}/${compMods}/${optMods}`;
   },
 };
