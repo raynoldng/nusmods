@@ -3,18 +3,20 @@
 /* eslint-disable no-console */
 import fetch from 'isomorphic-fetch';
 
+import NUSModsPlannerApi from 'apis/nusmodsplanner';
 import type {
-  Module,
-  ModuleCode,
-  Semester,
-  RawLesson,
-  // Lesson,
+Module,
+ModuleCode,
+Semester,
+RawLesson,
+// Lesson,
 } from 'types/modules';
 
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import NUSModsPlannerApi from 'apis/nusmodsplanner';
+import { solve } from '../utils/smtSolver';
+
 
 export const ADD_MODULE_AUTOBUILD_COMP: string = 'ADD_MODULE_AUTOBUILD_COMP';
 export function addModuleAutobuildComp(semester: Semester, moduleCode: ModuleCode) {
@@ -120,5 +122,12 @@ export function fetchQuery(autobuild) {
   const url = NUSModsPlannerApi.plannerQueryUrl(compMods, optMods, workload);
   console.log(`url: ${url}`);
 
-  fetch(url).then(req => req.text()).then(data => console.log(data));
+  // fetch(url).then(req => req.text()).then(data => console.log(data));
+  fetch(url).then(req => req.text()).then((data) => {
+    console.log('there is the query:');
+    console.log(data);
+    const result = solve(data);
+    console.log('result of SMT computation:');
+    console.log(result);
+  });
 }
