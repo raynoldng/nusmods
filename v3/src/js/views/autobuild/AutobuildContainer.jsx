@@ -40,7 +40,7 @@ import {
   toggleFreedayAutobuild,
   changeWorkloadAutobuild,
   changeLessonAutobuild,
-  toggleLockingMode,
+  switchMode,
   fetchQuery,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
@@ -84,7 +84,7 @@ type Props = {
   changeWorkloadAutobuild: Function,
   semModuleListAutobuild: Array<Object>,
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
-  toggleLockingMode: Function,
+  switchMode: Function,
   fetchQuery: Function,
 };
 
@@ -171,6 +171,10 @@ export class AutobuildContainer extends Component {
 
     const isHorizontalOrientation = this.props.timetableOrientation === HORIZONTAL;
 
+    const isLockingMode = this.props.autobuild.mode === 'lock';
+    const isUnlockingMode = this.props.autobuild.mode === 'unlock';
+    const isNormalMode = !this.props.autobuild.mode;
+
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
         <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
@@ -196,10 +200,28 @@ export class AutobuildContainer extends Component {
             })}>
               <div className="timetable-action-row text-xs-right">
                 <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={this.props.toggleTimetableOrientation}
+                  className={classnames('btn', { 'btn-outline-primary': !isNormalMode }, {
+                    'btn-primary': isNormalMode,
+                  })}
+                  onClick={() => this.props.switchMode(this.props.semester, '')}
                 >
-                  <i className="fa fa-lock" />
+                  Normal Mode
+                </button>
+                <button type="button"
+                  className={classnames('btn', { 'btn-outline-primary': !isLockingMode }, {
+                    'btn-primary': isLockingMode,
+                  })}
+                  onClick={() => this.props.switchMode(this.props.semester, 'lock')}
+                >
+                  Lock Mode
+                </button>
+                <button type="button"
+                  className={classnames('btn', { 'btn-outline-primary': !isUnlockingMode }, {
+                    'btn-primary': isUnlockingMode,
+                  })}
+                  onClick={() => this.props.switchMode(this.props.semester, 'unlock')}
+                >
+                  Unlock Mode
                 </button>
                 <button type="button"
                   className="btn btn-outline-primary"
@@ -208,28 +230,6 @@ export class AutobuildContainer extends Component {
                   <i className={classnames('fa', 'fa-exchange', {
                     'fa-rotate-90': isHorizontalOrientation,
                   })} />
-                </button>
-                <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
-                >
-                  <i className="fa fa-image" />
-                </button>
-                <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={() => this.props.downloadAsIcal(
-                    this.props.semester, this.props.semTimetableWithLessonsAutobuild, this.props.modules)}
-                >
-                  <i className="fa fa-calendar" />
-                </button>
-                <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={() => {
-                    this.props.removeAllModules(this.props.semester);
-                  }
-                  }
-                >
-                  <i className="fa fa-trash" />
                 </button>
               </div>
               <div className="row">
@@ -304,6 +304,7 @@ export class AutobuildContainer extends Component {
                   /> I want a free day!
                 </div>
               </div>
+              <br />
               <div className="row">
                 <button type="button" className="btn btn-info"
                   onClick={() => {
@@ -365,7 +366,7 @@ export default connect(
     removeModuleAutobuild,
     toggleFreedayAutobuild,
     changeWorkloadAutobuild,
-    toggleLockingMode,
+    switchMode,
     fetchQuery,
   },
 )(AutobuildContainer);
