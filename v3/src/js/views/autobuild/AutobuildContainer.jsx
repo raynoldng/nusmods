@@ -307,9 +307,7 @@ export class AutobuildContainer extends Component {
               <div className="row">
                 <button type="button" className="btn btn-info"
                   onClick={() => {
-                    // should do something
-                    // alert('Coming soon....');
-                    this.props.fetchQuery(this.props.autobuild);
+                    this.props.fetchQuery(this.props.autobuild, this.props.semester);
                   }}>Generate Timetable</button>
               </div>
             </div>

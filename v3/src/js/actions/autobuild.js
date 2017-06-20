@@ -112,31 +112,39 @@ export function toggleLockingMode(semester: Semester): FSA {
 }
 
 export const FETCH_QUERY: string = 'FETCH_QUERY';
-export function fetchQuery(autobuild) {
+export function fetchQuery(autobuild, semester) {
   // first filter out the mods
   const mods = Object.keys(autobuild).filter(k => autobuild[k].status);
   const compMods = mods.filter(m => autobuild[m].status === 'comp');
   const optMods = mods.filter(m => autobuild[m].status === 'opt');
   const workload = autobuild.workload ? autobuild.workload : 5;
-
   // console.log('compMods:');
   // console.log(compMods);
   // console.log('optMods:');
   // console.log(optMods);
 
-  const url = NUSModsPlannerApi.plannerQueryUrl(compMods, optMods, workload);
+  const url = NUSModsPlannerApi.plannerQueryUrl(compMods, optMods, workload, semester);
   // console.log(`url: ${url}`);
 
   // fetch(url).then(req => req.text()).then(data => console.log(data));
   fetch(url).then(req => req.text()).then((data) => {
-    // console.log('there is the query:');
+    // console.log('there is the data:');
     // console.log(data);
-    const result = solve(data);
-    return result;
+    const data2 = JSON.parse(data);
+    const smtlib2 = data2[0];
+    const moduleMapping = data2[1];
+
+    // console.log('smt query:');
+    // console.log(smtlib2.substring(0, 100));
+    // console.log('module lesson mappings:');
+    // console.log(moduleMapping);
+
+    const result = solve(smtlib2);
+    // return result
     // console.log('result of SMT computation:');
     // console.log(parseOutput(result));
-  }).then((result) => {
-    console.log(parseOutput(result));
-    slotsFromModel(result, compMods, optMods, workload);
+    // console.log(parseOutput(result));
+    const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
+    console.log(timetable);
   });
 }
