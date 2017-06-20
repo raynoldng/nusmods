@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable no-alert */
+/* eslint-disable no-console */
 
 import Checkbox from 'react-checkbox';
 import type {
@@ -27,11 +28,9 @@ import _ from 'lodash';
 import config from 'config';
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
-import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
   cancelModifyLesson,
   modifyLesson,
-  removeAllModules,
 } from 'actions/timetables';
 import {
   addModuleAutobuildComp,
@@ -46,7 +45,11 @@ import {
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
-import { isCompMod, isOptMod, autobuildToSemTimetableConfig } from 'utils/autobuild';
+import { isCompMod,
+         isOptMod,
+         autobuildToSemTimetableConfig,
+         isLessonLocked,
+} from 'utils/autobuild';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -75,9 +78,6 @@ type Props = {
   lockLessonAutobuild: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  downloadAsJpeg: Function,
-  downloadAsIcal: Function,
-  removeAllModules: Function,
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
   toggleFreedayAutobuild: Function,
@@ -186,9 +186,15 @@ export class AutobuildContainer extends Component {
         return row.map((lesson) => {
           const module: Module = this.props.modules[lesson.ModuleCode];
           const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
+          let modifiable: Boolean = areOtherClassesAvailable(moduleTimetable, lesson.LessonType);
+          if (isLockingMode || isNormalMode) {
+            modifiable = modifiable && !isLessonLocked(lesson, this.props.autobuild.lockedLessons);
+          } else if (isUnlockingMode) {
+            modifiable = isLessonLocked(lesson, this.props.autobuild.lockedLessons);
+          }
           return {
             ...lesson,
-            isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+            isModifiable: modifiable,
           };
         });
       });
@@ -377,18 +383,15 @@ export default connect(
   {
     modifyLesson,
     changeLessonAutobuild,
-    lockLessonAutobuild,
     cancelModifyLesson,
     toggleTimetableOrientation,
-    downloadAsJpeg,
-    downloadAsIcal,
-    removeAllModules,
     addModuleAutobuildComp,
     addModuleAutobuildOpt,
     removeModuleAutobuild,
     toggleFreedayAutobuild,
     changeWorkloadAutobuild,
     switchMode,
+    lockLessonAutobuild,
     fetchQuery,
   },
 )(AutobuildContainer);

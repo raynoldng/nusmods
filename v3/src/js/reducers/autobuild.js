@@ -1,4 +1,5 @@
 /* eslint no-unused-vars: 0 */
+/* eslint-disable no-console */
 
 import { ADD_MODULE_AUTOBUILD_COMP,
          ADD_MODULE_AUTOBUILD_OPT,
@@ -86,11 +87,19 @@ function semTimetable(state = {}, action) {
         [moduleCode]: moduleLessonConfig(state[moduleCode], action),
       };
     case LOCK_LESSON_AUTOBUILD:
+      if (state.lockedLessons) {
+        return {
+          ...state,
+          lockedLessons: {
+            ...state.lockedLessons,
+            [moduleCode]: moduleLessonConfig(state.lockedLessons[moduleCode], action),
+          },
+        };
+      }
       return {
         ...state,
         lockedLessons: {
-          ...state.lockedLessons,
-          [moduleCode]: moduleLessonConfig(state[moduleCode], action),
+          [moduleCode]: moduleLessonConfig({}, action),
         },
       };
     default:

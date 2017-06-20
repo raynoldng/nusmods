@@ -13,3 +13,15 @@ export function autobuildToSemTimetableConfig(autobuild) {
     return _.omit(obj, status);
   });
 }
+
+export function isLessonLocked(lesson, lockedLessons) {
+  // console.log(lesson);
+  if (lockedLessons) {
+    if (lockedLessons[lesson.ModuleCode]) {
+      if ((lockedLessons[lesson.ModuleCode])[lesson.LessonType]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
