@@ -6,6 +6,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
          CHANGE_WORKLOAD_AUTOBUILD,
          CHANGE_LESSON_AUTOBUILD,
+         LOCK_LESSON_AUTOBUILD,
          SWITCH_MODE,
 } from 'actions/autobuild';
 
@@ -14,6 +15,7 @@ import _ from 'lodash';
 function moduleLessonConfig(state = {}, action) {
   switch (action.type) {
     case CHANGE_LESSON_AUTOBUILD:
+    case LOCK_LESSON_AUTOBUILD:
       return (() => {
         if (!action.payload) {
           return state;
@@ -83,6 +85,14 @@ function semTimetable(state = {}, action) {
         ...state,
         [moduleCode]: moduleLessonConfig(state[moduleCode], action),
       };
+    case LOCK_LESSON_AUTOBUILD:
+      return {
+        ...state,
+        lockedLessons: {
+          ...state.lockedLessons,
+          [moduleCode]: moduleLessonConfig(state[moduleCode], action),
+        },
+      };
     default:
       return state;
   }
@@ -96,6 +106,7 @@ function autobuild(state = {}, action) {
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
     case CHANGE_WORKLOAD_AUTOBUILD:
     case CHANGE_LESSON_AUTOBUILD:
+    case LOCK_LESSON_AUTOBUILD:
     case SWITCH_MODE:
       return {
         ...state,

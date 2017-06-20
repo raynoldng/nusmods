@@ -40,6 +40,7 @@ import {
   toggleFreedayAutobuild,
   changeWorkloadAutobuild,
   changeLessonAutobuild,
+  lockLessonAutobuild,
   switchMode,
   fetchQuery,
 } from 'actions/autobuild';
@@ -71,6 +72,7 @@ type Props = {
   hiddenInTimetable: Array<ModuleCode>,
   modifyLesson: Function,
   changeLessonAutobuild: Function,
+  lockLessonAutobuild: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
@@ -115,10 +117,33 @@ export class AutobuildContainer extends Component {
     }
   }
 
+  lockCell(lesson: ModifiableLesson) {
+    this.props.lockLessonAutobuild(this.props.semester, lesson);
+  }
+
+  unlockCell(lesson: ModifiableLesson) {
+    // TO-DO
+    this.props.lockLessonAutobuild(this.props.semester, lesson);
+  }
+
   render() {
+    const isLockingMode = this.props.autobuild.mode === 'lock';
+    const isUnlockingMode = this.props.autobuild.mode === 'unlock';
+    const isNormalMode = !this.props.autobuild.mode;
+
+    let modifyFunction;
+
+    if (isLockingMode) {
+      modifyFunction = this.lockCell;
+    } else if (isUnlockingMode) {
+      modifyFunction = this.unlockCell;
+    } else {
+      modifyFunction = this.modifyCell;
+    }
+
     let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(
       this.props.semTimetableWithLessonsAutobuild);
-    if (this.props.activeLesson) {
+    if (this.props.activeLesson && isNormalMode) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
 
@@ -171,10 +196,6 @@ export class AutobuildContainer extends Component {
 
     const isHorizontalOrientation = this.props.timetableOrientation === HORIZONTAL;
 
-    const isLockingMode = this.props.autobuild.mode === 'lock';
-    const isUnlockingMode = this.props.autobuild.mode === 'unlock';
-    const isNormalMode = !this.props.autobuild.mode;
-
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
         <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
@@ -189,7 +210,7 @@ export class AutobuildContainer extends Component {
             })}>
               <Timetable lessons={arrangedLessonsWithModifiableFlag}
                 horizontalOrientation={isHorizontalOrientation}
-                onModifyCell={this.modifyCell}
+                onModifyCell={modifyFunction}
                 ref={r => (this.timetableDom = r && r.timetableDom)}
               />
               <br />
@@ -356,6 +377,7 @@ export default connect(
   {
     modifyLesson,
     changeLessonAutobuild,
+    lockLessonAutobuild,
     cancelModifyLesson,
     toggleTimetableOrientation,
     downloadAsJpeg,

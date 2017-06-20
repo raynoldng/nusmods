@@ -32,18 +32,6 @@ export type BiddingStat = {
   StudentAcctType: string,
 };
 
-// RawLesson is a lesson time slot obtained from the API.
-// Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
-export type RawLesson = {
-  ClassNo: ClassNo,
-  DayText: DayText,
-  EndTime: EndTime,
-  LessonType: LessonType,
-  StartTime: StartTime,
-  Venue: Venue,
-  WeekText: WeekText,
-};
-
 // Semester-specific information of a module.
 export type SemesterData = {
   ExamDate?: string,
@@ -79,6 +67,18 @@ export type ModuleCondensed = {
   ModuleCode: ModuleCode,
   ModuleTitle: ModuleTitle,
   Semesters: Array<number>,
+};
+
+// RawLesson is a lesson time slot obtained from the API.
+// Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
+export type RawLesson = {
+  ClassNo: ClassNo,
+  DayText: DayText,
+  EndTime: EndTime,
+  LessonType: LessonType,
+  StartTime: StartTime,
+  Venue: Venue,
+  WeekText: WeekText,
 };
 
 // RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
