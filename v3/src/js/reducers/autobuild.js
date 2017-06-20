@@ -1,4 +1,5 @@
 /* eslint no-unused-vars: 0 */
+/* eslint-disable no-console */
 
 import { ADD_MODULE_AUTOBUILD_COMP,
          ADD_MODULE_AUTOBUILD_OPT,
@@ -6,7 +7,8 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
          CHANGE_WORKLOAD_AUTOBUILD,
          CHANGE_LESSON_AUTOBUILD,
-         TOGGLE_LOCKING_MODE,
+         LOCK_LESSON_AUTOBUILD,
+         SWITCH_MODE,
 } from 'actions/autobuild';
 
 import _ from 'lodash';
@@ -14,6 +16,7 @@ import _ from 'lodash';
 function moduleLessonConfig(state = {}, action) {
   switch (action.type) {
     case CHANGE_LESSON_AUTOBUILD:
+    case LOCK_LESSON_AUTOBUILD:
       return (() => {
         if (!action.payload) {
           return state;
@@ -50,10 +53,10 @@ function semTimetable(state = {}, action) {
       checked: !state.checked,
     };
   }
-  if (action.type === TOGGLE_LOCKING_MODE) {
+  if (action.type === SWITCH_MODE) {
     return {
       ...state,
-      lockingMode: !state.lockingMode,
+      mode: action.payload.mode,
     };
   }
   const moduleCode = action.payload.moduleCode;
@@ -83,6 +86,22 @@ function semTimetable(state = {}, action) {
         ...state,
         [moduleCode]: moduleLessonConfig(state[moduleCode], action),
       };
+    case LOCK_LESSON_AUTOBUILD:
+      if (state.lockedLessons) {
+        return {
+          ...state,
+          lockedLessons: {
+            ...state.lockedLessons,
+            [moduleCode]: moduleLessonConfig(state.lockedLessons[moduleCode], action),
+          },
+        };
+      }
+      return {
+        ...state,
+        lockedLessons: {
+          [moduleCode]: moduleLessonConfig({}, action),
+        },
+      };
     default:
       return state;
   }
@@ -96,7 +115,8 @@ function autobuild(state = {}, action) {
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
     case CHANGE_WORKLOAD_AUTOBUILD:
     case CHANGE_LESSON_AUTOBUILD:
-    case TOGGLE_LOCKING_MODE:
+    case LOCK_LESSON_AUTOBUILD:
+    case SWITCH_MODE:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),

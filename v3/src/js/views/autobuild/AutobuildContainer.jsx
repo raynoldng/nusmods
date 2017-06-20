@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable no-alert */
+/* eslint-disable no-console */
 
 import Checkbox from 'react-checkbox';
 import type {
@@ -27,11 +28,9 @@ import _ from 'lodash';
 import config from 'config';
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
-import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
   cancelModifyLesson,
   modifyLesson,
-  removeAllModules,
 } from 'actions/timetables';
 import {
   addModuleAutobuildComp,
@@ -40,12 +39,17 @@ import {
   toggleFreedayAutobuild,
   changeWorkloadAutobuild,
   changeLessonAutobuild,
-  toggleLockingMode,
+  lockLessonAutobuild,
+  switchMode,
   fetchAndSolveQuery,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
-import { isCompMod, isOptMod, autobuildToSemTimetableConfig } from 'utils/autobuild';
+import { isCompMod,
+         isOptMod,
+         autobuildToSemTimetableConfig,
+         isLessonLocked,
+} from 'utils/autobuild';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -71,11 +75,9 @@ type Props = {
   hiddenInTimetable: Array<ModuleCode>,
   modifyLesson: Function,
   changeLessonAutobuild: Function,
+  lockLessonAutobuild: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  downloadAsJpeg: Function,
-  downloadAsIcal: Function,
-  removeAllModules: Function,
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
   toggleFreedayAutobuild: Function,
@@ -84,7 +86,7 @@ type Props = {
   changeWorkloadAutobuild: Function,
   semModuleListAutobuild: Array<Object>,
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
-  toggleLockingMode: Function,
+  switchMode: Function,
   fetchAndSolveQuery: Function,
 };
 
@@ -115,10 +117,33 @@ export class AutobuildContainer extends Component {
     }
   }
 
+  lockCell(lesson: ModifiableLesson) {
+    this.props.lockLessonAutobuild(this.props.semester, lesson);
+  }
+
+  unlockCell(lesson: ModifiableLesson) {
+    // TO-DO
+    this.props.lockLessonAutobuild(this.props.semester, lesson);
+  }
+
   render() {
+    const isLockingMode = this.props.autobuild.mode === 'lock';
+    const isUnlockingMode = this.props.autobuild.mode === 'unlock';
+    const isNormalMode = !this.props.autobuild.mode;
+
+    let modifyFunction;
+
+    if (isLockingMode) {
+      modifyFunction = this.lockCell;
+    } else if (isUnlockingMode) {
+      modifyFunction = this.unlockCell;
+    } else {
+      modifyFunction = this.modifyCell;
+    }
+
     let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(
       this.props.semTimetableWithLessonsAutobuild);
-    if (this.props.activeLesson) {
+    if (this.props.activeLesson && isNormalMode) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
 
@@ -161,9 +186,15 @@ export class AutobuildContainer extends Component {
         return row.map((lesson) => {
           const module: Module = this.props.modules[lesson.ModuleCode];
           const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
+          let modifiable: Boolean = areOtherClassesAvailable(moduleTimetable, lesson.LessonType);
+          if (isLockingMode || isNormalMode) {
+            modifiable = modifiable && !isLessonLocked(lesson, this.props.autobuild.lockedLessons);
+          } else if (isUnlockingMode) {
+            modifiable = isLessonLocked(lesson, this.props.autobuild.lockedLessons);
+          }
           return {
             ...lesson,
-            isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+            isModifiable: modifiable,
           };
         });
       });
@@ -185,7 +216,7 @@ export class AutobuildContainer extends Component {
             })}>
               <Timetable lessons={arrangedLessonsWithModifiableFlag}
                 horizontalOrientation={isHorizontalOrientation}
-                onModifyCell={this.modifyCell}
+                onModifyCell={modifyFunction}
                 ref={r => (this.timetableDom = r && r.timetableDom)}
               />
               <br />
@@ -196,10 +227,28 @@ export class AutobuildContainer extends Component {
             })}>
               <div className="timetable-action-row text-xs-right">
                 <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={this.props.toggleTimetableOrientation}
+                  className={classnames('btn', { 'btn-outline-primary': !isNormalMode }, {
+                    'btn-primary': isNormalMode,
+                  })}
+                  onClick={() => this.props.switchMode(this.props.semester, '')}
                 >
-                  <i className="fa fa-lock" />
+                  Normal Mode
+                </button>
+                <button type="button"
+                  className={classnames('btn', { 'btn-outline-primary': !isLockingMode }, {
+                    'btn-primary': isLockingMode,
+                  })}
+                  onClick={() => this.props.switchMode(this.props.semester, 'lock')}
+                >
+                  Lock Mode
+                </button>
+                <button type="button"
+                  className={classnames('btn', { 'btn-outline-primary': !isUnlockingMode }, {
+                    'btn-primary': isUnlockingMode,
+                  })}
+                  onClick={() => this.props.switchMode(this.props.semester, 'unlock')}
+                >
+                  Unlock Mode
                 </button>
                 <button type="button"
                   className="btn btn-outline-primary"
@@ -208,28 +257,6 @@ export class AutobuildContainer extends Component {
                   <i className={classnames('fa', 'fa-exchange', {
                     'fa-rotate-90': isHorizontalOrientation,
                   })} />
-                </button>
-                <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
-                >
-                  <i className="fa fa-image" />
-                </button>
-                <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={() => this.props.downloadAsIcal(
-                    this.props.semester, this.props.semTimetableWithLessonsAutobuild, this.props.modules)}
-                >
-                  <i className="fa fa-calendar" />
-                </button>
-                <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={() => {
-                    this.props.removeAllModules(this.props.semester);
-                  }
-                  }
-                >
-                  <i className="fa fa-trash" />
                 </button>
               </div>
               <div className="row">
@@ -304,6 +331,7 @@ export class AutobuildContainer extends Component {
                   /> I want a free day!
                 </div>
               </div>
+              <br />
               <div className="row">
                 <button type="button" className="btn btn-info"
                   onClick={() => {
@@ -355,15 +383,13 @@ export default connect(
     changeLessonAutobuild,
     cancelModifyLesson,
     toggleTimetableOrientation,
-    downloadAsJpeg,
-    downloadAsIcal,
-    removeAllModules,
     addModuleAutobuildComp,
     addModuleAutobuildOpt,
     removeModuleAutobuild,
     toggleFreedayAutobuild,
     changeWorkloadAutobuild,
-    toggleLockingMode,
+    switchMode,
+    lockLessonAutobuild,
     fetchAndSolveQuery,
   },
 )(AutobuildContainer);

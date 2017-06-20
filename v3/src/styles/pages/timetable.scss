@@ -324,4 +324,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       color: inherit;
     }
   }
+
+  .selected-btn {
+    background-color: 'orange';
+  }
 }

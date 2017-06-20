@@ -101,12 +101,26 @@ export function changeLessonAutobuild(semester: Semester, lesson: Lesson): FSA {
   };
 }
 
-export const TOGGLE_LOCKING_MODE: string = 'TOGGLE_LOCKING_MODE';
-export function toggleLockingMode(semester: Semester): FSA {
+export const LOCK_LESSON_AUTOBUILD: string = 'LOCK_LESSON_AUTOBUILD';
+export function lockLessonAutobuild(semester: Semester, lesson: Lesson): FSA {
   return {
-    type: TOGGLE_LOCKING_MODE,
+    type: LOCK_LESSON_AUTOBUILD,
     payload: {
       semester,
+      moduleCode: lesson.ModuleCode,
+      lessonType: lesson.LessonType,
+      classNo: lesson.ClassNo,
+    },
+  };
+}
+
+export const SWITCH_MODE: string = 'SWITCH_MODE';
+export function switchMode(semester: Semester, mode: String): FSA {
+  return {
+    type: SWITCH_MODE,
+    payload: {
+      semester,
+      mode,
     },
   };
 }
