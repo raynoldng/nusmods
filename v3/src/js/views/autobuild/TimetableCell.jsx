@@ -6,12 +6,14 @@ import type { ModifiableLesson } from 'types/modules';
 import React from 'react';
 import classnames from 'classnames';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
+import { isLessonLocked } from 'utils/autobuild';
 
 type Props = {
   lesson?: ModifiableLesson,
   size?: number,
   styleProp?: string,
   onModifyCell?: Function,
+  lockedLessons?: Object,
 };
 
 function TimetableCell(props: Props) {
@@ -23,6 +25,7 @@ function TimetableCell(props: Props) {
   }
 
   if (lesson) {
+    const lockSignifier = isLessonLocked(lesson, props.lockedLessons) ? ' (Locked)' : '';
     cell = (
       <div className={classnames('timetable-module-cell', {
         'is-modifiable': lesson.isModifiable,
@@ -37,7 +40,7 @@ function TimetableCell(props: Props) {
           }
         }}
       >
-        <div className="cell-module-code">{lesson.ModuleCode}</div>
+        <div className="cell-module-code">{lesson.ModuleCode + lockSignifier}</div>
         <div>
           <span className="cell-module-lesson-type">{LESSON_TYPE_ABBREV[lesson.LessonType]}</span>
           <span className="cell-module-class">{' '}[{lesson.ClassNo}]</span>

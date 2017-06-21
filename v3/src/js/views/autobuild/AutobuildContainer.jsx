@@ -220,6 +220,7 @@ export class AutobuildContainer extends Component {
                 horizontalOrientation={isHorizontalOrientation}
                 onModifyCell={modifyFunction}
                 ref={r => (this.timetableDom = r && r.timetableDom)}
+                lockedLessons={this.props.autobuild.lockedLessons}
               />
               <br />
             </div>

@@ -14,6 +14,7 @@ type Props = {
   startingIndex: number,
   endingIndex: number,
   onModifyCell: Function,
+  lockedLessons?: Object,
 };
 
 function TimetableDay(props: Props) {
@@ -43,6 +44,7 @@ function TimetableDay(props: Props) {
                 scale={100 / props.dayLessonRows.length}
                 lessons={dayLessonRow}
                 onModifyCell={props.onModifyCell}
+                lockedLessons={props.lockedLessons}
               />
             );
           }) :

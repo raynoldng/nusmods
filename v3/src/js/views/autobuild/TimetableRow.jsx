@@ -26,7 +26,7 @@ const dummyLesson = {
 
 function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
   cellSize: number, cellOrientationStyleProp: string,
-  onModifyCell?: Function, startingIndex: number, endingIndex: number) {
+  onModifyCell?: Function, startingIndex: number, endingIndex: number, lockedLessons?: Object) {
   const lessonToStartTimeMap: {[time: LessonTime]: ModifiableLesson} = _.mapValues(
     _.groupBy(lessons, lesson => lesson.StartTime),
     value => value[0],
@@ -46,6 +46,7 @@ function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
           styleProp={cellOrientationStyleProp}
           lesson={lesson}
           onModifyCell={onModifyCell}
+          lockedLessons={lockedLessons}
         />,
       );
       i += (size - 1);
@@ -55,7 +56,8 @@ function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
           size={1 * cellSize}
           styleProp={cellOrientationStyleProp}
           // lesson={dummyLesson}
-          onModifyCell={alertwow}
+          // onModifyCell={alertwow}
+          // lockedLessons={lockedLessons}
         />,
       );
     }
@@ -72,6 +74,7 @@ type Props = {
   endingIndex: number,
   lessons?: Array<ModifiableLesson | Lesson>,
   onModifyCell?: Function,
+  lockedLessons?: Object,
 };
 
 function TimetableRow(props: Props) {
@@ -82,7 +85,7 @@ function TimetableRow(props: Props) {
   return (
     <div className="timetable-row" style={style}>
       {generateCells(props.lessons, props.cellSize, props.cellOrientationStyleProp,
-        props.onModifyCell, props.startingIndex, props.endingIndex)}
+        props.onModifyCell, props.startingIndex, props.endingIndex, props.lockedLessons)}
     </div>
   );
 }

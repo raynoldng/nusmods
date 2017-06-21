@@ -23,6 +23,7 @@ type Props = {
   lessons: TimetableArrangement,
   horizontalOrientation: boolean,
   onModifyCell: Function,
+  lockedLessons?: Object,
 };
 
 class Timetable extends Component {
@@ -92,6 +93,7 @@ class Timetable extends Component {
                       onModifyCell={this.props.onModifyCell}
                       day={dayDisplayText}
                       dayLessonRows={this.props.lessons[day]}
+                      lockedLessons={this.props.lockedLessons}
                     />
                   );
                 })}
