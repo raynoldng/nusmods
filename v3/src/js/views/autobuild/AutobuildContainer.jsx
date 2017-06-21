@@ -40,6 +40,7 @@ import {
   changeWorkloadAutobuild,
   changeLessonAutobuild,
   lockLessonAutobuild,
+  unlockLessonAutobuild,
   switchMode,
   fetchAndSolveQuery,
 } from 'actions/autobuild';
@@ -76,6 +77,7 @@ type Props = {
   modifyLesson: Function,
   changeLessonAutobuild: Function,
   lockLessonAutobuild: Function,
+  unlockLessonAutobuild: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   addModuleAutobuildComp: Function,
@@ -123,7 +125,7 @@ export class AutobuildContainer extends Component {
 
   unlockCell(lesson: ModifiableLesson) {
     // TO-DO
-    this.props.lockLessonAutobuild(this.props.semester, lesson);
+    this.props.unlockLessonAutobuild(this.props.semester, lesson);
   }
 
   render() {
@@ -390,6 +392,7 @@ export default connect(
     changeWorkloadAutobuild,
     switchMode,
     lockLessonAutobuild,
+    unlockLessonAutobuild,
     fetchAndSolveQuery,
   },
 )(AutobuildContainer);

@@ -8,6 +8,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          CHANGE_WORKLOAD_AUTOBUILD,
          CHANGE_LESSON_AUTOBUILD,
          LOCK_LESSON_AUTOBUILD,
+         UNLOCK_LESSON_AUTOBUILD,
          SWITCH_MODE,
 } from 'actions/autobuild';
 
@@ -102,6 +103,14 @@ function semTimetable(state = {}, action) {
           [moduleCode]: moduleLessonConfig({}, action),
         },
       };
+    case UNLOCK_LESSON_AUTOBUILD:
+      return {
+        ...state,
+        lockedLessons: {
+          ...state.lockedLessons,
+          [moduleCode]: _.omit(state.lockedLessons.moduleCode, action.payload.lessonType),
+        },
+      };
     default:
       return state;
   }
@@ -116,6 +125,7 @@ function autobuild(state = {}, action) {
     case CHANGE_WORKLOAD_AUTOBUILD:
     case CHANGE_LESSON_AUTOBUILD:
     case LOCK_LESSON_AUTOBUILD:
+    case UNLOCK_LESSON_AUTOBUILD:
     case SWITCH_MODE:
       return {
         ...state,

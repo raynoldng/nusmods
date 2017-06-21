@@ -114,6 +114,19 @@ export function lockLessonAutobuild(semester: Semester, lesson: Lesson): FSA {
   };
 }
 
+export const UNLOCK_LESSON_AUTOBUILD: string = 'UNLOCK_LESSON_AUTOBUILD';
+export function unlockLessonAutobuild(semester: Semester, lesson: Lesson): FSA {
+  return {
+    type: UNLOCK_LESSON_AUTOBUILD,
+    payload: {
+      semester,
+      moduleCode: lesson.ModuleCode,
+      lessonType: lesson.LessonType,
+      classNo: lesson.ClassNo,
+    },
+  };
+}
+
 export const SWITCH_MODE: string = 'SWITCH_MODE';
 export function switchMode(semester: Semester, mode: String): FSA {
   return {
