@@ -43,6 +43,8 @@ import {
   unlockLessonAutobuild,
   switchMode,
   fetchAndSolveQuery,
+  changeBeforeTime,
+  changeAfterTime,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -59,7 +61,7 @@ import {
   lessonsForLessonType,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
-import AutobuildWorkloadSelect from 'views/components/AutobuildWorkloadSelect';
+import AutobuildSelect from 'views/components/AutobuildSelect';
 
 import Timetable from './Timetable';
 import TimetableModulesTable from '../timetable/TimetableModulesTable';
@@ -90,6 +92,8 @@ type Props = {
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
   switchMode: Function,
   fetchAndSolveQuery: Function,
+  changeBeforeTime: Function,
+  changeAfterTime: Function,
 };
 
 export class AutobuildContainer extends Component {
@@ -203,6 +207,42 @@ export class AutobuildContainer extends Component {
     });
 
     const isHorizontalOrientation = this.props.timetableOrientation === HORIZONTAL;
+
+    const workloadString = this.props.autobuild.workload ?
+                            `Workload selected: ${this.props.autobuild.workload} modules` :
+                            'Select workload (number of modules)';
+
+    const workloadOptions = [
+      { label: '4', value: 4 },
+      { label: '5', value: 5 },
+      { label: '6', value: 6 },
+      { label: '7', value: 7 },
+      { label: '8', value: 8 },
+      { label: '9', value: 9 },
+    ];
+
+    const noBeforeString = this.props.autobuild.noLessonsBefore ?
+                            `${this.props.autobuild.noLessonsBefore} a.m.` :
+                            'Select time (optional)';
+
+    const noLessonsBeforeOptions = [
+      { label: '8 a.m.', value: 8 },
+      { label: '9 a.m.', value: 9 },
+      { label: '10 a.m.', value: 10 },
+      { label: '11 a.m.', value: 11 },
+    ];
+
+    const noAfterString = this.props.autobuild.noLessonsAfter ?
+                            `${this.props.autobuild.noLessonsAfter - 12} p.m.` :
+                            'Select time (optional)';
+
+    const noLessonsAfterOptions = [
+      { label: '4 p.m.', value: 16 },
+      { label: '5 p.m.', value: 17 },
+      { label: '6 p.m.', value: 18 },
+      { label: '7 p.m.', value: 19 },
+      { label: '8 p.m.', value: 20 },
+    ];
 
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
@@ -318,10 +358,38 @@ export class AutobuildContainer extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
-                  <AutobuildWorkloadSelect onChange={(selectedWorkload) => {
+                  <AutobuildSelect onChange={(selectedWorkload) => {
                     this.props.changeWorkloadAutobuild(this.props.semester, selectedWorkload);
-                  }} placeholder={this.props.autobuild.workload}
-                  /> Select intended workload:
+                  }}
+                    placeholder={workloadString}
+                    options={workloadOptions}
+                    />
+                </div>
+              </div>
+              <br />
+              Options:
+              <br />
+              <div className="row">
+                <div className="col-md-12">
+                  No lessons starting before:
+                  <AutobuildSelect onChange={(timing) => {
+                    this.props.changeBeforeTime(this.props.semester, timing);
+                  }}
+                    placeholder={noBeforeString}
+                    options={noLessonsBeforeOptions}
+                    />
+                </div>
+              </div>
+              <br />
+              <div className="row">
+                <div className="col-md-12">
+                  No lessons ending later than:
+                  <AutobuildSelect onChange={(timing) => {
+                    this.props.changeAfterTime(this.props.semester, timing);
+                  }}
+                    placeholder={noAfterString}
+                    options={noLessonsAfterOptions}
+                    />
                 </div>
               </div>
               <br />
@@ -395,5 +463,7 @@ export default connect(
     lockLessonAutobuild,
     unlockLessonAutobuild,
     fetchAndSolveQuery,
+    changeAfterTime,
+    changeBeforeTime,
   },
 )(AutobuildContainer);

@@ -88,6 +88,28 @@ export function changeWorkloadAutobuild(semester: Semester, workload): FSA {
   };
 }
 
+export const CHANGE_BEFORE_TIME: string = 'CHANGE_BEFORE_TIME';
+export function changeBeforeTime(semester: Semester, timing): FSA {
+  return {
+    type: CHANGE_BEFORE_TIME,
+    payload: {
+      semester,
+      noLessonsBefore: timing.value,
+    },
+  };
+}
+
+export const CHANGE_AFTER_TIME: string = 'CHANGE_AFTER_TIME';
+export function changeAfterTime(semester: Semester, timing): FSA {
+  return {
+    type: CHANGE_AFTER_TIME,
+    payload: {
+      semester,
+      noLessonsAfter: timing.value,
+    },
+  };
+}
+
 export const CHANGE_LESSON_AUTOBUILD: string = 'CHANGE_LESSON_AUTOBUILD';
 export function changeLessonAutobuild(semester: Semester, lesson: Lesson): FSA {
   return {

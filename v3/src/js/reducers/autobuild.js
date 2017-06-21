@@ -10,6 +10,8 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          LOCK_LESSON_AUTOBUILD,
          UNLOCK_LESSON_AUTOBUILD,
          SWITCH_MODE,
+         CHANGE_AFTER_TIME,
+         CHANGE_BEFORE_TIME,
 } from 'actions/autobuild';
 
 import _ from 'lodash';
@@ -46,6 +48,18 @@ function semTimetable(state = {}, action) {
     return {
       ...state,
       workload: action.payload.workload,
+    };
+  }
+  if (action.type === CHANGE_BEFORE_TIME) {
+    return {
+      ...state,
+      noLessonsBefore: action.payload.noLessonsBefore,
+    };
+  }
+  if (action.type === CHANGE_AFTER_TIME) {
+    return {
+      ...state,
+      noLessonsAfter: action.payload.noLessonsAfter,
     };
   }
   if (action.type === TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD) {
@@ -127,6 +141,8 @@ function autobuild(state = {}, action) {
     case LOCK_LESSON_AUTOBUILD:
     case UNLOCK_LESSON_AUTOBUILD:
     case SWITCH_MODE:
+    case CHANGE_BEFORE_TIME:
+    case CHANGE_AFTER_TIME:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),
