@@ -31,3 +31,10 @@ export function isLessonLocked(lesson, lockedLessons) {
   }
   return false;
 }
+
+export function lessonSlotStringToObject(string) {
+  const arr = string.split('_');
+  const obj = {};
+  obj[arr[0]] = {};
+  (obj[arr[0]])[arr[1]] = arr[2];
+}

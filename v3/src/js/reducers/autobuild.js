@@ -12,6 +12,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          SWITCH_MODE,
          CHANGE_AFTER_TIME,
          CHANGE_BEFORE_TIME,
+         UPDATE_AUTOBUILD_TIMETABLE,
 } from 'actions/autobuild';
 
 import _ from 'lodash';
@@ -73,6 +74,9 @@ function semTimetable(state = {}, action) {
       ...state,
       mode: action.payload.mode,
     };
+  }
+  if (action.type === UPDATE_AUTOBUILD_TIMETABLE) {
+    return action.payload.state;
   }
   const moduleCode = action.payload.moduleCode;
   if (!moduleCode) {
@@ -143,6 +147,7 @@ function autobuild(state = {}, action) {
     case SWITCH_MODE:
     case CHANGE_BEFORE_TIME:
     case CHANGE_AFTER_TIME:
+    case UPDATE_AUTOBUILD_TIMETABLE:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),
