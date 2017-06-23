@@ -167,8 +167,9 @@ export function fetchAndSolveQuery(autobuild, semester) {
   const compMods = mods.filter(m => autobuild[m].status === 'comp');
   const optMods = mods.filter(m => autobuild[m].status === 'opt');
   const workload = autobuild.workload ? autobuild.workload : 5;
+  const options = { freeday: autobuild.freeday };
 
-  const url = NUSModsPlannerApi.plannerQueryUrl({ freeday: true }, compMods, optMods, workload, semester);
+  const url = NUSModsPlannerApi.plannerQueryUrl(options, compMods, optMods, workload, semester);
 
   fetch(url).then(req => req.text()).then((data) => {
     const data2 = JSON.parse(data);
