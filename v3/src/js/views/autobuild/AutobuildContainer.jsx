@@ -226,6 +226,7 @@ export class AutobuildContainer extends Component {
                             'Select time (optional)';
 
     const noLessonsBeforeOptions = [
+      { label: 'Nil', value: undefined },
       { label: '8 a.m.', value: 8 },
       { label: '9 a.m.', value: 9 },
       { label: '10 a.m.', value: 10 },
@@ -237,6 +238,7 @@ export class AutobuildContainer extends Component {
                             'Select time (optional)';
 
     const noLessonsAfterOptions = [
+      { label: 'Nil', value: undefined },
       { label: '4 p.m.', value: 16 },
       { label: '5 p.m.', value: 17 },
       { label: '6 p.m.', value: 18 },

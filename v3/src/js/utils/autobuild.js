@@ -1,11 +1,17 @@
 import _ from 'lodash';
 
 export function isCompMod(obj) {
-  return obj.status === 'comp';
+  if (obj) {
+    return obj.status === 'comp';
+  }
+  return false;
 }
 
 export function isOptMod(obj) {
-  return obj.status === 'opt';
+  if (obj) {
+    return obj.status === 'opt';
+  }
+  return false;
 }
 
 export function autobuildToSemTimetableConfig(autobuild) {
@@ -24,4 +30,11 @@ export function isLessonLocked(lesson, lockedLessons) {
     }
   }
   return false;
+}
+
+export function lessonSlotStringToObject(string) {
+  const arr = string.split('_');
+  const obj = {};
+  obj[arr[0]] = {};
+  (obj[arr[0]])[arr[1]] = arr[2];
 }

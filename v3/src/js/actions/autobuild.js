@@ -12,6 +12,8 @@ RawLesson,
 // Lesson,
 } from 'types/modules';
 
+import { lessonSlotStringToObject } from 'utils/autobuild';
+
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
@@ -161,6 +163,7 @@ export function switchMode(semester: Semester, mode: String): FSA {
 }
 
 export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
+export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
 export function fetchAndSolveQuery(autobuild, semester) {
   // first filter the mods
   const mods = Object.keys(autobuild).filter(k => autobuild[k].status);
@@ -171,13 +174,31 @@ export function fetchAndSolveQuery(autobuild, semester) {
 
   const url = NUSModsPlannerApi.plannerQueryUrl(options, compMods, optMods, workload, semester);
 
-  fetch(url).then(req => req.text()).then((data) => {
+  return fetch(url).then(req => req.text()).then((data) => {
     const data2 = JSON.parse(data);
     const smtlib2 = data2[0];
     const moduleMapping = data2[1];
 
     const result = solve(smtlib2);
     const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
+    const obj = {};
+
     console.log(timetable);
+
+    timetable.forEach((string) => {
+      const arr = string.split('_');
+      obj[arr[0]] = {
+        ...obj[arr[0]],
+        [arr[1]]: arr[2],
+        status: 'comp',
+      };
+    });
+    return {
+      type: UPDATE_AUTOBUILD_TIMETABLE,
+      payload: {
+        semester,
+        state: obj,
+      },
+    };
   });
 }
