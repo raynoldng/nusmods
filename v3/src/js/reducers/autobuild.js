@@ -65,7 +65,7 @@ function semTimetable(state = {}, action) {
   if (action.type === TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD) {
     return {
       ...state,
-      checked: !state.checked,
+      freeday: !state.freeday,
     };
   }
   if (action.type === SWITCH_MODE) {

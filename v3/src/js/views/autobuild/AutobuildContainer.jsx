@@ -395,7 +395,7 @@ export class AutobuildContainer extends Component {
               <br />
               <div className="row">
                 <div className="col-md-12">
-                  <Checkbox checked={this.props.autobuild.checked}
+                  <Checkbox checked={this.props.autobuild.freeday}
                     onChange={() => {
                       this.props.toggleFreedayAutobuild(this.props.semester);
                     }}
