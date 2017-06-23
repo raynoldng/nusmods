@@ -1,11 +1,17 @@
 import _ from 'lodash';
 
 export function isCompMod(obj) {
-  return obj.status === 'comp';
+  if (obj) {
+    return obj.status === 'comp';
+  }
+  return false;
 }
 
 export function isOptMod(obj) {
-  return obj.status === 'opt';
+  if (obj) {
+    return obj.status === 'opt';
+  }
+  return false;
 }
 
 export function autobuildToSemTimetableConfig(autobuild) {
