@@ -10,7 +10,7 @@ const NUSModsPlannerApi = {
                     numMods: number): string => {
     const compMods = compModuleCodes.length !== 0 ? compModuleCodes.join(',') : 'null';
     const optMods = optModuleCodes.length !== 0 ? optModuleCodes.join(',') : 'null';
-    const opts = options || { freeday: false };
+    const opts = options || {};
     return `${plannerBaseUrl}/${numMods}/${compMods}/${optMods}/${encodeURIComponent(JSON.stringify(opts))}`;
   },
 };
