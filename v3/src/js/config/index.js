@@ -1,7 +1,8 @@
 // @flow
 import type { Semester } from 'types/modules';
 
-import appConfig from './app-config-temp.json';
+import appConfig from './app-config.json';
+// import appConfig from './app-config-temp.json';
 
 const augmentedConfig: Object = {
   ...appConfig,
