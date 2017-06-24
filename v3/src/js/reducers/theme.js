@@ -10,7 +10,7 @@ import type {
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE, REMOVE_ALL_MODULES } from 'actions/timetables';
 import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
-import { ADD_MODULE_AUTOBUILD_COMP, REMOVE_MODULE_AUTOBUILD } from 'actions/autobuild';
+import { ADD_MODULE_AUTOBUILD_COMP, REMOVE_MODULE_AUTOBUILD, UPDATE_AUTOBUILD_TIMETABLE } from 'actions/autobuild';
 
 import {
   VERTICAL,
@@ -98,6 +98,19 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         ...state,
         timetableOrientation: state.timetableOrientation === VERTICAL ? HORIZONTAL : VERTICAL,
       };
+    case UPDATE_AUTOBUILD_TIMETABLE:
+      {
+        const obj = {};
+        Object.keys(action.payload.state).forEach(
+          (curVal, index) => {
+            obj[curVal] = index + 1;
+          },
+        );
+        return {
+          ...state,
+          autobuildcolors: obj,
+        };
+      }
     default:
       return state;
   }
