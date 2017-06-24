@@ -9,6 +9,8 @@ import type {
   TimetableConfig,
   SemTimetableConfig,
 } from 'types/timetables';
+import { PORT_TIMETABLE } from 'actions/autobuild';
+import { isCompMod } from 'utils/autobuild';
 
 import _ from 'lodash';
 
@@ -74,7 +76,7 @@ function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig, act
 // Map of semester to semTimetable.
 const defaultTimetableConfig: TimetableConfig = {};
 
-function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA): TimetableConfig {
+function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA, autobuild): TimetableConfig {
   if (!action.payload) {
     return state;
   }
@@ -86,6 +88,11 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),
+      };
+    case PORT_TIMETABLE:
+      return {
+        ...state,
+        [action.payload.semester]: _.pickBy(autobuild[action.payload.semester], isCompMod),
       };
     default:
       return state;

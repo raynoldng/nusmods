@@ -47,6 +47,7 @@ import {
   changeAfterTime,
   storeState,
   loadState,
+  portTimetableToMain,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -98,6 +99,7 @@ type Props = {
   changeAfterTime: Function,
   storeState: Function,
   loadState: Function,
+  portTimetableToMain: Function,
 };
 
 export class AutobuildContainer extends Component {
@@ -423,6 +425,14 @@ export class AutobuildContainer extends Component {
                   onClick={() => {
                     this.props.loadState(this.props.semester);
                   }}>Load Previous Options</button>
+                <span className="divider" style={{ width: '5px',
+                  height: 'auto',
+                  display: 'inline-block',
+                }} />
+                <button type="button" className="btn btn-failure"
+                  onClick={() => {
+                    this.props.portTimetableToMain(this.props.semester);
+                  }}>Port Timetable to Mainpage</button>
               </div>
             </div>
           </div>
@@ -482,5 +492,6 @@ export default connect(
     changeBeforeTime,
     storeState,
     loadState,
+    portTimetableToMain,
   },
 )(AutobuildContainer);

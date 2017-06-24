@@ -182,6 +182,16 @@ export function loadState(semester: Semester): FSA {
   };
 }
 
+export const PORT_TIMETABLE: string = 'PORT_TIMETABLE';
+export function portTimetableToMain(semester: Semester): FSA {
+  return {
+    type: PORT_TIMETABLE,
+    payload: {
+      semester,
+    },
+  };
+}
+
 export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
 export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
 export function fetchAndSolveQuery(autobuild, semester) {

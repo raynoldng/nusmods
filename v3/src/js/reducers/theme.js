@@ -19,6 +19,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          UPDATE_AUTOBUILD_TIMETABLE,
          STORE_STATE,
          LOAD_STATE,
+         PORT_TIMETABLE,
 } from 'actions/autobuild';
 
 import {
@@ -141,6 +142,13 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         }
         return state;
       }
+    case PORT_TIMETABLE:
+      return {
+        ...state,
+        colors: {
+          ...state.autobuildcolors,
+        },
+      };
     default:
       return state;
   }
