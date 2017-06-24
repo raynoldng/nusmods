@@ -162,6 +162,26 @@ export function switchMode(semester: Semester, mode: String): FSA {
   };
 }
 
+export const STORE_STATE: string = 'STORE_STATE';
+export function storeState(semester: Semester): FSA {
+  return {
+    type: STORE_STATE,
+    payload: {
+      semester,
+    },
+  };
+}
+
+export const LOAD_STATE: string = 'LOAD_STATE';
+export function loadState(semester: Semester): FSA {
+  return {
+    type: LOAD_STATE,
+    payload: {
+      semester,
+    },
+  };
+}
+
 export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
 export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
 export function fetchAndSolveQuery(autobuild, semester) {

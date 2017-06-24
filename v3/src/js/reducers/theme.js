@@ -10,7 +10,12 @@ import type {
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE, REMOVE_ALL_MODULES } from 'actions/timetables';
 import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
-import { ADD_MODULE_AUTOBUILD_COMP, REMOVE_MODULE_AUTOBUILD, UPDATE_AUTOBUILD_TIMETABLE } from 'actions/autobuild';
+import { ADD_MODULE_AUTOBUILD_COMP,
+         REMOVE_MODULE_AUTOBUILD,
+         UPDATE_AUTOBUILD_TIMETABLE,
+         STORE_STATE,
+         LOAD_STATE,
+} from 'actions/autobuild';
 
 import {
   VERTICAL,
@@ -110,6 +115,25 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
           ...state,
           autobuildcolors: obj,
         };
+      }
+    case STORE_STATE:
+      return {
+        ...state,
+        storedState: {
+          ...state.autobuildcolors,
+        },
+      };
+    case LOAD_STATE:
+      {
+        if (state.storedState) {
+          return {
+            ...state,
+            autobuildcolors: {
+              ...state.storedState,
+            },
+          };
+        }
+        return state;
       }
     default:
       return state;
