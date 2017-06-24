@@ -172,7 +172,13 @@ export function fetchAndSolveQuery(autobuild, semester) {
   const workload = autobuild.workload ? autobuild.workload : 5;
   const options = { freeday: autobuild.freeday };
 
-  const url = NUSModsPlannerApi.plannerQueryUrl(compMods, optMods, workload, semester);
+  if (autobuild.noLessonsAfter) options.noLessonsAfter = autobuild.noLessonsAfter;
+  if (autobuild.noLessonsBefore) options.noLessonsBefore = autobuild.noLessonsBefore;
+
+  const url = NUSModsPlannerApi.plannerQueryUrl(options, compMods, optMods, workload, semester);
+
+  console.log(url);
+
   return (dispatch: Function, getState: Function) => {
     return fetch(url).then((req) => {
       return req.text().then((data) => {
@@ -185,6 +191,11 @@ export function fetchAndSolveQuery(autobuild, semester) {
         const obj = {};
 
         console.log(timetable);
+
+        // don't do anything if empty timetable(UNSAT)
+        if (timetable.length === 0) {
+          return {};
+        }
 
         timetable.forEach((string) => {
           const arr = string.split('_');
