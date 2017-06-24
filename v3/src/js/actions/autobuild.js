@@ -202,28 +202,6 @@ export function fetchAndSolveQuery(autobuild, semester) {
           },
         });
       });
-
-  const url = NUSModsPlannerApi.plannerQueryUrl(options, compMods, optMods, workload, semester);
-
-  return fetch(url).then(req => req.text()).then((data) => {
-    const data2 = JSON.parse(data);
-    const smtlib2 = data2[0];
-    const moduleMapping = data2[1];
-
-    const result = solve(smtlib2);
-    const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
-    const obj = {};
-
-    console.log(timetable);
-
-    timetable.forEach((string) => {
-      const arr = string.split('_');
-      obj[arr[0]] = {
-        ...obj[arr[0]],
-        [arr[1]]: arr[2],
-        status: 'comp',
-      };
-
     });
   };
 }
