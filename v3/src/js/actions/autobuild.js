@@ -172,32 +172,35 @@ export function fetchAndSolveQuery(autobuild, semester) {
   const workload = autobuild.workload ? autobuild.workload : 5;
 
   const url = NUSModsPlannerApi.plannerQueryUrl(compMods, optMods, workload, semester);
+  return (dispatch: Function, getState: Function) => {
+    return fetch(url).then((req) => {
+      return req.text().then((data) => {
+        const data2 = JSON.parse(data);
+        const smtlib2 = data2[0];
+        const moduleMapping = data2[1];
 
-  return fetch(url).then(req => req.text()).then((data) => {
-    const data2 = JSON.parse(data);
-    const smtlib2 = data2[0];
-    const moduleMapping = data2[1];
+        const result = solve(smtlib2);
+        const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
+        const obj = {};
 
-    const result = solve(smtlib2);
-    const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
-    const obj = {};
+        console.log(timetable);
 
-    console.log(timetable);
-
-    timetable.forEach((string) => {
-      const arr = string.split('_');
-      obj[arr[0]] = {
-        ...obj[arr[0]],
-        [arr[1]]: arr[2],
-        status: 'comp',
-      };
+        timetable.forEach((string) => {
+          const arr = string.split('_');
+          obj[arr[0]] = {
+            ...obj[arr[0]],
+            [arr[1]]: arr[2],
+            status: 'comp',
+          };
+        });
+        return dispatch({
+          type: UPDATE_AUTOBUILD_TIMETABLE,
+          payload: {
+            semester,
+            state: obj,
+          },
+        });
+      });
     });
-    return {
-      type: UPDATE_AUTOBUILD_TIMETABLE,
-      payload: {
-        semester,
-        state: obj,
-      },
-    };
-  });
+  };
 }
