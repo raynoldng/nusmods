@@ -65,8 +65,8 @@ import {
 import ModulesSelect from 'views/components/ModulesSelect';
 import AutobuildSelect from 'views/components/AutobuildSelect';
 
+import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
-import TimetableModulesTable from '../timetable/TimetableModulesTable';
 
 
 type Props = {

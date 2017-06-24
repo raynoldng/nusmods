@@ -9,7 +9,11 @@ import type {
 
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE, REMOVE_ALL_MODULES } from 'actions/timetables';
-import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
+import { SELECT_THEME,
+         SELECT_MODULE_COLOR,
+         TOGGLE_TIMETABLE_ORIENTATION,
+         SELECT_MODULE_COLOR_AUTOBUILD,
+} from 'actions/theme';
 import { ADD_MODULE_AUTOBUILD_COMP,
          REMOVE_MODULE_AUTOBUILD,
          UPDATE_AUTOBUILD_TIMETABLE,
@@ -68,6 +72,7 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
     case REMOVE_ALL_MODULES:
       return {};
     case SELECT_MODULE_COLOR:
+    case SELECT_MODULE_COLOR_AUTOBUILD:
       return {
         ...state,
         [action.payload.moduleCode]: action.payload.colorIndex,
@@ -89,6 +94,7 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
       };
     case ADD_MODULE_AUTOBUILD_COMP:
     case REMOVE_MODULE_AUTOBUILD:
+    case SELECT_MODULE_COLOR_AUTOBUILD:
       return {
         ...state,
         autobuildcolors: colors(state.autobuildcolors, action),
@@ -108,7 +114,7 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         const obj = {};
         Object.keys(action.payload.state).forEach(
           (curVal, index) => {
-            obj[curVal] = index + 1;
+            obj[curVal] = index % 8;
           },
         );
         return {
