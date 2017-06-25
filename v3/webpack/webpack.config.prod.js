@@ -57,7 +57,7 @@ const productionConfig = merge([
     include: parts.PATHS.app,
   }),
   // Fail for CI
-  parts.flow({ failOnError: true }),
+  // parts.flow({ failOnError: true }),
 ]);
 
 module.exports = productionConfig;
