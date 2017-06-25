@@ -199,7 +199,7 @@ export function fetchAndSolveQuery(autobuild, semester) {
   const mods = Object.keys(autobuild).filter(k => autobuild[k].status);
   const compMods = mods.filter(m => autobuild[m].status === 'comp');
   const optMods = mods.filter(m => autobuild[m].status === 'opt');
-  const workload = autobuild.workload ? autobuild.workload : 5;
+  const workload = autobuild.workload ? autobuild.workload : compMods.length;
   const options = { freeday: autobuild.freeday };
 
   if (autobuild.noLessonsAfter) options.noLessonsAfter = autobuild.noLessonsAfter;
