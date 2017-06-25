@@ -45,6 +45,9 @@ import {
   fetchAndSolveQuery,
   changeBeforeTime,
   changeAfterTime,
+  storeState,
+  loadState,
+  portTimetableToMain,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -63,8 +66,8 @@ import {
 import ModulesSelect from 'views/components/ModulesSelect';
 import AutobuildSelect from 'views/components/AutobuildSelect';
 
+import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
-import TimetableModulesTable from '../timetable/TimetableModulesTable';
 
 
 type Props = {
@@ -94,6 +97,9 @@ type Props = {
   fetchAndSolveQuery: Function,
   changeBeforeTime: Function,
   changeAfterTime: Function,
+  storeState: Function,
+  loadState: Function,
+  portTimetableToMain: Function,
 };
 
 export class AutobuildContainer extends Component {
@@ -408,8 +414,25 @@ export class AutobuildContainer extends Component {
               <div className="row">
                 <button type="button" className="btn btn-info"
                   onClick={() => {
+                    this.props.storeState(this.props.semester);
                     this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester);
                   }}>Generate Timetable</button>
+                <span className="divider" style={{ width: '5px',
+                  height: 'auto',
+                  display: 'inline-block',
+                }} />
+                <button type="button" className="btn btn-success"
+                  onClick={() => {
+                    this.props.loadState(this.props.semester);
+                  }}>Load Previous Options</button>
+                <span className="divider" style={{ width: '5px',
+                  height: 'auto',
+                  display: 'inline-block',
+                }} />
+                <button type="button" className="btn btn-failure"
+                  onClick={() => {
+                    this.props.portTimetableToMain(this.props.semester);
+                  }}>Port Timetable to Mainpage</button>
               </div>
             </div>
           </div>
@@ -467,5 +490,8 @@ export default connect(
     fetchAndSolveQuery,
     changeAfterTime,
     changeBeforeTime,
+    storeState,
+    loadState,
+    portTimetableToMain,
   },
 )(AutobuildContainer);

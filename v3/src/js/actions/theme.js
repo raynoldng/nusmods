@@ -21,6 +21,16 @@ export function modifyModuleColor(moduleCode: ModuleCode): FSA {
   };
 }
 
+export const MODIFY_MODULE_COLOR_AUTOBUILD: string = 'MODIFY_MODULE_COLOR_AUTOBUILD';
+export function modifyModuleColorAutobuild(moduleCode: ModuleCode): FSA {
+  return {
+    type: MODIFY_MODULE_COLOR_AUTOBUILD,
+    payload: {
+      activeModule: moduleCode,
+    },
+  };
+}
+
 export const CANCEL_MODIFY_MODULE_COLOR: string = 'CANCEL_MODIFY_MODULE_COLOR';
 export function cancelModifyModuleColor(): FSA {
   return {
@@ -33,6 +43,17 @@ export const SELECT_MODULE_COLOR: string = 'SELECT_MODULE_COLOR';
 export function selectModuleColor(moduleCode: ModuleCode, colorIndex: ColorIndex): FSA {
   return {
     type: SELECT_MODULE_COLOR,
+    payload: {
+      moduleCode,
+      colorIndex,
+    },
+  };
+}
+
+export const SELECT_MODULE_COLOR_AUTOBUILD: string = 'SELECT_MODULE_COLOR_AUTOBUILD';
+export function selectModuleColorAutobuild(moduleCode: ModuleCode, colorIndex: ColorIndex): FSA {
+  return {
+    type: SELECT_MODULE_COLOR_AUTOBUILD,
     payload: {
       moduleCode,
       colorIndex,

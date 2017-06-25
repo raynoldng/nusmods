@@ -12,8 +12,10 @@ import {
 } from 'actions/autobuild';
 import {
   MODIFY_MODULE_COLOR,
+  MODIFY_MODULE_COLOR_AUTOBUILD,
   CANCEL_MODIFY_MODULE_COLOR,
   SELECT_MODULE_COLOR,
+  SELECT_MODULE_COLOR_AUTOBUILD,
 } from 'actions/theme';
 
 const defaultAppState: AppState = {
@@ -32,6 +34,7 @@ function app(state: AppState = defaultAppState, action: FSA): AppState {
         activeLesson: action.payload && action.payload.activeLesson,
       };
     case MODIFY_MODULE_COLOR:
+    case MODIFY_MODULE_COLOR_AUTOBUILD:
       return {
         ...state,
         activeModule: action.payload && action.payload.activeModule,
@@ -45,6 +48,7 @@ function app(state: AppState = defaultAppState, action: FSA): AppState {
       };
     case CANCEL_MODIFY_MODULE_COLOR:
     case SELECT_MODULE_COLOR:
+    case SELECT_MODULE_COLOR_AUTOBUILD:
       return {
         ...state,
         activeModule: null,
