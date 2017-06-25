@@ -24,5 +24,6 @@
     "faculty": "default",
     "student": "false",
     "account": "P"
-  }
+  },
+  "live": true
 }

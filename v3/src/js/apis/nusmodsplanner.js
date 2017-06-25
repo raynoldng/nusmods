@@ -1,7 +1,9 @@
 // @flow
 import type { ModuleCode } from 'types/modules';
 // TODO migrate url to config
-const plannerBaseUrl: string = 'http://localhost:3001/api';
+import config from 'config/app-config.json';
+
+const plannerBaseUrl: string = config.live ? 'http://modsplanner.tk:3001/api' : 'http://localhost:3001/api';
 
 const NUSModsPlannerApi = {
   plannerBaseUrl: (): string => plannerBaseUrl,
