@@ -79,16 +79,14 @@ function semTimetable(state = {}, action) {
   }
   if (action.type === UPDATE_AUTOBUILD_TIMETABLE) {
     return {
+      ...state,
       ...action.payload.state,
-      storedState: state.storedState,
     };
   }
   if (action.type === STORE_STATE) {
     return {
       ...state,
-      storedState: {
-        ...state,
-      },
+      storedState: _.omit(state, 'storedState'),
     };
   }
   if (action.type === LOAD_STATE) {

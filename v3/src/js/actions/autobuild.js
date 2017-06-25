@@ -217,6 +217,7 @@ export function fetchAndSolveQuery(autobuild, semester) {
         const moduleMapping = data2[1];
 
         const result = solve(smtlib2);
+
         const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
         const obj = {};
 
