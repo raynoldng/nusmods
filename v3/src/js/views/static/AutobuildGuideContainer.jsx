@@ -8,9 +8,8 @@ export default function AutobuildGuideContainer() {
         <div className="col-md-8 offset-md-1">
           <h2>Guide to using Auto-Build Feature</h2>
           <p>Warning: Locked modules and blocking of lessons before and after certain timings
-          are not implemented yet (we are working on it, expect it to be up by mid-July!)
-          Also, the current freeday feature is always turned on (even if the &quot;I want a free day
-          checkbox&quot; is unchecked) - this is something we will fix soon too.
+          are not implemented yet (we are working on it, expect it to be up by mid-July!). Also,
+          try refreshing the page if you experience problems generating your timetable.
           </p>
           <p>First, specify the compulsory (the modules you definitely want to be in your timetable)
           and optional modules by adding them from the dropdown menus, and specify intended workload
@@ -26,6 +25,11 @@ export default function AutobuildGuideContainer() {
           and clicking on the slots you wish to fix (for example, if I want to take CS2100 Tut 7 with
           my friend, I would shift the Tut slot to 7 in Normal Mode, then switch to Lock Mode to lock
           it in place)
+          </p>
+          <p>
+          &quot;Load Previous Options&quot; loads the most recent state before the user pressed
+          &quot;Generate Timetable&quot;, and &quot;Port Timetable to Main&quot; transfers the currently
+          displayed modules and slots to the main timetable for exporting purposes.
           </p>
         </div>
       </div>

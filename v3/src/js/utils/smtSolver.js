@@ -20,6 +20,7 @@ export function solve(smtQuery: String) {
   };
 
   solveString(smtQuery, 2);
+  // console.log(output);
   return output;
 }
 
