@@ -20,7 +20,6 @@ export function solve(smtQuery: String) {
   };
 
   solveString(smtQuery, 2);
-  console.log(output);
   return output;
 }
 
@@ -30,8 +29,11 @@ export function parseOutput(output: String) {
     result: outputArr[0],
   };
   for (let i = 1; i < outputArr.length; i += 1) {
-    const tokens = outputArr[i].split(' ');
-    result[tokens[0]] = parseInt(tokens[1], 2);
+    const line = outputArr[i].trim();
+
+    const key = line.substring(0, line.lastIndexOf(' ')).replace(/\|/g, '');
+    const value = line.substring(line.lastIndexOf(' '));
+    result[key] = parseInt(value, 2);
   }
   return result;
 }
