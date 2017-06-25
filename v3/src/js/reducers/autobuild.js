@@ -54,16 +54,22 @@ function semTimetable(state = {}, action) {
     };
   }
   if (action.type === CHANGE_BEFORE_TIME) {
-    return {
-      ...state,
-      noLessonsBefore: action.payload.noLessonsBefore,
-    };
+    if (action.payload.noLessonsBefore) {
+      return {
+        ...state,
+        noLessonsBefore: action.payload.noLessonsBefore,
+      };
+    }
+    return _.omit(state, 'noLessonsBefore');
   }
   if (action.type === CHANGE_AFTER_TIME) {
-    return {
-      ...state,
-      noLessonsAfter: action.payload.noLessonsAfter,
-    };
+    if (action.payload.noLessonsAfter) {
+      return {
+        ...state,
+        noLessonsAfter: action.payload.noLessonsAfter,
+      };
+    }
+    return _.omit(state, 'noLessonsAfter');
   }
   if (action.type === TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD) {
     return {
