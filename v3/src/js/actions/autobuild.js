@@ -1,6 +1,8 @@
 // @flow
 /* eslint no-unused-vars: 0 */
 /* eslint-disable no-console */
+/* eslint-disable no-alert */
+
 import fetch from 'isomorphic-fetch';
 
 import NUSModsPlannerApi from 'apis/nusmodsplanner';
@@ -218,14 +220,17 @@ export function fetchAndSolveQuery(autobuild, semester) {
         // console.log(moduleMapping);
         const result = solve(smtlib2);
 
-        const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
+        const timetable = slotsFromModel(result[0], compMods, optMods, workload, moduleMapping);
         const obj = {};
 
         // console.log(timetable);
+        // console.log(result[1]);
 
-        // don't do anything if empty timetable(UNSAT)
-        if (timetable.length === 0) {
+        if (result[1] === 'ERROR') {
+          alert('Please wait a while before re-sending your request');
           window.location.reload();
+          return {};
+        } else if (timetable.length === 0) { // UNSAT
           return {};
         }
 

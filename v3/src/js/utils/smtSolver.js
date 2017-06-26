@@ -21,10 +21,10 @@ export function solve(smtQuery: String) {
     output += `${x}\n`;
   };
 
-  solveString(smtQuery, 2);
+  const satUnsatOrError = solveString(smtQuery, 2);
 
   // console.log(output);
-  return output;
+  return [output, satUnsatOrError];
 }
 
 export function parseOutput(output: String) {

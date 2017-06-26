@@ -20,7 +20,7 @@ export default function AutobuildGuideContainer() {
           you want a free day.
           </p>
           <p>
-          The timetable only displays your compulosry modules, and has no impact on the timetable that
+          The timetable only displays your compulsory modules, and has no impact on the timetable that
           will be generated for you UNLESS you lock certain slots. This is done by selecting Lock Mode
           and clicking on the slots you wish to fix (for example, if I want to take CS2100 Tut 7 with
           my friend, I would shift the Tut slot to 7 in Normal Mode, then switch to Lock Mode to lock
