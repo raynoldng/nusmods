@@ -4,6 +4,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+/* eslint-disable prefer-template */
 
 import _ from 'lodash';
 // import { getModuleTimetable } from 'utils/modules';
@@ -11,6 +12,7 @@ import _ from 'lodash';
 const solveString = Module.cwrap('solve_string', 'string', ['string', 'number']);
 
 export function solve(smtQuery: String) {
+  // console.log(smtQuery);
   let output = '';
   Module.print = function (x) {
     output += `${x}\n`;
@@ -20,6 +22,7 @@ export function solve(smtQuery: String) {
   };
 
   solveString(smtQuery, 2);
+
   // console.log(output);
   return output;
 }

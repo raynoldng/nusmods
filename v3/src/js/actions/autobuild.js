@@ -12,12 +12,13 @@ RawLesson,
 // Lesson,
 } from 'types/modules';
 
-import { lessonSlotStringToObject } from 'utils/autobuild';
+import { lessonSlotStringToObject, isCompMod, isOptMod } from 'utils/autobuild';
 
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import { solve, parseOutput, slotsFromModel } from '../utils/smtSolver';
+import { solve, parseOutput, slotsFromModel } from 'utils/smtSolver';
+import _ from 'lodash';
 
 
 export const ADD_MODULE_AUTOBUILD_COMP: string = 'ADD_MODULE_AUTOBUILD_COMP';
@@ -196,9 +197,8 @@ export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
 export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
 export function fetchAndSolveQuery(autobuild, semester) {
   // first filter the mods
-  const mods = Object.keys(autobuild).filter(k => autobuild[k].status);
-  const compMods = mods.filter(m => autobuild[m].status === 'comp');
-  const optMods = mods.filter(m => autobuild[m].status === 'opt');
+  const compMods = Object.keys(_.pickBy(autobuild, isCompMod));
+  const optMods = Object.keys(_.pickBy(autobuild, isOptMod));
   const workload = autobuild.workload ? autobuild.workload : compMods.length;
   const options = { freeday: autobuild.freeday };
 
@@ -215,16 +215,17 @@ export function fetchAndSolveQuery(autobuild, semester) {
         const data2 = JSON.parse(data);
         const smtlib2 = data2[0];
         const moduleMapping = data2[1];
-
+        // console.log(moduleMapping);
         const result = solve(smtlib2);
 
         const timetable = slotsFromModel(result, compMods, optMods, workload, moduleMapping);
         const obj = {};
 
-        console.log(timetable);
+        // console.log(timetable);
 
         // don't do anything if empty timetable(UNSAT)
         if (timetable.length === 0) {
+          window.location.reload();
           return {};
         }
 

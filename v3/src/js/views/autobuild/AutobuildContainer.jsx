@@ -4,6 +4,7 @@
 /* eslint-disable no-console */
 
 import Checkbox from 'react-checkbox';
+// import storage from 'storage';
 import type {
   ThemeState,
   TimetableOrientation,
@@ -100,6 +101,7 @@ type Props = {
   storeState: Function,
   loadState: Function,
   portTimetableToMain: Function,
+  // storeState: Object,
 };
 
 export class AutobuildContainer extends Component {
@@ -416,6 +418,19 @@ export class AutobuildContainer extends Component {
                   onClick={() => {
                     this.props.storeState(this.props.semester);
                     this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester);
+                    /* storage.saveState({
+                      entities: {
+                        moduleBank: {
+                          modules: this.props.storeState.entities.moduleBank.modules,
+                          moduleList: this.props.storeState.entities.moduleBank.moduleList,
+                        },
+                      },
+                      timetables: this.props.storeState.timetables,
+                      theme: this.props.storeState.theme,
+                      settings: this.props.storeState.settings,
+                      autobuild: this.props.storeState.autobuild,
+                    });
+                    window.location.reload(); */
                   }}>Generate Timetable</button>
                 <span className="divider" style={{ width: '5px',
                   height: 'auto',
@@ -468,6 +483,7 @@ function mapStateToProps(state) {
     autobuild,
     semModuleListAutobuild,
     semTimetableWithLessonsAutobuild,
+    // storeState: state,
     // isLockingMode,
   };
 }

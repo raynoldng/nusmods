@@ -10,6 +10,8 @@ const NUSModsPlannerApi = {
 
   plannerQueryUrl: (options, compModuleCodes: Array<ModuleCode>, optModuleCodes: Array<ModuleCode>,
                     numMods: number): string => {
+    compModuleCodes.sort();
+    optModuleCodes.sort();
     const compMods = compModuleCodes.length !== 0 ? compModuleCodes.join(',') : 'null';
     const optMods = optModuleCodes.length !== 0 ? optModuleCodes.join(',') : 'null';
     const opts = options || {};
