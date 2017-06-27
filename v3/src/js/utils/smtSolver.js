@@ -5,26 +5,28 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-template */
+/* eslint-disable no-eval */
 
 import _ from 'lodash';
 // import { getModuleTimetable } from 'utils/modules';
 
-const solveString = Module.cwrap('solve_string', 'string', ['string', 'number']);
-
-export function solve(smtQuery: String) {
-  // console.log(smtQuery);
-  let output = '';
-  Module.print = function (x) {
-    output += `${x}\n`;
-  };
-  Module.printErr = function (x) {
-    output += `${x}\n`;
-  };
-
-  const satUnsatOrError = solveString(smtQuery, 2);
-
-  // console.log(output);
-  return [output, satUnsatOrError];
+export function solve(smtQuery: String, cb) {
+  fetch('http://localhost:3001/static/boolector.js').then((data) => { return data.text(); }).then((data) => {
+    eval(data);
+    const solveString = Module.cwrap('solve_string', 'string', ['string', 'number']);
+    let output = '';
+    Module.print = function (x) {
+      output += x + '\n';
+    };
+    Module.printErr = function (x) {
+      output += x + '\n';
+    };
+    const result = solveString(query, 2);
+    const outcome = [output, result];
+    return outcome;
+  }).then((outcome) => {
+    cb(outcome);
+  });
 }
 
 export function parseOutput(output: String) {

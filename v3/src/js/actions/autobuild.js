@@ -2,6 +2,8 @@
 /* eslint no-unused-vars: 0 */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
+/* eslint-disable no-undef */
+
 
 import fetch from 'isomorphic-fetch';
 
@@ -218,36 +220,39 @@ export function fetchAndSolveQuery(autobuild, semester) {
         const smtlib2 = data2[0];
         const moduleMapping = data2[1];
         // console.log(moduleMapping);
-        const result = solve(smtlib2);
+        // const result = solve(smtlib2);
 
-        const timetable = slotsFromModel(result[0], compMods, optMods, workload, moduleMapping);
-        const obj = {};
+        solveSmtGlobal(smtlib2, (outcome) => {
+          console.log(outcome);
+          const model = outcome[0];
+          const result = outcome[1];
+          const timetable = slotsFromModel(model, compMods, optMods, workload, moduleMapping);
+          console.log(timetable);
 
-        // console.log(timetable);
-        // console.log(result[1]);
+          const obj = {};
 
-        if (result[1] === 'ERROR') {
-          alert('Please wait a while before re-sending your request');
-          window.location.reload();
-          return {};
-        } else if (timetable.length === 0) { // UNSAT
-          return {};
-        }
+          if (result === 'ERROR') {
+            alert('Please wait a while before re-sending your request');
+            return {};
+          } else if (timetable.length === 0) { // UNSAT
+            return {};
+          }
 
-        timetable.forEach((string) => {
-          const arr = string.split('_');
-          obj[arr[0]] = {
-            ...obj[arr[0]],
-            [arr[1]]: arr[2],
-            status: 'comp',
-          };
-        });
-        return dispatch({
-          type: UPDATE_AUTOBUILD_TIMETABLE,
-          payload: {
-            semester,
-            state: obj,
-          },
+          timetable.forEach((string) => {
+            const arr = string.split('_');
+            obj[arr[0]] = {
+              ...obj[arr[0]],
+              [arr[1]]: arr[2],
+              status: 'comp',
+            };
+          });
+          return dispatch({
+            type: UPDATE_AUTOBUILD_TIMETABLE,
+            payload: {
+              semester,
+              state: obj,
+            },
+          });
         });
       });
     });
