@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 // @flow
 import type { ModuleCode } from 'types/modules';
 // TODO migrate url to config
@@ -8,14 +10,14 @@ const plannerBaseUrl: string = config.live ? 'http://modsplanner.tk:3001/api' : 
 const NUSModsPlannerApi = {
   plannerBaseUrl: (): string => plannerBaseUrl,
 
-  plannerQueryUrl: (options, compModuleCodes: Array<ModuleCode>, optModuleCodes: Array<ModuleCode>,
+  plannerQueryUrl: (semester, options, compModuleCodes: Array<ModuleCode>, optModuleCodes: Array<ModuleCode>,
                     numMods: number): string => {
     compModuleCodes.sort();
     optModuleCodes.sort();
     const compMods = compModuleCodes.length !== 0 ? compModuleCodes.join(',') : 'null';
     const optMods = optModuleCodes.length !== 0 ? optModuleCodes.join(',') : 'null';
     const opts = options || {};
-    return `${plannerBaseUrl}/${numMods}/${compMods}/${optMods}/${encodeURIComponent(JSON.stringify(opts))}`;
+    return `${plannerBaseUrl}/${semester}/${numMods}/${compMods}/${optMods}/${encodeURIComponent(JSON.stringify(opts))}`;
   },
 };
 

@@ -7,24 +7,15 @@
   <link rel="manifest" href="/manifest.json">
   <base href="/"/>
   <script>
-function solveSmtGlobal(query, cb) {
-  fetch('http://localhost:3001/static/boolector.js').then(function(data) {return data.text()}).then(function(data) {
-    eval(data);
-    var solveString = Module.cwrap('solve_string', 'string', ['string', 'number']);
-    var output = '';
-    Module.print = function (x) {
-      output += x + '\n';
-    };
-    Module.printErr = function (x) {
-      output += x + '\n';
-    };
-    var result = solveString(query, 2)
-    var outcome = [output, result];
-    return outcome;
-  }).then(function(outcome) {
-    cb(outcome)
-  })
+var request = new XMLHttpRequest();
+request.open('GET', 'http://localhost:3001/static/boolector.js', false);
+request.send(null);
+boolector = request.responseText;
+function createBoolector() {
+  eval(boolector)
+  return Module;
 }
+var BoolectorModuleArray = [createBoolector(), createBoolector()];
   </script>
 </head>
 <body>

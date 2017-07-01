@@ -3,7 +3,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable no-undef */
-
+/* eslint-disable no-param-reassign */
+/* eslint-disable func-names */
+/* eslint-disable prefer-template */
+/* eslint-disable consistent-return */
 
 import fetch from 'isomorphic-fetch';
 
@@ -21,7 +24,7 @@ import { lessonSlotStringToObject, isCompMod, isOptMod } from 'utils/autobuild';
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import { solve, parseOutput, slotsFromModel } from 'utils/smtSolver';
+import { parseOutput, slotsFromModel } from 'utils/smtSolver';
 import _ from 'lodash';
 
 
@@ -197,64 +200,103 @@ export function portTimetableToMain(semester: Semester): FSA {
   };
 }
 
+function solve(boolector, query) {
+  let output = '';
+  boolector.print = function (x) {
+    output += x + '\n';
+  };
+  boolector.printErr = function (x) {
+    output += x + '\n';
+  };
+  const solveString = boolector.cwrap('solve_string', 'string', ['string', 'number']);
+  const result = solveString(query, 2);
+  const outcome = [result, output];
+  return outcome;
+}
+
+function solveQuery(query, boolectorarray) {
+  for (let i = 0; i < boolectorarray.length; i += 1) {
+    const outcome1 = solve(boolectorarray[i], query);
+    if (outcome1[0] !== 'ERROR') {
+      return outcome1;
+    }
+  }
+  const n = boolectorarray.push(createBoolector());
+  return solve(boolectorarray[n - 1], query);
+}
+
+function syncQuery(url) {
+  const request = new XMLHttpRequest();
+  request.open('GET', url, false);  // `false` makes the request synchronous
+  request.send(null);
+
+  if (request.status === 200) {
+    // console.log(request.responseText);
+    const data2 = JSON.parse(request.responseText);
+    const smtlib2 = data2[0];
+    const mapping = data2[1]; // not really needed
+    const outcome = solveQuery(smtlib2, BoolectorModuleArray);
+    return [outcome, mapping];
+  }
+
+  return ['UNABLE TO GET QUERY STRING', null];
+}
+
 export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
 export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
 export function fetchAndSolveQuery(autobuild, semester) {
   // first filter the mods
   const compMods = Object.keys(_.pickBy(autobuild, isCompMod));
   const optMods = Object.keys(_.pickBy(autobuild, isOptMod));
-  const workload = autobuild.workload ? autobuild.workload : compMods.length;
+  const workload = autobuild.workload ? autobuild.workload : 5;
   const options = { freeday: autobuild.freeday };
+  if (compMods.length + optMods.length < workload) {
+    alert('Please select enough modules to satisfy workload');
+    return;
+  }
 
   if (autobuild.noLessonsAfter) options.noLessonsAfter = autobuild.noLessonsAfter;
   if (autobuild.noLessonsBefore) options.noLessonsBefore = autobuild.noLessonsBefore;
 
-  const url = NUSModsPlannerApi.plannerQueryUrl(options, compMods, optMods, workload, semester);
+  const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload, semester);
 
   console.log(url);
 
   return (dispatch: Function, getState: Function) => {
-    return fetch(url).then((req) => {
-      return req.text().then((data) => {
-        const data2 = JSON.parse(data);
-        const smtlib2 = data2[0];
-        const moduleMapping = data2[1];
-        // console.log(moduleMapping);
-        // const result = solve(smtlib2);
+    const retVal = syncQuery(url);
+    const outcome = retVal[0];
+    const moduleMapping = retVal[1];
+    console.log(outcome);
+    const model = outcome[1];
+    const result = outcome[0];
+    const timetable = slotsFromModel(model, compMods, optMods, workload, moduleMapping);
+    console.log(timetable);
 
-        solveSmtGlobal(smtlib2, (outcome) => {
-          console.log(outcome);
-          const model = outcome[0];
-          const result = outcome[1];
-          const timetable = slotsFromModel(model, compMods, optMods, workload, moduleMapping);
-          console.log(timetable);
+    const obj = {};
 
-          const obj = {};
+    if (result === 'ERROR') {
+      alert('Please wait a while before re-sending your request');
+      window.location.reload();
+      return {};
+    } else if (timetable.length === 0) { // UNSAT
+      alert('Sorry, there is no possible timetable that fulfils your constraints D:');
+      return {};
+    }
 
-          if (result === 'ERROR') {
-            alert('Please wait a while before re-sending your request');
-            return {};
-          } else if (timetable.length === 0) { // UNSAT
-            return {};
-          }
-
-          timetable.forEach((string) => {
-            const arr = string.split('_');
-            obj[arr[0]] = {
-              ...obj[arr[0]],
-              [arr[1]]: arr[2],
-              status: 'comp',
-            };
-          });
-          return dispatch({
-            type: UPDATE_AUTOBUILD_TIMETABLE,
-            payload: {
-              semester,
-              state: obj,
-            },
-          });
-        });
-      });
+    timetable.forEach((string) => {
+      const arr = string.split('_');
+      obj[arr[0]] = {
+        ...obj[arr[0]],
+        [arr[1]]: arr[2],
+        status: 'comp',
+      };
+    });
+    return dispatch({
+      type: UPDATE_AUTOBUILD_TIMETABLE,
+      payload: {
+        semester,
+        state: obj,
+      },
     });
   };
 }

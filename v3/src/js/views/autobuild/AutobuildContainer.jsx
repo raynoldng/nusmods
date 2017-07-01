@@ -218,7 +218,7 @@ export class AutobuildContainer extends Component {
 
     const workloadString = this.props.autobuild.workload ?
                             `Workload selected: ${this.props.autobuild.workload} modules` :
-                            'Select workload (number of modules)';
+                            'Select workload (number of modules, default value is 5)';
 
     const workloadOptions = [
       { label: '4', value: 4 },
@@ -447,6 +447,7 @@ export class AutobuildContainer extends Component {
                 <button type="button" className="btn btn-failure"
                   onClick={() => {
                     this.props.portTimetableToMain(this.props.semester);
+                    alert('Timetable successfully ported to mainpage!');
                   }}>Port Timetable to Mainpage</button>
               </div>
             </div>
