@@ -4,6 +4,7 @@
 /* eslint-disable no-console */
 
 import Checkbox from 'react-checkbox';
+import NumericInput from 'react-numeric-input';
 // import storage from 'storage';
 import type {
   ThemeState,
@@ -239,30 +240,26 @@ export class AutobuildContainer extends Component {
       { label: '9', value: 9 },
     ];
 
-    const noBeforeString = this.props.autobuild.noLessonsBefore ?
-                            `${this.props.autobuild.noLessonsBefore} a.m.` :
-                            'Select time (optional)';
+    // const noBeforeString = 'Select time (optional)';
 
-    const noLessonsBeforeOptions = [
+    /* const noLessonsBeforeOptions = [
       { label: 'Nil', value: undefined },
       { label: '8 a.m.', value: 8 },
       { label: '9 a.m.', value: 9 },
       { label: '10 a.m.', value: 10 },
       { label: '11 a.m.', value: 11 },
-    ];
+    ]; */
 
-    const noAfterString = this.props.autobuild.noLessonsAfter ?
-                            `${this.props.autobuild.noLessonsAfter - 12} p.m.` :
-                            'Select time (optional)';
+    // const noAfterString = 'Select time (optional)';
 
-    const noLessonsAfterOptions = [
+    /* const noLessonsAfterOptions = [
       { label: 'Nil', value: undefined },
       { label: '4 p.m.', value: 16 },
       { label: '5 p.m.', value: 17 },
       { label: '6 p.m.', value: 18 },
       { label: '7 p.m.', value: 19 },
       { label: '8 p.m.', value: 20 },
-    ];
+    ]; */
 
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
@@ -397,27 +394,40 @@ export class AutobuildContainer extends Component {
               <Collapsible trigger="More Options">
                 <div className="row">
                   <div className="col-md-12">
-                    No lessons starting before:
-                    <AutobuildSelect onChange={(timing) => {
-                      this.props.changeBeforeTime(this.props.semester, timing);
-                    }}
-                      name="noBefSelect"
-                      placeholder={noBeforeString}
-                      options={noLessonsBeforeOptions}
+                    <Checkbox checked={this.props.autobuild.freeday}
+                      onChange={() => {
+                        // this.props.toggleFreedayAutobuild(this.props.semester);
+                      }}
                       />
+                    &nbsp;No lessons starting before:&nbsp;
+                    <NumericInput min={8}
+                      max={11}
+                      value={8}
+                      size={10}
+                      />&nbsp;a.m.
                   </div>
                 </div>
                 <br />
                 <div className="row">
                   <div className="col-md-12">
-                    No lessons ending later than:
-                    <AutobuildSelect onChange={(timing) => {
+                    <Checkbox checked={this.props.autobuild.freeday}
+                      onChange={() => {
+                        // this.props.toggleFreedayAutobuild(this.props.semester);
+                      }}
+                      />
+                    &nbsp;No lessons ending later than:&nbsp;
+                    {/* <AutobuildSelect onChange={(timing) => {
                       this.props.changeAfterTime(this.props.semester, timing);
                     }}
                       name="noAftSelect"
                       placeholder={noAfterString}
                       options={noLessonsAfterOptions}
-                      />
+                      /> */}
+                    <NumericInput min={4}
+                      max={8}
+                      value={4}
+                      size={10}
+                      />&nbsp;p.m.
                   </div>
                 </div>
                 <br />
@@ -427,7 +437,7 @@ export class AutobuildContainer extends Component {
                       onChange={() => {
                         this.props.toggleFreedayAutobuild(this.props.semester);
                       }}
-                    /> I want a free day!
+                    />&nbsp;I want a free day!
                   </div>
                 </div>
               </Collapsible>
