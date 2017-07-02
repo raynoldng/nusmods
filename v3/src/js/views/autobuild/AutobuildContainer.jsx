@@ -228,9 +228,7 @@ export class AutobuildContainer extends Component {
 
     const isHorizontalOrientation = this.props.timetableOrientation === HORIZONTAL;
 
-    const workloadString = this.props.autobuild.workload ?
-                            `Workload selected: ${this.props.autobuild.workload} modules` :
-                            'Select workload (number of modules, default value is 5)';
+    const workloadString = 'Select workload (default value is 5)';
 
     const workloadOptions = [
       { label: '4', value: 4 },
@@ -381,13 +379,19 @@ export class AutobuildContainer extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
+                  Intended Workload (number of modules):
+                </div>
+                <div className="col-md-2">
                   <AutobuildSelect onChange={(selectedWorkload) => {
                     this.props.changeWorkloadAutobuild(this.props.semester, selectedWorkload);
                   }}
+                    value={this.props.autobuild.workload}
+                    name="workloadSelect"
                     placeholder={workloadString}
                     options={workloadOptions}
                     />
                 </div>
+
               </div>
               <br />
               <Collapsible trigger="More Options">
@@ -397,6 +401,7 @@ export class AutobuildContainer extends Component {
                     <AutobuildSelect onChange={(timing) => {
                       this.props.changeBeforeTime(this.props.semester, timing);
                     }}
+                      name="noBefSelect"
                       placeholder={noBeforeString}
                       options={noLessonsBeforeOptions}
                       />
@@ -409,6 +414,7 @@ export class AutobuildContainer extends Component {
                     <AutobuildSelect onChange={(timing) => {
                       this.props.changeAfterTime(this.props.semester, timing);
                     }}
+                      name="noAftSelect"
                       placeholder={noAfterString}
                       options={noLessonsAfterOptions}
                       />
