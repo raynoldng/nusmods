@@ -70,7 +70,7 @@ import AutobuildSelect from 'views/components/AutobuildSelect';
 import {
   PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION,
 } from 'utils/autobuild-notifications';
-
+import Collapsible from 'react-collapsible';
 
 import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
@@ -390,41 +390,41 @@ export class AutobuildContainer extends Component {
                 </div>
               </div>
               <br />
-              Options:
-              <br />
-              <div className="row">
-                <div className="col-md-12">
-                  No lessons starting before:
-                  <AutobuildSelect onChange={(timing) => {
-                    this.props.changeBeforeTime(this.props.semester, timing);
-                  }}
-                    placeholder={noBeforeString}
-                    options={noLessonsBeforeOptions}
-                    />
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="col-md-12">
-                  No lessons ending later than:
-                  <AutobuildSelect onChange={(timing) => {
-                    this.props.changeAfterTime(this.props.semester, timing);
-                  }}
-                    placeholder={noAfterString}
-                    options={noLessonsAfterOptions}
-                    />
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="col-md-12">
-                  <Checkbox checked={this.props.autobuild.freeday}
-                    onChange={() => {
-                      this.props.toggleFreedayAutobuild(this.props.semester);
+              <Collapsible trigger="More Options">
+                <div className="row">
+                  <div className="col-md-12">
+                    No lessons starting before:
+                    <AutobuildSelect onChange={(timing) => {
+                      this.props.changeBeforeTime(this.props.semester, timing);
                     }}
-                  /> I want a free day!
+                      placeholder={noBeforeString}
+                      options={noLessonsBeforeOptions}
+                      />
+                  </div>
                 </div>
-              </div>
+                <br />
+                <div className="row">
+                  <div className="col-md-12">
+                    No lessons ending later than:
+                    <AutobuildSelect onChange={(timing) => {
+                      this.props.changeAfterTime(this.props.semester, timing);
+                    }}
+                      placeholder={noAfterString}
+                      options={noLessonsAfterOptions}
+                      />
+                  </div>
+                </div>
+                <br />
+                <div className="row">
+                  <div className="col-md-12">
+                    <Checkbox checked={this.props.autobuild.freeday}
+                      onChange={() => {
+                        this.props.toggleFreedayAutobuild(this.props.semester);
+                      }}
+                    /> I want a free day!
+                  </div>
+                </div>
+              </Collapsible>
               <br />
               <div className="row">
                 <button type="button" className="btn btn-info"

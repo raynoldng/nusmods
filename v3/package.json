@@ -87,6 +87,7 @@
     "react-addons-shallow-compare": "^15.5.2",
     "react-autobind": "^1.0.6",
     "react-checkbox": "^0.1.3",
+    "react-collapsible": "^1.4.0",
     "react-disqus-thread": "^0.4.0",
     "react-document-title": "^2.0.3",
     "react-dom": "^15.5.4",
