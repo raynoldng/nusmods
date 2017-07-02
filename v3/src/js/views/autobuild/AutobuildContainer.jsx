@@ -24,6 +24,7 @@ import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables'
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
+import NotificationSystem from 'react-notification-system';
 import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
@@ -66,6 +67,10 @@ import {
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 import AutobuildSelect from 'views/components/AutobuildSelect';
+import {
+  PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION,
+} from 'utils/autobuild-notifications';
+
 
 import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
@@ -117,8 +122,15 @@ export class AutobuildContainer extends Component {
 
   timetableDom: Element
 
+  notificationSystem
+
   isHiddenInTimetable(moduleCode: ModuleCode) {
     return this.props.hiddenInTimetable.includes(moduleCode);
+  }
+
+  addNotification(notif) {
+    // event.preventDefault();
+    this.notificationSystem.addNotification(notif);
   }
 
   modifyCell(lesson: ModifiableLesson) {
@@ -272,6 +284,7 @@ export class AutobuildContainer extends Component {
                 ref={r => (this.timetableDom = r && r.timetableDom)}
                 lockedLessons={this.props.autobuild.lockedLessons}
               />
+              <NotificationSystem ref={(c) => { this.notificationSystem = c; }} />
               <br />
             </div>
             <div className={classnames({
@@ -417,7 +430,7 @@ export class AutobuildContainer extends Component {
                 <button type="button" className="btn btn-info"
                   onClick={() => {
                     this.props.storeState(this.props.semester);
-                    this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester);
+                    this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester, this.addNotification);
                     /* storage.saveState({
                       entities: {
                         moduleBank: {
@@ -447,7 +460,7 @@ export class AutobuildContainer extends Component {
                 <button type="button" className="btn btn-failure"
                   onClick={() => {
                     this.props.portTimetableToMain(this.props.semester);
-                    alert('Timetable successfully ported to mainpage!');
+                    this.addNotification(PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION);
                   }}>Port Timetable to Mainpage</button>
               </div>
             </div>

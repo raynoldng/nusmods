@@ -25,6 +25,12 @@ import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import { parseOutput, slotsFromModel } from 'utils/smtSolver';
+import {
+  NOT_ENOUGH_MODULES_NOTIFICATION,
+  UNSAT_NOTIFICATION,
+  ERROR_NOTIFICATION,
+  // TEST_NOTIFICATION,
+} from 'utils/autobuild-notifications';
 import _ from 'lodash';
 
 
@@ -244,14 +250,14 @@ function syncQuery(url) {
 
 export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
 export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
-export function fetchAndSolveQuery(autobuild, semester) {
+export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   // first filter the mods
   const compMods = Object.keys(_.pickBy(autobuild, isCompMod));
   const optMods = Object.keys(_.pickBy(autobuild, isOptMod));
   const workload = autobuild.workload ? autobuild.workload : 5;
   const options = { freeday: autobuild.freeday };
   if (compMods.length + optMods.length < workload) {
-    alert('Please select enough modules to satisfy workload');
+    notificationGenerator(NOT_ENOUGH_MODULES_NOTIFICATION);
     return;
   }
 
@@ -275,11 +281,11 @@ export function fetchAndSolveQuery(autobuild, semester) {
     const obj = {};
 
     if (result === 'ERROR') {
-      alert('Please wait a while before re-sending your request');
+      notificationGenerator(ERROR_NOTIFICATION);
       window.location.reload();
       return {};
     } else if (timetable.length === 0) { // UNSAT
-      alert('Sorry, there is no possible timetable that fulfils your constraints D:');
+      notificationGenerator(UNSAT_NOTIFICATION);
       return {};
     }
 
