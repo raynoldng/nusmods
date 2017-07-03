@@ -1,6 +1,3 @@
-/* eslint no-unused-vars: 0 */
-/* eslint-disable no-console */
-
 import { ADD_MODULE_AUTOBUILD_COMP,
          ADD_MODULE_AUTOBUILD_OPT,
          REMOVE_MODULE_AUTOBUILD,
@@ -49,78 +46,71 @@ function semTimetable(state = {}, action) {
   if (!action.payload) {
     return state;
   }
-  if (action.type === CHANGE_WORKLOAD_AUTOBUILD) {
-    return {
-      ...state,
-      workload: action.payload.workload,
-    };
-  }
-  if (action.type === CHANGE_BEFORE_TIME) {
-    if (action.payload.noLessonsBefore) {
+  switch (action.type) {
+    case CHANGE_WORKLOAD_AUTOBUILD:
       return {
         ...state,
-        noLessonsBefore: action.payload.noLessonsBefore,
+        workload: action.payload.workload,
       };
-    }
-    return _.omit(state, 'noLessonsBefore');
-  }
-  if (action.type === CHANGE_AFTER_TIME) {
-    if (action.payload.noLessonsAfter) {
+    case CHANGE_BEFORE_TIME:
+      if (action.payload.noLessonsBefore) {
+        return {
+          ...state,
+          noLessonsBefore: action.payload.noLessonsBefore,
+        };
+      }
+      return _.omit(state, 'noLessonsBefore');
+    case CHANGE_AFTER_TIME:
+      if (action.payload.noLessonsAfter) {
+        return {
+          ...state,
+          noLessonsAfter: action.payload.noLessonsAfter,
+        };
+      }
+      return _.omit(state, 'noLessonsAfter');
+    case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
       return {
         ...state,
-        noLessonsAfter: action.payload.noLessonsAfter,
+        freeday: !state.freeday,
       };
-    }
-    return _.omit(state, 'noLessonsAfter');
-  }
-  if (action.type === TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD) {
-    return {
-      ...state,
-      freeday: !state.freeday,
-    };
-  }
-  if (action.type === TOGGLE_BEFORE_OPTION) {
-    return {
-      ...state,
-      beforeOption: !state.beforeOption,
-      noLessonsBefore: state.noLessonsBefore ? state.noLessonsBefore : 8,
-    };
-  }
-  if (action.type === TOGGLE_AFTER_OPTION) {
-    return {
-      ...state,
-      afterOption: !state.afterOption,
-      noLessonsAfter: state.noLessonsAfter ? state.noLessonsAfter : 16,
-    };
-  }
-  if (action.type === SWITCH_MODE) {
-    return {
-      ...state,
-      mode: action.payload.mode,
-    };
-  }
-  if (action.type === UPDATE_AUTOBUILD_TIMETABLE) {
-    return {
-      ...state,
-      ...action.payload.state,
-    };
-  }
-  if (action.type === STORE_STATE) {
-    return {
-      ...state,
-      storedState: _.omit(state, 'storedState'),
-    };
-  }
-  if (action.type === LOAD_STATE) {
-    if (state.storedState) {
-      return state.storedState;
-    }
-    return state;
+    case TOGGLE_BEFORE_OPTION:
+      return {
+        ...state,
+        beforeOption: !state.beforeOption,
+        noLessonsBefore: state.noLessonsBefore ? state.noLessonsBefore : 8,
+      };
+    case TOGGLE_AFTER_OPTION:
+      return {
+        ...state,
+        afterOption: !state.afterOption,
+        noLessonsAfter: state.noLessonsAfter ? state.noLessonsAfter : 16,
+      };
+    case SWITCH_MODE:
+      return {
+        ...state,
+        mode: action.payload.mode,
+      };
+    case UPDATE_AUTOBUILD_TIMETABLE:
+      return {
+        ...state,
+        ...action.payload.state,
+      };
+    case STORE_STATE:
+      return {
+        ...state,
+        storedState: _.omit(state, 'storedState'),
+      };
+    case LOAD_STATE:
+      if (state.storedState) {
+        return state.storedState;
+      }
+      return state;
+    default:
+      if (!action.payload.moduleCode) {
+        return state;
+      }
   }
   const moduleCode = action.payload.moduleCode;
-  if (!moduleCode) {
-    return state;
-  }
   switch (action.type) {
     case ADD_MODULE_AUTOBUILD_COMP:
       return {

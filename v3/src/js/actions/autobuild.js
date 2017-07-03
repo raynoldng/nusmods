@@ -241,14 +241,16 @@ function solve(boolector, query) {
 }
 
 function solveQuery(query, boolectorarray) {
-  for (let i = 0; i < boolectorarray.length; i += 1) {
+  /* for (let i = 0; i < boolectorarray.length; i += 1) {
     const outcome1 = solve(boolectorarray[i], query);
     if (outcome1[0] !== 'ERROR') {
       return outcome1;
     }
   }
   const n = boolectorarray.push(createBoolector());
-  return solve(boolectorarray[n - 1], query);
+  return solve(boolectorarray[n - 1], query); */
+  const newBoolector = createBoolector();
+  return solve(newBoolector, query);
 }
 
 function syncQuery(url) {
