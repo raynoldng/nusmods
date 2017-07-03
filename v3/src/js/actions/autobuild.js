@@ -93,6 +93,26 @@ export function toggleFreedayAutobuild(semester: Semester): FSA {
   };
 }
 
+export const TOGGLE_BEFORE_OPTION: string = 'TOGGLE_BEFORE_OPTION';
+export function toggleBeforeOption(semester: Semester): FSA {
+  return {
+    type: TOGGLE_BEFORE_OPTION,
+    payload: {
+      semester,
+    },
+  };
+}
+
+export const TOGGLE_AFTER_OPTION: string = 'TOGGLE_AFTER_OPTION';
+export function toggleAfterOption(semester: Semester): FSA {
+  return {
+    type: TOGGLE_AFTER_OPTION,
+    payload: {
+      semester,
+    },
+  };
+}
+
 export const CHANGE_WORKLOAD_AUTOBUILD: string = 'CHANGE_WORKLOAD_AUTOBUILD';
 export function changeWorkloadAutobuild(semester: Semester, workload): FSA {
   return {
@@ -110,7 +130,7 @@ export function changeBeforeTime(semester: Semester, timing): FSA {
     type: CHANGE_BEFORE_TIME,
     payload: {
       semester,
-      noLessonsBefore: timing.value,
+      noLessonsBefore: timing,
     },
   };
 }
@@ -121,7 +141,7 @@ export function changeAfterTime(semester: Semester, timing): FSA {
     type: CHANGE_AFTER_TIME,
     payload: {
       semester,
-      noLessonsAfter: timing.value,
+      noLessonsAfter: timing,
     },
   };
 }

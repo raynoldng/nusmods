@@ -2,6 +2,7 @@
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 
 import Checkbox from 'react-checkbox';
 import NumericInput from 'react-numeric-input';
@@ -51,6 +52,8 @@ import {
   storeState,
   loadState,
   portTimetableToMain,
+  toggleBeforeOption,
+  toggleAfterOption,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -107,6 +110,8 @@ type Props = {
   storeState: Function,
   loadState: Function,
   portTimetableToMain: Function,
+  toggleBeforeOption: Function,
+  toggleAfterOption: Function,
   // storeState: Object,
 };
 
@@ -239,27 +244,6 @@ export class AutobuildContainer extends Component {
       { label: '8', value: 8 },
       { label: '9', value: 9 },
     ];
-
-    // const noBeforeString = 'Select time (optional)';
-
-    /* const noLessonsBeforeOptions = [
-      { label: 'Nil', value: undefined },
-      { label: '8 a.m.', value: 8 },
-      { label: '9 a.m.', value: 9 },
-      { label: '10 a.m.', value: 10 },
-      { label: '11 a.m.', value: 11 },
-    ]; */
-
-    // const noAfterString = 'Select time (optional)';
-
-    /* const noLessonsAfterOptions = [
-      { label: 'Nil', value: undefined },
-      { label: '4 p.m.', value: 16 },
-      { label: '5 p.m.', value: 17 },
-      { label: '6 p.m.', value: 18 },
-      { label: '7 p.m.', value: 19 },
-      { label: '8 p.m.', value: 20 },
-    ]; */
 
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
@@ -394,15 +378,18 @@ export class AutobuildContainer extends Component {
               <Collapsible trigger="More Options">
                 <div className="row">
                   <div className="col-md-12">
-                    <Checkbox checked={this.props.autobuild.freeday}
+                    <Checkbox checked={this.props.autobuild.beforeOption}
                       onChange={() => {
-                        // this.props.toggleFreedayAutobuild(this.props.semester);
+                        this.props.toggleBeforeOption(this.props.semester);
                       }}
                       />
                     &nbsp;No lessons starting before:&nbsp;
-                    <NumericInput min={8}
+                    <NumericInput onChange={(timing) => {
+                      this.props.changeBeforeTime(this.props.semester, timing);
+                    }}
+                      min={8}
                       max={11}
-                      value={8}
+                      value={this.props.autobuild.noLessonsBefore || 8}
                       size={10}
                       />&nbsp;a.m.
                   </div>
@@ -410,23 +397,19 @@ export class AutobuildContainer extends Component {
                 <br />
                 <div className="row">
                   <div className="col-md-12">
-                    <Checkbox checked={this.props.autobuild.freeday}
+                    <Checkbox checked={this.props.autobuild.afterOption}
                       onChange={() => {
-                        // this.props.toggleFreedayAutobuild(this.props.semester);
+                        this.props.toggleAfterOption(this.props.semester);
                       }}
                       />
                     &nbsp;No lessons ending later than:&nbsp;
-                    {/* <AutobuildSelect onChange={(timing) => {
-                      this.props.changeAfterTime(this.props.semester, timing);
-                    }}
-                      name="noAftSelect"
-                      placeholder={noAfterString}
-                      options={noLessonsAfterOptions}
-                      /> */}
                     <NumericInput min={4}
                       max={8}
-                      value={4}
+                      value={this.props.autobuild.noLessonsAfter ? this.props.autobuild.noLessonsAfter - 12 : 4}
                       size={10}
+                      onChange={(timing) => {
+                        this.props.changeAfterTime(this.props.semester, timing + 12);
+                      }}
                       />&nbsp;p.m.
                   </div>
                 </div>
@@ -447,19 +430,6 @@ export class AutobuildContainer extends Component {
                   onClick={() => {
                     this.props.storeState(this.props.semester);
                     this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester, this.addNotification);
-                    /* storage.saveState({
-                      entities: {
-                        moduleBank: {
-                          modules: this.props.storeState.entities.moduleBank.modules,
-                          moduleList: this.props.storeState.entities.moduleBank.moduleList,
-                        },
-                      },
-                      timetables: this.props.storeState.timetables,
-                      theme: this.props.storeState.theme,
-                      settings: this.props.storeState.settings,
-                      autobuild: this.props.storeState.autobuild,
-                    });
-                    window.location.reload(); */
                   }}>Generate Timetable</button>
                 <span className="divider" style={{ width: '5px',
                   height: 'auto',
@@ -529,6 +499,8 @@ export default connect(
     addModuleAutobuildOpt,
     removeModuleAutobuild,
     toggleFreedayAutobuild,
+    toggleAfterOption,
+    toggleBeforeOption,
     changeWorkloadAutobuild,
     switchMode,
     lockLessonAutobuild,

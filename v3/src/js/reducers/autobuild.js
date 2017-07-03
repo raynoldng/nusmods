@@ -5,6 +5,8 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          ADD_MODULE_AUTOBUILD_OPT,
          REMOVE_MODULE_AUTOBUILD,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
+         TOGGLE_BEFORE_OPTION,
+         TOGGLE_AFTER_OPTION,
          CHANGE_WORKLOAD_AUTOBUILD,
          CHANGE_LESSON_AUTOBUILD,
          LOCK_LESSON_AUTOBUILD,
@@ -75,6 +77,18 @@ function semTimetable(state = {}, action) {
     return {
       ...state,
       freeday: !state.freeday,
+    };
+  }
+  if (action.type === TOGGLE_BEFORE_OPTION) {
+    return {
+      ...state,
+      beforeOption: !state.beforeOption,
+    };
+  }
+  if (action.type === TOGGLE_AFTER_OPTION) {
+    return {
+      ...state,
+      afterOption: !state.afterOption,
     };
   }
   if (action.type === SWITCH_MODE) {
@@ -163,6 +177,8 @@ function autobuild(state = {}, action) {
     case ADD_MODULE_AUTOBUILD_OPT:
     case REMOVE_MODULE_AUTOBUILD:
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
+    case TOGGLE_AFTER_OPTION:
+    case TOGGLE_BEFORE_OPTION:
     case CHANGE_WORKLOAD_AUTOBUILD:
     case CHANGE_LESSON_AUTOBUILD:
     case LOCK_LESSON_AUTOBUILD:
