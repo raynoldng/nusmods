@@ -83,12 +83,14 @@ function semTimetable(state = {}, action) {
     return {
       ...state,
       beforeOption: !state.beforeOption,
+      noLessonsBefore: state.noLessonsBefore ? state.noLessonsBefore : 8,
     };
   }
   if (action.type === TOGGLE_AFTER_OPTION) {
     return {
       ...state,
       afterOption: !state.afterOption,
+      noLessonsAfter: state.noLessonsAfter ? state.noLessonsAfter : 16,
     };
   }
   if (action.type === SWITCH_MODE) {

@@ -281,8 +281,8 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     return;
   }
 
-  if (autobuild.noLessonsAfter) options.noLessonsAfter = autobuild.noLessonsAfter;
-  if (autobuild.noLessonsBefore) options.noLessonsBefore = autobuild.noLessonsBefore;
+  if (autobuild.noLessonsAfter && autobuild.afterOption) options.noLessonsAfter = autobuild.noLessonsAfter;
+  if (autobuild.noLessonsBefore && autobuild.beforeOption) options.noLessonsBefore = autobuild.noLessonsBefore;
 
   const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload, semester);
 
