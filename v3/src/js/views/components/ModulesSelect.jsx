@@ -12,6 +12,7 @@ type Props = {
   moduleList: ModuleSelectList,
   onChange: Function,
   placeholder: string,
+  style?: Object,
 };
 
 class ModulesSelect extends Component {
@@ -34,6 +35,7 @@ class ModulesSelect extends Component {
         filterOptions={filterOptions}
         placeholder={this.props.placeholder || 'Search module'}
         onChange={this.props.onChange}
+        style={this.props.style}
       />
     );
   }

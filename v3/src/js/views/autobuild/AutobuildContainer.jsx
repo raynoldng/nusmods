@@ -338,6 +338,7 @@ export class AutobuildContainer extends Component {
                       this.props.addModuleAutobuildOpt(this.props.semester, moduleCode.value);
                     }}
                     placeholder="Add optional module to timetable"
+                    style={{ '$select-input-border-color': '#fff !important' }}
                   />
                   <br />
                   <TimetableModulesTable modules={
