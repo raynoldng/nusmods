@@ -357,6 +357,7 @@ export class AutobuildContainer extends Component {
                     onRemoveModule={(moduleCode) => {
                       this.props.removeModuleAutobuild(this.props.semester, moduleCode);
                     }}
+                    isOptTable
                   />
                 </div>
               </div>

@@ -23,6 +23,7 @@ type Props = {
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
   horizontalOrientation: boolean,
+  isOptTable?: Boolean,
 };
 
 class TimetableModulesTable extends Component {
@@ -49,6 +50,11 @@ class TimetableModulesTable extends Component {
   props: Props;
 
   render() {
+    let eyeButton;
+    if (!this.props.isOptTable) {
+      eyeButton = module.hiddenInTimetable ?
+        this.showButton(module.ModuleCode) : this.hideButton(module.ModuleCode);
+    }
     return (
       <div className="modules-table row">
         {this.props.modules.length ?
@@ -61,7 +67,7 @@ class TimetableModulesTable extends Component {
                 key={module.ModuleCode}
               >
                 <div className="modules-table-row-inner">
-                  <div className="color-column">
+                  {!this.props.isOptTable ? <div className="color-column">
                     <div className={classnames('modules-table-color', {
                       [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
                       'color-muted': module.hiddenInTimetable,
@@ -78,7 +84,7 @@ class TimetableModulesTable extends Component {
                         this.props.selectModuleColorAutobuild(module.ModuleCode, colorIndex);
                       }} />
                     }
-                  </div>
+                  </div> : <div />}
                   <div className="module-details-column">
                     <Link to={modulePagePath(module.ModuleCode)}>
                       {module.ModuleCode} {module.ModuleTitle}
@@ -94,8 +100,7 @@ class TimetableModulesTable extends Component {
                         }}>
                           Remove
                         </button>
-                        {module.hiddenInTimetable ?
-                          this.showButton(module.ModuleCode) : this.hideButton(module.ModuleCode)}
+                        {eyeButton}
                       </small>
                     </div>
                   </div>
