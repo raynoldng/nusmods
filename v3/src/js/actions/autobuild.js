@@ -102,6 +102,20 @@ export function toggleModuleStatusAutobuild(semester: Semester, moduleCode: Modu
   };
 }
 
+export function optToCompMod(semester: Semester, moduleCode: ModuleCode): FSA {
+  return (dispatch: Function, getState: Function) => {
+    dispatch(removeModuleAutobuild(semester, moduleCode));
+    return dispatch(addModuleAutobuildComp(semester, moduleCode));
+  };
+}
+
+export function compToOptMod(semester: Semester, moduleCode: ModuleCode): FSA {
+  return (dispatch: Function, getState: Function) => {
+    dispatch(removeModuleAutobuild(semester, moduleCode));
+    return dispatch(addModuleAutobuildOpt(semester, moduleCode));
+  };
+}
+
 export const TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD: string = 'TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD';
 export function toggleFreedayAutobuild(semester: Semester): FSA {
   return {
