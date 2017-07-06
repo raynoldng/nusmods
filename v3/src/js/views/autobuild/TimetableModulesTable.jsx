@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 import type { ModuleWithColor, ModuleCode } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
@@ -47,14 +48,25 @@ class TimetableModulesTable extends Component {
     );
   }
 
+  moveToCompButton(moduleCode) {
+    return (
+      <button className="btn-link btn-remove" onClick={() => this.props.hideLessonInTimetable(moduleCode)}>
+        <i className="fa fa-arrow-up" />
+      </button>
+    );
+  }
+
+  moveToOptButton(moduleCode) {
+    return (
+      <button className="btn-link btn-remove" onClick={() => this.props.hideLessonInTimetable(moduleCode)}>
+        <i className="fa fa-arrow-down" />
+      </button>
+    );
+  }
+
   props: Props;
 
   render() {
-    let eyeButton;
-    if (!this.props.isOptTable) {
-      eyeButton = module.hiddenInTimetable ?
-        this.showButton(module.ModuleCode) : this.hideButton(module.ModuleCode);
-    }
     return (
       <div className="modules-table row">
         {this.props.modules.length ?
@@ -100,7 +112,13 @@ class TimetableModulesTable extends Component {
                         }}>
                           Remove
                         </button>
-                        {eyeButton}
+                        {this.props.isOptTable ? undefined :
+                          module.hiddenInTimetable ?
+                            this.showButton(module.ModuleCode) : this.hideButton(module.ModuleCode)
+                        }
+                        {this.props.isOptTable ?
+                            this.moveToCompButton(module.ModuleCode) : this.moveToOptButton(module.ModuleCode)
+                        }
                       </small>
                     </div>
                   </div>
