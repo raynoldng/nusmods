@@ -270,6 +270,12 @@ function syncQuery(url) {
   return ['UNABLE TO GET QUERY STRING', null];
 }
 
+function flatten(arr) {
+  return arr.reduce((flat, toFlatten) => {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+
 export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
 export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
 export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
@@ -285,6 +291,16 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
 
   if (autobuild.noLessonsAfter && autobuild.afterOption) options.noLessonsAfter = autobuild.noLessonsAfter;
   if (autobuild.noLessonsBefore && autobuild.beforeOption) options.noLessonsBefore = autobuild.noLessonsBefore;
+
+  if (autobuild.lockedLessons) {
+    const lockedLessons = Object.keys(autobuild.lockedLessons).map((moduleCode) => {
+      return Object.keys(autobuild.lockedLessons[moduleCode]).map((lessonType) => {
+        return [moduleCode, lessonType, autobuild.lockedLessons[moduleCode][lessonType]].join('_');
+      });
+    });
+
+    options.lockedLessonSlots = flatten(lockedLessons);
+  }
 
   const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload, semester);
 
