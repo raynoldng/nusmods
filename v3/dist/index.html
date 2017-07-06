@@ -5,11 +5,21 @@
   <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1,minimum-scale=1">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
   <link rel="manifest" href="/manifest.json">
-  <script src="https://jgalenson.github.io/research.js/demos/boolector.js"></script>
   <base href="/"/>
-<link href="app.62d8b539d64e03c26a5f.css" rel="stylesheet"></head>
+  <script>
+var request = new XMLHttpRequest();
+request.open('GET', 'http://modsplanner.tk:3001/static/boolector.js', false);
+request.send(null);
+boolector = request.responseText;
+function createBoolector() {
+  eval(boolector)
+  return Module;
+}
+var BoolectorModuleArray = [createBoolector(), createBoolector()];
+  </script>
+<link href="app.b565d54caaa5fb48d2e3.css" rel="stylesheet"></head>
 <body>
   <div id="app"></div>
   
-<script type="text/javascript" src="vendor.00a4df75d7cb21e784d4.js"></script><script type="text/javascript" src="app.62d8b539d64e03c26a5f.js"></script></body>
+<script type="text/javascript" src="vendor.e05b307aab5c22d866ad.js"></script><script type="text/javascript" src="app.b565d54caaa5fb48d2e3.js"></script></body>
 </html>
