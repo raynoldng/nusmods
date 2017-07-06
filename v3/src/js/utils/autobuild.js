@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import _ from 'lodash';
 
 export function isCompMod(obj) {
@@ -15,9 +17,10 @@ export function isOptMod(obj) {
 }
 
 export function autobuildToSemTimetableConfig(autobuild) {
-  return _.mapValues(_.pickBy(autobuild, isCompMod), (obj) => {
-    return _.omit(obj, status);
+  const ret = _.mapValues(_.pickBy(autobuild, isCompMod), (obj) => {
+    return _.omit(obj, 'status');
   });
+  return ret;
 }
 
 export function isLessonLocked(lesson, lockedLessons) {
