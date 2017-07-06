@@ -11,3 +11,4 @@ secrets.json
 npm-debug.log
 *.swp
 tmp/
+v3/.idea
