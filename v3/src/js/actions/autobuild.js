@@ -29,6 +29,8 @@ import {
   NOT_ENOUGH_MODULES_NOTIFICATION,
   UNSAT_NOTIFICATION,
   ERROR_NOTIFICATION,
+  TOO_MANY_COMP_MODULES_NOTIFICATION,
+  SAT_NOTIFICATION,
   // TEST_NOTIFICATION,
 } from 'utils/autobuild-notifications';
 import _ from 'lodash';
@@ -288,6 +290,10 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     notificationGenerator(NOT_ENOUGH_MODULES_NOTIFICATION);
     return;
   }
+  if (compMods.length > workload) {
+    notificationGenerator(TOO_MANY_COMP_MODULES_NOTIFICATION);
+    return;
+  }
 
   if (autobuild.noLessonsAfter && autobuild.afterOption) options.noLessonsAfter = autobuild.noLessonsAfter;
   if (autobuild.noLessonsBefore && autobuild.beforeOption) options.noLessonsBefore = autobuild.noLessonsBefore;
@@ -335,6 +341,7 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
         status: 'comp',
       };
     });
+    notificationGenerator(SAT_NOTIFICATION);
     return dispatch({
       type: UPDATE_AUTOBUILD_TIMETABLE,
       payload: {

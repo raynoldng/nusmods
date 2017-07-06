@@ -73,6 +73,7 @@ import ModulesSelect from 'views/components/ModulesSelect';
 import AutobuildSelect from 'views/components/AutobuildSelect';
 import {
   PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION,
+  LOAD_PREVIOUS_OPTIONS_SUCCESSFUL_NOTIFICATION,
 } from 'utils/autobuild-notifications';
 import Collapsible from 'react-collapsible';
 
@@ -438,6 +439,7 @@ export class AutobuildContainer extends Component {
                 }} />
                 <button type="button" className="btn btn-success"
                   onClick={() => {
+                    this.addNotification(LOAD_PREVIOUS_OPTIONS_SUCCESSFUL_NOTIFICATION);
                     this.props.loadState(this.props.semester);
                   }}>Load Previous Options</button>
                 <span className="divider" style={{ width: '5px',
