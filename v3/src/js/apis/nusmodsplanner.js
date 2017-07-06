@@ -3,7 +3,8 @@
 // @flow
 import type { ModuleCode } from 'types/modules';
 // TODO migrate url to config
-import config from 'config/app-config.json';
+// import config from 'config/app-config.json';
+import config from 'config/app-config-temp.json';
 
 const plannerBaseUrl: string = config.live ? 'http://modsplanner.tk:3001/api' : 'http://localhost:3001/api';
 
