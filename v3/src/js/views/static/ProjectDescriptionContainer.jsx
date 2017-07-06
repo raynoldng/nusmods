@@ -18,14 +18,15 @@ export default function ProjectDescriptionContainer() {
           and Raynold Ng, are using
            <a href="https://github.com/Z3Prover/z3">&nbsp;z3</a>, a theorem prover by Microsoft research to support the
            aforementioned features.</p>
-          <h1>Constraint Solving</h1>
-          <p>We managed to support the following queries:</p>
+          <h2>Constraint Solving</h2>
+          <p>We have managed to support the following queries:</p>
           <ul>
-            <li>Having one or more free days by picking m out n user supplied mods</li>
-            <li>Picking from a set of compulsory mods and optional mods</li>
+            <li>Free Day</li>
+            <li>Compulsory Modules</li>
+            <li>Optional Modules to fill up workload</li>
+            <li>Not have lessons start too early or end too late</li>
+            <li>Lock certain lesson slots</li>
           </ul>
-          <p>A CLI-based prototype is available at{' '}
-            <a href="https://github.com/raynoldng/nusmods-planner">nusmods-planner</a></p>
           {// <img src="http://i.imgur.com/BOl6eP1.png" border="0" alt="perhaps" />
         }
         </div>

@@ -31,9 +31,26 @@ export const PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION = {
       </button>
     </div>
   ),
+  autoDismiss: 10,
 };
 
 export const ERROR_NOTIFICATION = {
   message: 'Please wait a while before resending your request',
   level: 'error',
+};
+
+export const TOO_MANY_COMP_MODULES_NOTIFICATION = {
+  message: 'You have provided more compulsory modules than your intended workload!',
+  level: 'error',
+};
+
+export const SAT_NOTIFICATION = {
+  message: 'Timetable generated successfully! We have moved the modules in your' +
+  'timetable to the compulsory section',
+  level: 'success',
+};
+
+export const LOAD_PREVIOUS_OPTIONS_SUCCESSFUL_NOTIFICATION = {
+  message: 'Previous options loaded!',
+  level: 'success',
 };
