@@ -91,6 +91,17 @@ export function removeModuleAutobuild(semester: Semester, moduleCode: ModuleCode
   };
 }
 
+export const TOGGLE_MODULE_STATUS_AUTOBUILD: string = 'TOGGLE_MODULE_STATUS_AUTOBUILD';
+export function toggleModuleStatusAutobuild(semester: Semester, moduleCode: ModuleCode): FSA {
+  return {
+    type: TOGGLE_MODULE_STATUS_AUTOBUILD,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
 export const TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD: string = 'TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD';
 export function toggleFreedayAutobuild(semester: Semester): FSA {
   return {

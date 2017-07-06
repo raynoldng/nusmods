@@ -14,6 +14,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          UPDATE_AUTOBUILD_TIMETABLE,
          STORE_STATE,
          LOAD_STATE,
+         TOGGLE_MODULE_STATUS_AUTOBUILD,
 } from 'actions/autobuild';
 
 import _ from 'lodash';
@@ -130,6 +131,14 @@ function semTimetable(state = {}, action) {
       };
     case REMOVE_MODULE_AUTOBUILD:
       return _.omit(state, [moduleCode]);
+    case TOGGLE_MODULE_STATUS_AUTOBUILD:
+      return {
+        ...state,
+        [moduleCode]: {
+          ...state[moduleCode],
+          status: state[moduleCode].status === 'comp' ? 'opt' : 'comp',
+        },
+      };
     case CHANGE_LESSON_AUTOBUILD:
       return {
         ...state,
@@ -182,6 +191,7 @@ function autobuild(state = {}, action) {
     case UPDATE_AUTOBUILD_TIMETABLE:
     case STORE_STATE:
     case LOAD_STATE:
+    case TOGGLE_MODULE_STATUS_AUTOBUILD:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),
