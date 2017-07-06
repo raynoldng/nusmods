@@ -124,6 +124,7 @@ function semTimetable(state = {}, action) {
       return {
         ...state,
         [moduleCode]: {
+          ...action.payload.moduleLessonConfig,
           status: 'opt',
         },
       };

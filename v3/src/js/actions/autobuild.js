@@ -58,16 +58,22 @@ export function addModuleAutobuildComp(semester: Semester, moduleCode: ModuleCod
   };
 }
 
-// no need for moduleLessonConfig in optional module
 export const ADD_MODULE_AUTOBUILD_OPT: string = 'ADD_MODULE_AUTOBUILD_OPT';
 export function addModuleAutobuildOpt(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: Function) => {
     return dispatch(loadModule(moduleCode)).then(() => {
+      const module: Module = getState().entities.moduleBank.modules[moduleCode];
+      const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
+      let moduleLessonConfig: ModuleLessonConfig = {};
+      if (lessons) { // Module may not have lessons.
+        moduleLessonConfig = randomModuleLessonConfig(lessons);
+      }
       return dispatch({
         type: ADD_MODULE_AUTOBUILD_OPT,
         payload: {
           semester,
           moduleCode,
+          moduleLessonConfig,
         },
       });
     });
@@ -224,6 +230,28 @@ export function portTimetableToMain(semester: Semester): FSA {
     type: PORT_TIMETABLE,
     payload: {
       semester,
+    },
+  };
+}
+
+export const MOVE_TO_OPT_AUTOBUILD: string = 'MOVE_TO_OPT_AUTOBUILD';
+export function moveToOptAutobuild(semester: Semester, moduleCode: ModuleCode): FSA {
+  return {
+    type: MOVE_TO_OPT_AUTOBUILD,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
+export const MOVE_TO_COMP_AUTOBUILD: string = 'MOVE_TO_COMP_AUTOBUILD';
+export function moveToCompAutobuild(semester: Semester, moduleCode: ModuleCode): FSA {
+  return {
+    type: MOVE_TO_COMP_AUTOBUILD,
+    payload: {
+      semester,
+      moduleCode,
     },
   };
 }
