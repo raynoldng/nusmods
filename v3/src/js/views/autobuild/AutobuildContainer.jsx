@@ -424,6 +424,7 @@ export class AutobuildContainer extends Component {
                         this.props.toggleFreedayAutobuild(this.props.semester);
                       }}
                     />&nbsp;I want a free day!
+                    <Checkbox />Mon &nbsp;
                   </div>
                 </div>
               </Collapsible>
