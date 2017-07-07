@@ -1,7 +1,11 @@
+/* eslint-disable no-console */
+/* eslint-disable no-case-declarations */
+
 import { ADD_MODULE_AUTOBUILD_COMP,
          ADD_MODULE_AUTOBUILD_OPT,
          REMOVE_MODULE_AUTOBUILD,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
+         TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD,
          TOGGLE_BEFORE_OPTION,
          TOGGLE_AFTER_OPTION,
          CHANGE_WORKLOAD_AUTOBUILD,
@@ -42,6 +46,7 @@ function moduleLessonConfig(state = {}, action) {
   }
 }
 
+
 // even though we only need array, using object to maintain type compatibility
 function semTimetable(state = {}, action) {
   if (!action.payload) {
@@ -74,6 +79,15 @@ function semTimetable(state = {}, action) {
         ...state,
         freeday: !state.freeday,
       };
+    case TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD:
+      console.log(state);
+      const newState = {
+        ...state,
+        [action.payload.weekday]: !state[action.payload.weekday],
+      };
+      console.log('new state:');
+      console.log(newState);
+      return newState;
     case TOGGLE_BEFORE_OPTION:
       return {
         ...state,
@@ -179,6 +193,7 @@ function autobuild(state = {}, action) {
     case ADD_MODULE_AUTOBUILD_OPT:
     case REMOVE_MODULE_AUTOBUILD:
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
+    case TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD:
     case TOGGLE_AFTER_OPTION:
     case TOGGLE_BEFORE_OPTION:
     case CHANGE_WORKLOAD_AUTOBUILD:

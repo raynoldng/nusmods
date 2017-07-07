@@ -126,6 +126,17 @@ export function toggleFreedayAutobuild(semester: Semester): FSA {
   };
 }
 
+export const TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD: string = 'TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD';
+export function toggleFreeWeekdayAutobuild(semester: Semester, weekday: String): FSA {
+  return {
+    type: TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD,
+    payload: {
+      semester,
+      weekday,
+    },
+  };
+}
+
 export const TOGGLE_BEFORE_OPTION: string = 'TOGGLE_BEFORE_OPTION';
 export function toggleBeforeOption(semester: Semester): FSA {
   return {
