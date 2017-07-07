@@ -165,7 +165,7 @@ function semTimetable(state = {}, action) {
         ...state,
         lockedLessons: {
           ...state.lockedLessons,
-          [moduleCode]: _.omit(state.lockedLessons.moduleCode, action.payload.lessonType),
+          [moduleCode]: _.omit(state.lockedLessons[moduleCode], action.payload.lessonType),
         },
       };
     default:
