@@ -55,6 +55,7 @@ import {
   portTimetableToMain,
   toggleBeforeOption,
   toggleAfterOption,
+  changeNumFreedays,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -116,6 +117,7 @@ type Props = {
   portTimetableToMain: Function,
   toggleBeforeOption: Function,
   toggleAfterOption: Function,
+  changeNumFreedays: Function,
   // storeState: Object,
 };
 
@@ -427,36 +429,47 @@ export class AutobuildContainer extends Component {
                         this.props.toggleFreedayAutobuild(this.props.semester);
                       }}
                     />&nbsp;I want a free day!&nbsp;
-                    <Checkbox checked={this.props.autobuild.Mon}
+                    <Checkbox checked={this.props.autobuild.Any} disabled={!this.props.autobuild.freeday}
                       onChange={() => {
                         this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Any');
                       }}
-                    />Any &nbsp;
-                    <Checkbox checked={this.props.autobuild.Mon}
+                    /> Any &nbsp;
+                    <Checkbox checked={this.props.autobuild.Mon} disabled={!this.props.autobuild.freeday}
                       onChange={() => {
                         this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Mon');
                       }}
-                    />Mon &nbsp;
-                    <Checkbox checked={this.props.autobuild.Tue}
+                    /> Mon &nbsp;
+                    <Checkbox checked={this.props.autobuild.Tue} disabled={!this.props.autobuild.freeday}
                       onChange={() => {
                         this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Tue');
                       }}
-                    />Tue &nbsp;
-                    <Checkbox checked={this.props.autobuild.Wed}
+                    /> Tue &nbsp;
+                    <Checkbox checked={this.props.autobuild.Wed} disabled={!this.props.autobuild.freeday}
                       onChange={() => {
                         this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Wed');
                       }}
-                    />Wed &nbsp;
-                    <Checkbox checked={this.props.autobuild.Thu}
+                    /> Wed &nbsp;
+                    <Checkbox checked={this.props.autobuild.Thu} disabled={!this.props.autobuild.freeday}
                       onChange={() => {
                         this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Thu');
                       }}
-                    />Thu &nbsp;
-                    <Checkbox checked={this.props.autobuild.Fri}
+                    /> Thu &nbsp;
+                    <Checkbox checked={this.props.autobuild.Fri} disabled={!this.props.autobuild.freeday}
                       onChange={() => {
                         this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Fri');
                       }}
-                    />Fri &nbsp;
+                    /> Fri &nbsp;
+                    <NumericInput onChange={(input) => {
+                      console.log(`new value: ${input}`);
+                      const numWeekdayCheckedBoxes = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+                        .filter((day) => { return this.props.autobuild[day]; }).length;
+                      this.props.changeNumFreedays(this.props.semester, input, numWeekdayCheckedBoxes);
+                    }}
+                      min={['Any', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+                        .filter((day) => { return this.props.autobuild[day]; }).length}
+                      max={4}
+                      value={this.props.autobuild.numFreedays || 0} size={10}
+                    />&nbsp;days
                   </div>
                 </div>
               </Collapsible>
@@ -538,6 +551,7 @@ export default connect(
     removeModuleAutobuild,
     toggleFreedayAutobuild,
     toggleFreeWeekdayAutobuild,
+    changeNumFreedays,
     toggleAfterOption,
     toggleBeforeOption,
     changeWorkloadAutobuild,

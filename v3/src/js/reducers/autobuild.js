@@ -19,6 +19,7 @@ import { ADD_MODULE_AUTOBUILD_COMP,
          STORE_STATE,
          LOAD_STATE,
          TOGGLE_MODULE_STATUS_AUTOBUILD,
+         CHANGE_NUM_FREEDAYS,
 } from 'actions/autobuild';
 
 import _ from 'lodash';
@@ -74,6 +75,18 @@ function semTimetable(state = {}, action) {
         };
       }
       return _.omit(state, 'noLessonsAfter');
+    case CHANGE_NUM_FREEDAYS:
+      if (action.payload.numFreedays > action.payload.numWeekdayCheckedBoxes) {
+        return {
+          ...state,
+          numFreedays: action.payload.numFreedays,
+          Any: true,
+        };
+      }
+      return {
+        ...state,
+        numFreedays: action.payload.numFreedays,
+      };
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
       return {
         ...state,
@@ -206,6 +219,7 @@ function autobuild(state = {}, action) {
     case UPDATE_AUTOBUILD_TIMETABLE:
     case STORE_STATE:
     case LOAD_STATE:
+    case CHANGE_NUM_FREEDAYS:
     case TOGGLE_MODULE_STATUS_AUTOBUILD:
       return {
         ...state,

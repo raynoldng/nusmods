@@ -157,6 +157,19 @@ export function toggleAfterOption(semester: Semester): FSA {
   };
 }
 
+export const CHANGE_NUM_FREEDAYS: string = 'CHANGE_NUM_FREEDAYS';
+export function changeNumFreedays(semester: Semester, numFreedays, numWeekdayCheckedBoxes): FSA {
+  return {
+    type: CHANGE_NUM_FREEDAYS,
+    payload: {
+      semester,
+      numFreedays,
+      numWeekdayCheckedBoxes,
+    },
+  };
+}
+
+
 export const CHANGE_WORKLOAD_AUTOBUILD: string = 'CHANGE_WORKLOAD_AUTOBUILD';
 export function changeWorkloadAutobuild(semester: Semester, workload): FSA {
   return {
@@ -350,6 +363,16 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   const optMods = Object.keys(_.pickBy(autobuild, isOptMod));
   const workload = autobuild.workload ? autobuild.workload : 5;
   const options = { freeday: autobuild.freeday };
+
+  if (options.freeday) {
+    const fullWeedayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
+    const freedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return autobuild[day]; })
+      .map(d => fullWeedayMapping[d]);
+    const numFreedays = autobuild.numFreedays;
+
+    console.log(`freedays: ${freedays}, num: ${numFreedays}`);
+  }
+
   if (compMods.length + optMods.length < workload) {
     notificationGenerator(NOT_ENOUGH_MODULES_NOTIFICATION);
     return;
