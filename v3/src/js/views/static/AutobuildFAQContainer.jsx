@@ -53,54 +53,51 @@ export default function FaqContainer() {
               as non-deterministic (random) as possible. Just spam the Generate Timetable button a few times until
               you get one that suits you.
             </p>
+            <li><p>Allow setting of priorities to options and optional modules</p></li>
+            <p>
+              Once again, we think that the tradeoff between such fine-grained control and performance/usability
+              is not worth it, especially when users can manually do this with what they have now (include the
+              options with highest priority first, and if that fails, replace with the next set of options).
+            </p>
+            <li><p>Show all GE mods from a particular pillar that fit in a timetable</p></li>
+            <p>
+              Although this is a very valid concern, we do not have the computational power to do this, and
+              users who want to clear modules from particular GE pillars are advised to add the most interesting
+              GE modules in the optional section and try to generate a timetable, failing which add the next few
+              most interesting mods and so on.
+            </p>
           </ul>
-          <p>Hello</p>
 
-          <p>Check
-            <a href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp"> CORS </a>
-            for the official timetable data (and see if that module even exists in CORS).
-            Only if it differs from NUSMods, then report it to NUSMods, else,
-            kindly inform your faculty to update the official sources and NUSMods will reflect the updates respectively.
-            If CORS is updated while NUSMods is not,
-            give it a day or two for NUSMods to update it via our automatic scripts.
-            If NUSMods is still not updated after two days, then there might be a problem.
-            Please contact us and we will look into it.
-          </p>
-
-          <h4>
-            On my faculty website, the exam date for PS3242 is different from the one shown on NUSMods.
-            It should be 28th Nov 2016 1pm and not 24th Nov.
-          </h4>
-          <p>Refer to the answer for the previous question.</p>
-
-          <h4>
-            I can add IS1112 into my list of modules but why are there no lectures or tutorial slots after adding them?
-          </h4>
-          <p>Refer to the answer for the previous question.</p>
-
-          <h4>SE5221 cannot be found on your website, can you update your system?</h4>
-          <p>Refer to the answer for the previous question.</p>
-
-          <h4>
-            SC3202 is indicated as only available in Sem 1 in NUSMods but
-            the FASS module list shows it as available in Sem 2 too?
-          </h4>
-          <p>Refer to the answer for the previous question.</p>
-
-          <h4>Why is ... ?</h4>
           <p>
-            Before we hear the rest of your question, refer to the answer for the previous question.
+            In summary, proposed features are sometimes not implemented due to design tradeoffs, lack of computational
+            power, and priorities. If you think you have some feature that is feasible and useful to a large
+            proportion of the student population, feel free to email bayweiheng@gmail.com or raynold.ng24@gmail.com
+            (include NUSMods Auto-build in the subject).
           </p>
+          {/* <h4>Here&#39;s what we <em>have</em> implemented:</h4>
+          <ul>
+            <li><p>Button to switch modules from compulsory to optional and vice versa</p></li>
+            <li><p>Button to remove all compulosry/optional modules at once</p></li>
+            <li><p>Allow specifying of preferred weekdays when selecting free day option</p></li>
+          </ul>*/}
+
+          <h4>Can you go back to the previous color scheme? I liked that one better.</h4>
+          <p>
+            WELL WE LIKE THIS ONE BETTER SO NO. Just kidding, you can change the color scheme in the Settings
+            section.
+          </p>
+
+          <h4>What features are you working on now?</h4>
+          <p>
+            Actually no one ever asked this question so it&#39;s far from an FAQ, but...
+          </p>
+          <ul>
+            <li><p>Introduce new users to the auto-build feature by taking them on a tour</p></li>
+            <li><p>Looking into whether minimisation of travel time is possible</p></li>
+          </ul>
+
 
           <hr />
-
-          <p>
-            Congratulations for making it to the end!
-            If you are still bent on contacting us,
-            you may reach us via email at
-            nusmods&#123;at&#125;googlegroups[dot]com.
-            Please allow up to 90 working days for a reply.
-          </p>
         </div>
       </div>
     </DocumentTitle>

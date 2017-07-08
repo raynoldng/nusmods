@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-plusplus */
 
 // @flow
 import type { ModuleCode } from 'types/modules';
@@ -8,13 +10,20 @@ import config from 'config/app-config-temp.json';
 
 const plannerBaseUrl: string = config.live ? 'http://modsplanner.tk:3001/api' : 'http://localhost:3001/api';
 
+function shuffle(a) {
+  for (let i = a.length; i; i--) {
+    const j = Math.floor(Math.random() * i);
+    [a[i - 1], a[j]] = [a[j], a[i - 1]];
+  }
+}
+
 const NUSModsPlannerApi = {
   plannerBaseUrl: (): string => plannerBaseUrl,
 
   plannerQueryUrl: (semester, options, compModuleCodes: Array<ModuleCode>, optModuleCodes: Array<ModuleCode>,
                     numMods: number): string => {
-    compModuleCodes.sort();
-    optModuleCodes.sort();
+    shuffle(compModuleCodes);
+    shuffle(optModuleCodes);
     const compMods = compModuleCodes.length !== 0 ? compModuleCodes.join(',') : 'null';
     const optMods = optModuleCodes.length !== 0 ? optModuleCodes.join(',') : 'null';
     const opts = options || {};

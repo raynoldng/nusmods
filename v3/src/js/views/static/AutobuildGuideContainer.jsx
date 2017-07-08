@@ -6,6 +6,15 @@ export default function AutobuildGuideContainer() {
     <DocumentTitle title="Auto-build Guide">
       <div className="row">
         <div className="col-md-8 offset-md-1">
+          <h2>Disclaimers:</h2>
+          <ul>
+            <li><p>The auto-build feature does NOT currently check for exam clashes - please
+            do a brief self-check after your timetable is generated</p></li>
+            <li><p>The Generate Timetable button returns a <em>RANDOM</em> timetable that fits
+            the constraints you specify. It does NOT mean there are no other possible ones -
+            If you are not satisfied with the timetable generated, either tighten your constraints
+            or Load Previous Options and try generating a new one.</p></li>
+          </ul>
           <h2>Guide to using Auto-Build Feature</h2>
           <p>Using the Auto-build Feature is easy!
           </p>
