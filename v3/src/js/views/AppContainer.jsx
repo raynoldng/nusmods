@@ -109,6 +109,12 @@ export class AppContainer extends Component {
                     <span className="nm-link-title"> Auto-Build Guide</span>
                   </Link>
                 </li>
+                <li role="presentation" className="nm-nav-item">
+                  <Link className="nav-link" activeClassName="active" to="/autobuild-faq">
+                    <i className="fa fa-fw fa-lg fa-question-circle-o" />
+                    <span className="nm-link-title"> Auto-Build FAQ</span>
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="col-md-10 main-content">

@@ -423,8 +423,13 @@ export class AutobuildContainer extends Component {
                       onChange={() => {
                         this.props.toggleFreedayAutobuild(this.props.semester);
                       }}
-                    />&nbsp;I want a free day!
-                    <Checkbox />Mon &nbsp;
+                    />&nbsp;I want a free day, prefably on these days:&nbsp;
+                    <Checkbox />&nbsp;Mon &nbsp;
+                    <Checkbox />&nbsp;Tue &nbsp;
+                    <Checkbox />&nbsp;Wed &nbsp;
+                    <Checkbox />&nbsp;Thurs &nbsp;
+                    <Checkbox />&nbsp;Fri &nbsp;
+                    <Checkbox />&nbsp;No Preference (default) &nbsp;
                   </div>
                 </div>
               </Collapsible>
