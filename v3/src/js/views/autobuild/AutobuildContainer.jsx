@@ -428,13 +428,21 @@ export class AutobuildContainer extends Component {
                       onChange={() => {
                         this.props.toggleFreedayAutobuild(this.props.semester);
                       }}
-                    />&nbsp;I want a free day, prefably on these days:&nbsp;
-                    <Checkbox />&nbsp;Mon &nbsp;
-                    <Checkbox />&nbsp;Tue &nbsp;
-                    <Checkbox />&nbsp;Wed &nbsp;
-                    <Checkbox />&nbsp;Thurs &nbsp;
-                    <Checkbox />&nbsp;Fri &nbsp;
-                    <Checkbox />&nbsp;No Preference (default) &nbsp;
+                    />&nbsp;I want a free day, preferably on these days:&nbsp;
+                    {/* Should create a component for this, a lot of code duplication */}
+                    <Checkbox checked={this.props.autobuild.Mon} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Mon')} />&nbsp;Mon &nbsp;
+                    <Checkbox checked={this.props.autobuild.Tue} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Tue')} />&nbsp;Tue &nbsp;
+                    <Checkbox checked={this.props.autobuild.Wed} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Wed')} />&nbsp;Wed &nbsp;
+                    <Checkbox checked={this.props.autobuild.Thu} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Thu')} />&nbsp;Thurs &nbsp;
+                    <Checkbox checked={this.props.autobuild.Fri} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Fri')} />&nbsp;Fri &nbsp;
+                    <Checkbox checked={this.props.autobuild.Any} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Any')} />
+                    &nbsp;No Preference (default) &nbsp;
                   </div>
                 </div>
               </Collapsible>
@@ -481,7 +489,6 @@ function mapStateToProps(state) {
   const semester = config.semester;
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
   const autobuild = state.autobuild[semester] || {};
-  // autobuild.freedays = { Mon: false, Tue: false, Wed: false, Thu: false, Fri: false, Any: false };
   const semModuleListAutobuild = getSemModuleSelectList(state.entities.moduleBank, semester, autobuild);
   const semTimetableWithLessonsAutobuild = hydrateSemTimetableWithLessons(
     autobuildToSemTimetableConfig(autobuild), modules, semester);

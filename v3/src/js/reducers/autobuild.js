@@ -75,18 +75,6 @@ function semTimetable(state = {}, action) {
         };
       }
       return _.omit(state, 'noLessonsAfter');
-    case CHANGE_NUM_FREEDAYS:
-      if (action.payload.numFreedays > action.payload.numWeekdayCheckedBoxes) {
-        return {
-          ...state,
-          numFreedays: action.payload.numFreedays,
-          Any: true,
-        };
-      }
-      return {
-        ...state,
-        numFreedays: action.payload.numFreedays,
-      };
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
       return {
         ...state,

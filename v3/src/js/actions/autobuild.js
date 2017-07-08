@@ -362,15 +362,17 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   const compMods = Object.keys(_.pickBy(autobuild, isCompMod));
   const optMods = Object.keys(_.pickBy(autobuild, isOptMod));
   const workload = autobuild.workload ? autobuild.workload : 5;
-  const options = { freeday: autobuild.freeday };
+  const options = {};
 
-  if (options.freeday) {
+  if (autobuild.freeday) {
     const fullWeedayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
     const freedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return autobuild[day]; })
       .map(d => fullWeedayMapping[d]);
-    const numFreedays = autobuild.numFreedays;
+    const numFreedays = freedays.length;
 
     console.log(`freedays: ${freedays}, num: ${numFreedays}`);
+    options.numFreedays = numFreedays;
+    options.freedays = freedays;
   }
 
   if (compMods.length + optMods.length < workload) {
