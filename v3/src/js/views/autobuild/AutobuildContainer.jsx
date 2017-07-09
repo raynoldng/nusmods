@@ -6,7 +6,12 @@
 
 import Checkbox from 'react-checkbox';
 import NumericInput from 'react-numeric-input';
+import Joyride from 'react-joyride';
 // import storage from 'storage';
+import {
+  testStep,
+  testDefaults,
+} from 'utils/autobuild-tour';
 import type {
   ThemeState,
   TimetableOrientation,
@@ -258,6 +263,11 @@ export class AutobuildContainer extends Component {
             this.props.cancelModifyLesson();
           }
         }}>
+          <Joyride ref={(c) => { this.joyRide = c; }}
+            steps={[testStep, testDefaults]}
+            run // or some other boolean for when you want to start it
+            debug
+            />
           <div className="row">
             <div className={classnames('timetable-wrapper', {
               'col-md-12': isHorizontalOrientation,
@@ -383,7 +393,7 @@ export class AutobuildContainer extends Component {
 
               </div>
               <br />
-              <Collapsible trigger="More Options">
+              <Collapsible trigger="More Options" className="moreOptions">
                 <div className="row">
                   <div className="col-md-12">
                     <Checkbox checked={this.props.autobuild.beforeOption}
