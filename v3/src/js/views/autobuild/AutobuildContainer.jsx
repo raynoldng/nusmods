@@ -41,6 +41,7 @@ import {
   addModuleAutobuildOpt,
   removeModuleAutobuild,
   toggleFreedayAutobuild,
+  toggleFreeWeekdayAutobuild,
   changeWorkloadAutobuild,
   changeLessonAutobuild,
   lockLessonAutobuild,
@@ -54,6 +55,7 @@ import {
   portTimetableToMain,
   toggleBeforeOption,
   toggleAfterOption,
+  changeNumFreedays,
 } from 'actions/autobuild';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
@@ -99,7 +101,9 @@ type Props = {
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
   toggleFreedayAutobuild: Function,
+  toggleFreeWeekdayAutobuild: Function,
   autobuild: Object,
+  freedays: Object,
   removeModuleAutobuild: Function,
   changeWorkloadAutobuild: Function,
   semModuleListAutobuild: Array<Object>,
@@ -113,6 +117,7 @@ type Props = {
   portTimetableToMain: Function,
   toggleBeforeOption: Function,
   toggleAfterOption: Function,
+  changeNumFreedays: Function,
   // storeState: Object,
 };
 
@@ -423,13 +428,21 @@ export class AutobuildContainer extends Component {
                       onChange={() => {
                         this.props.toggleFreedayAutobuild(this.props.semester);
                       }}
-                    />&nbsp;I want a free day, prefably on these days:&nbsp;
-                    <Checkbox />&nbsp;Mon &nbsp;
-                    <Checkbox />&nbsp;Tue &nbsp;
-                    <Checkbox />&nbsp;Wed &nbsp;
-                    <Checkbox />&nbsp;Thurs &nbsp;
-                    <Checkbox />&nbsp;Fri &nbsp;
-                    <Checkbox />&nbsp;No Preference (default) &nbsp;
+                    />&nbsp;I want a free day, preferably on these days:&nbsp;
+                    {/* Should create a component for this, a lot of code duplication */}
+                    <Checkbox checked={this.props.autobuild.Mon} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Mon')} />&nbsp;Mon &nbsp;
+                    <Checkbox checked={this.props.autobuild.Tue} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Tue')} />&nbsp;Tue &nbsp;
+                    <Checkbox checked={this.props.autobuild.Wed} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Wed')} />&nbsp;Wed &nbsp;
+                    <Checkbox checked={this.props.autobuild.Thu} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Thu')} />&nbsp;Thurs &nbsp;
+                    <Checkbox checked={this.props.autobuild.Fri} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Fri')} />&nbsp;Fri &nbsp;
+                    <Checkbox checked={this.props.autobuild.Any} onChange={() =>
+                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Any')} />
+                    &nbsp;No Preference (default) &nbsp;
                   </div>
                 </div>
               </Collapsible>
@@ -509,6 +522,8 @@ export default connect(
     addModuleAutobuildOpt,
     removeModuleAutobuild,
     toggleFreedayAutobuild,
+    toggleFreeWeekdayAutobuild,
+    changeNumFreedays,
     toggleAfterOption,
     toggleBeforeOption,
     changeWorkloadAutobuild,
