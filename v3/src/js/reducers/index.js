@@ -13,6 +13,7 @@ import app from './app';
 import theme from './theme';
 import settings from './settings';
 import autobuild from './autobuild';
+import joyride from './joyride';
 
 type State = {
   entities: Object,
@@ -37,5 +38,6 @@ export default function (state: State = defaultState, action: FSA) {
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
     autobuild: autobuild(state.autobuild, action),
+    joyride: joyride(state.joyride, action),
   };
 }

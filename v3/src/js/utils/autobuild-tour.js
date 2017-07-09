@@ -2,7 +2,7 @@
 export const testStep = {
   title: 'First Step',
   text: 'Start using the <strong>joyride</strong>',
-  selector: '.moreOptions',
+  selector: '#moreOptions',
   position: 'bottom-left',
   type: 'hover',
   isFixed: true,
@@ -48,6 +48,13 @@ export const testStep = {
 export const testDefaults = {
   title: 'Second Step',
   text: 'Testing Default Options',
-  selector: '.moreOptions',
+  selector: '#workloadSelect',
   position: 'bottom-left',
 };
+
+const allSteps = [
+  testStep,
+  testDefaults,
+];
+
+export default allSteps;
