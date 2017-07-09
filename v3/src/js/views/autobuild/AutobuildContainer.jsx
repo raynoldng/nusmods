@@ -41,25 +41,19 @@ import {
   addModuleAutobuildComp,
   addModuleAutobuildOpt,
   removeModuleAutobuild,
-  toggleFreedayAutobuild,
-  toggleFreeWeekdayAutobuild,
   changeWorkloadAutobuild,
   changeLessonAutobuild,
   lockLessonAutobuild,
   unlockLessonAutobuild,
   switchMode,
   fetchAndSolveQuery,
-  changeBeforeTime,
-  changeAfterTime,
   storeState,
   loadState,
   portTimetableToMain,
-  toggleBeforeOption,
-  toggleAfterOption,
   changeNumFreedays,
 } from 'actions/autobuild';
 import {
-  addSteps,
+  addStep,
   startJoyride,
 } from 'actions/joyride';
 import { toggleTimetableOrientation } from 'actions/theme';
@@ -87,7 +81,7 @@ import Collapsible from 'react-collapsible';
 
 import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
-
+import MoreOptions from './MoreOptions';
 
 type Props = {
   semester: number,
@@ -106,8 +100,6 @@ type Props = {
   toggleTimetableOrientation: Function,
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
-  toggleFreedayAutobuild: Function,
-  toggleFreeWeekdayAutobuild: Function,
   autobuild: Object,
   freedays: Object,
   removeModuleAutobuild: Function,
@@ -116,17 +108,13 @@ type Props = {
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
   switchMode: Function,
   fetchAndSolveQuery: Function,
-  changeBeforeTime: Function,
-  changeAfterTime: Function,
   storeState: Function,
   loadState: Function,
   portTimetableToMain: Function,
-  toggleBeforeOption: Function,
-  toggleAfterOption: Function,
   changeNumFreedays: Function,
 
   joyride: Object,
-  addSteps: Function,
+  addStep: Function,
   startJoyride: Function,
   // storeState: Object,
 };
@@ -140,7 +128,7 @@ export class AutobuildContainer extends Component {
 
   /* componentDidMount() {
     setTimeout(() => {
-      this.props.addSteps(allSteps);
+      this.props.addStep(allSteps);
     }, 500);
   } */
 
@@ -415,69 +403,7 @@ export class AutobuildContainer extends Component {
 
               </div>
               <br />
-              <Collapsible trigger="More Options" id="moreOptions">
-                <div className="row">
-                  <div className="col-md-12">
-                    <Checkbox checked={this.props.autobuild.beforeOption}
-                      onChange={() => {
-                        this.props.toggleBeforeOption(this.props.semester);
-                      }}
-                      />
-                    &nbsp;No lessons starting before:&nbsp;
-                    <NumericInput onChange={(timing) => {
-                      this.props.changeBeforeTime(this.props.semester, timing);
-                    }}
-                      min={8}
-                      max={11}
-                      value={this.props.autobuild.noLessonsBefore || 8}
-                      size={10}
-                      />&nbsp;a.m.
-                  </div>
-                </div>
-                <br />
-                <div className="row">
-                  <div className="col-md-12">
-                    <Checkbox checked={this.props.autobuild.afterOption}
-                      onChange={() => {
-                        this.props.toggleAfterOption(this.props.semester);
-                      }}
-                      />
-                    &nbsp;No lessons ending later than:&nbsp;
-                    <NumericInput min={4}
-                      max={8}
-                      value={this.props.autobuild.noLessonsAfter ? this.props.autobuild.noLessonsAfter - 12 : 4}
-                      size={10}
-                      onChange={(timing) => {
-                        this.props.changeAfterTime(this.props.semester, timing + 12);
-                      }}
-                      />&nbsp;p.m.
-                  </div>
-                </div>
-                <br />
-                <div className="row">
-                  <div className="col-md-12">
-                    <Checkbox checked={this.props.autobuild.freeday}
-                      onChange={() => {
-                        this.props.toggleFreedayAutobuild(this.props.semester);
-                      }}
-                    />&nbsp;I want a free day, preferably on these days:&nbsp;
-                    {/* Should create a component for this, a lot of code duplication */}
-                    <Checkbox checked={this.props.autobuild.Mon} onChange={() =>
-                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Mon')} />&nbsp;Mon &nbsp;
-                    <Checkbox checked={this.props.autobuild.Tue} onChange={() =>
-                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Tue')} />&nbsp;Tue &nbsp;
-                    <Checkbox checked={this.props.autobuild.Wed} onChange={() =>
-                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Wed')} />&nbsp;Wed &nbsp;
-                    <Checkbox checked={this.props.autobuild.Thu} onChange={() =>
-                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Thu')} />&nbsp;Thurs &nbsp;
-                    <Checkbox checked={this.props.autobuild.Fri} onChange={() =>
-                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Fri')} />&nbsp;Fri &nbsp;
-                    <Checkbox checked={this.props.autobuild.Any} onChange={() =>
-                      this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Any')} />
-                    &nbsp;No Preference (default) &nbsp;
-                  </div>
-                </div>
-              </Collapsible>
+              <MoreOptions />
               <br />
               <div className="row">
                 <button type="button" className="btn btn-info"
@@ -555,23 +481,17 @@ export default connect(
     addModuleAutobuildComp,
     addModuleAutobuildOpt,
     removeModuleAutobuild,
-    toggleFreedayAutobuild,
-    toggleFreeWeekdayAutobuild,
     changeNumFreedays,
-    toggleAfterOption,
-    toggleBeforeOption,
     changeWorkloadAutobuild,
     switchMode,
     lockLessonAutobuild,
     unlockLessonAutobuild,
     fetchAndSolveQuery,
-    changeAfterTime,
-    changeBeforeTime,
     storeState,
     loadState,
     portTimetableToMain,
 
-    addSteps,
+    addStep,
     startJoyride,
   },
 )(AutobuildContainer);
