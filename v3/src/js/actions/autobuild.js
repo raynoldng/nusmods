@@ -19,7 +19,12 @@ RawLesson,
 // Lesson,
 } from 'types/modules';
 
-import { lessonSlotStringToObject, isCompMod, isOptMod } from 'utils/autobuild';
+import {
+  lessonSlotStringToObject,
+  isCompMod,
+  isOptMod,
+  isOptModWithoutLessons,
+} from 'utils/autobuild';
 
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
@@ -394,6 +399,18 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
         status: 'comp',
       };
     });
+
+    const curTimetableLength = Object.keys(obj).length;
+    if (curTimetableLength !== workload) {
+      const optModsWithoutLessons = Object.keys(_.pickBy(autobuild, isOptModWithoutLessons));
+      console.log(optModsWithoutLessons);
+      for (let i = 0; i < workload - curTimetableLength; i += 1) {
+        obj[optModsWithoutLessons[i]] = {
+          status: 'comp',
+        };
+      }
+    }
+
     notificationGenerator(SAT_NOTIFICATION);
     return dispatch({
       type: UPDATE_AUTOBUILD_TIMETABLE,

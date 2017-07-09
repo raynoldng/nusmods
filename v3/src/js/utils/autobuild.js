@@ -16,6 +16,13 @@ export function isOptMod(obj) {
   return false;
 }
 
+export function isOptModWithoutLessons(obj) {
+  if (obj) {
+    return _.isEqual(obj, { status: 'opt' });
+  }
+  return false;
+}
+
 export function autobuildToSemTimetableConfig(autobuild) {
   const ret = _.mapValues(_.pickBy(autobuild, isCompMod), (obj) => {
     return _.omit(obj, 'status');
