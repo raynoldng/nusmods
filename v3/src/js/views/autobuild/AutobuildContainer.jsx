@@ -82,6 +82,7 @@ import Collapsible from 'react-collapsible';
 import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
 import MoreOptions from './MoreOptions';
+import ModulesContainer from './ModulesContainer';
 
 type Props = {
   semester: number,
@@ -330,24 +331,22 @@ export class AutobuildContainer extends Component {
                 </button>
               </div>
               <div className="row">
-                <div className="col-md-12">
-                  <ModulesSelect moduleList={this.props.semModuleListAutobuild}
+                <div className="col-md-6">
+                  <ModulesContainer moduleList={this.props.semModuleListAutobuild}
                     onChange={(moduleCode) => {
                       this.props.addModuleAutobuildComp(this.props.semester, moduleCode.value);
                     }}
                     placeholder="Add compuslory module to timetable"
-                  />
-                  <br />
-                  <TimetableModulesTable modules={
-                    Object.keys(_.pickBy(this.props.autobuild, isCompMod)).sort((a, b) => {
-                      return a.localeCompare(b);
-                    }).map((moduleCode) => {
-                      const module = this.props.modules[moduleCode] || {};
-                      // Inject color index.
-                      module.colorIndex = this.props.autobuildcolors[moduleCode];
-                      module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                      return module;
-                    })}
+                    modules={
+                      Object.keys(_.pickBy(this.props.autobuild, isCompMod)).sort((a, b) => {
+                        return a.localeCompare(b);
+                      }).map((moduleCode) => {
+                        const module = this.props.modules[moduleCode] || {};
+                        // Inject color index.
+                        module.colorIndex = this.props.autobuildcolors[moduleCode];
+                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
+                        return module;
+                      })}
                     horizontalOrientation={isHorizontalOrientation}
                     semester={this.props.semester}
                     onRemoveModule={(moduleCode) => {
@@ -355,27 +354,22 @@ export class AutobuildContainer extends Component {
                     }}
                   />
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  <ModulesSelect moduleList={this.props.semModuleListAutobuild}
+                <div className="col-md-6">
+                  <ModulesContainer moduleList={this.props.semModuleListAutobuild}
                     onChange={(moduleCode) => {
                       this.props.addModuleAutobuildOpt(this.props.semester, moduleCode.value);
                     }}
                     placeholder="Add optional module to timetable"
-                    style={{ '$select-input-border-color': '#fff !important' }}
-                  />
-                  <br />
-                  <TimetableModulesTable modules={
-                    Object.keys(_.pickBy(this.props.autobuild, isOptMod)).sort((a, b) => {
-                      return a.localeCompare(b);
-                    }).map((moduleCode) => {
-                      const module = this.props.modules[moduleCode] || {};
-                      // Inject color index.
-                      module.colorIndex = this.props.colors[moduleCode];
-                      module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                      return module;
-                    })}
+                    modules={
+                      Object.keys(_.pickBy(this.props.autobuild, isOptMod)).sort((a, b) => {
+                        return a.localeCompare(b);
+                      }).map((moduleCode) => {
+                        const module = this.props.modules[moduleCode] || {};
+                        // Inject color index.
+                        module.colorIndex = this.props.colors[moduleCode];
+                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
+                        return module;
+                      })}
                     horizontalOrientation={isHorizontalOrientation}
                     semester={this.props.semester}
                     onRemoveModule={(moduleCode) => {
