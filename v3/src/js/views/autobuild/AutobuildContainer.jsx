@@ -63,7 +63,10 @@ import { isCompMod,
          autobuildToSemTimetableConfig,
          isLessonLocked,
 } from 'utils/autobuild';
-// import allSteps from 'utils/autobuild-tour';
+import {
+  testStep,
+  testDefaults,
+} from 'utils/autobuild-tour';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -269,7 +272,8 @@ export class AutobuildContainer extends Component {
         }}>
           <Joyride ref={(c) => { this.joyride = c; }}
             steps={this.props.joyride.steps || []}
-            run={this.props.joyride.isRunning}// or some other boolean for when you want to start it
+            // run={this.props.joyride.isRunning}// or some other boolean for when you want to start it
+            run
             debug
             />
           <div className="row">
@@ -352,6 +356,9 @@ export class AutobuildContainer extends Component {
                     onRemoveModule={(moduleCode) => {
                       this.props.removeModuleAutobuild(this.props.semester, moduleCode);
                     }}
+                    id="compMods"
+                    addStep={this.props.addStep}
+                    step={testStep}
                   />
                 </div>
                 <div className="col-md-6">
@@ -397,7 +404,10 @@ export class AutobuildContainer extends Component {
 
               </div>
               <br />
-              <MoreOptions />
+              <MoreOptions step={testDefaults}
+                addStep={this.props.addStep}
+                id="moreOptions"
+              />
               <br />
               <div className="row">
                 <button type="button" className="btn btn-info"

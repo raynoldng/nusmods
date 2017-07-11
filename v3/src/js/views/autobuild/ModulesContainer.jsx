@@ -15,6 +15,8 @@ type Props = {
   semester: Number,
   onRemoveModule: Function,
   isOptTable?: Boolean,
+  step?: Object,
+  addStep: Function,
 };
 
 export default class extends Component {
@@ -23,11 +25,14 @@ export default class extends Component {
     super(props);
     autobind(this);
   }
-  /* componentDidMount() {
-    setTimeout(() => {
-      this.props.addSteps(allSteps);
-    }, 500);
-  } */
+
+  componentDidMount() {
+    if (this.props.step) {
+      setTimeout(() => {
+        this.props.addStep(this.props.step);
+      }, 500);
+    }
+  }
 
   render() {
     return (

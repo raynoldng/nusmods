@@ -16,7 +16,7 @@ function joyride(state = {}, action) {
     case ADD_STEP:
       return {
         ...state,
-        steps: state.steps ? state.steps.push(action.payload.step) : [action.payload.step],
+        steps: state.steps ? state.steps.concat(action.payload.step) : action.payload.step,
       };
     default:
       return state;

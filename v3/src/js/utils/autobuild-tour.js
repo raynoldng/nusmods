@@ -2,7 +2,7 @@
 export const testStep = {
   title: 'First Step',
   text: 'Start using the <strong>joyride</strong>',
-  selector: '#moreOptions',
+  selector: '#compMods',
   position: 'bottom-left',
   type: 'hover',
   isFixed: true,
@@ -48,7 +48,7 @@ export const testStep = {
 export const testDefaults = {
   title: 'Second Step',
   text: 'Testing Default Options',
-  selector: '#workloadSelect',
+  selector: '#moreOptions',
   position: 'bottom-left',
 };
 
