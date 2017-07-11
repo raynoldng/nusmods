@@ -34,6 +34,7 @@ type Props = {
   semester: Number,
   step?: Object,
   addStep: Function,
+  m_id?: String,
 };
 
 class MoreOptions extends Component {
@@ -53,7 +54,7 @@ class MoreOptions extends Component {
 
   render() {
     return (
-      <Collapsible trigger="More Options" id="moreOptions">
+      <Collapsible trigger="More Options" id={this.props.m_id}>
         <div className="row">
           <div className="col-md-12">
             <Checkbox checked={this.props.autobuild.beforeOption}

@@ -272,8 +272,8 @@ export class AutobuildContainer extends Component {
         }}>
           <Joyride ref={(c) => { this.joyride = c; }}
             steps={this.props.joyride.steps || []}
-            // run={this.props.joyride.isRunning}// or some other boolean for when you want to start it
-            run
+            run={this.props.joyride.isRunning} // or some other boolean for when you want to start it
+            // run
             debug
             />
           <div className="row">
@@ -356,7 +356,7 @@ export class AutobuildContainer extends Component {
                     onRemoveModule={(moduleCode) => {
                       this.props.removeModuleAutobuild(this.props.semester, moduleCode);
                     }}
-                    id="compMods"
+                    m_id="compMods"
                     addStep={this.props.addStep}
                     step={testStep}
                   />
@@ -383,6 +383,7 @@ export class AutobuildContainer extends Component {
                       this.props.removeModuleAutobuild(this.props.semester, moduleCode);
                     }}
                     isOptTable
+                    m_id="optMods"
                   />
                 </div>
               </div>
@@ -406,7 +407,7 @@ export class AutobuildContainer extends Component {
               <br />
               <MoreOptions step={testDefaults}
                 addStep={this.props.addStep}
-                id="moreOptions"
+                m_id="moreOptions"
               />
               <br />
               <div className="row">

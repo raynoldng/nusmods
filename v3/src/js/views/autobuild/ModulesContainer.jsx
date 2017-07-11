@@ -17,6 +17,7 @@ type Props = {
   isOptTable?: Boolean,
   step?: Object,
   addStep: Function,
+  m_id?: String
 };
 
 export default class extends Component {
@@ -36,7 +37,7 @@ export default class extends Component {
 
   render() {
     return (
-      <div>
+      <div id={this.props.m_id}>
         <ModulesSelect moduleList={this.props.moduleList}
           onChange={this.props.onChange}
           placeholder={this.props.placeholder}
