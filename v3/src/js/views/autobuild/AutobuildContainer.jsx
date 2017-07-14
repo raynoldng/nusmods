@@ -263,11 +263,7 @@ export class AutobuildContainer extends Component {
 
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
-        <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
-          if (this.props.activeLesson) {
-            this.props.cancelModifyLesson();
-          }
-        }}>
+        <div>
           <Joyride ref={(c) => { this.joyride = c; }}
             steps={this.props.joyride.steps || []}
             run={this.props.joyride.isRunning} // or some other boolean for when you want to start it
@@ -275,164 +271,170 @@ export class AutobuildContainer extends Component {
             showStepsProgress
             type="continuous"
             debug
-            />
-          <div className="row">
-            <div className={classnames('timetable-wrapper', {
-              'col-md-12': isHorizontalOrientation,
-              'col-md-8': !isHorizontalOrientation,
-            })}>
-              <Timetable lessons={arrangedLessonsWithModifiableFlag}
-                horizontalOrientation={isHorizontalOrientation}
-                onModifyCell={modifyFunction}
-                ref={r => (this.timetableDom = r && r.timetableDom)}
-                lockedLessons={this.props.autobuild.lockedLessons}
-                id="timetable"
-              />
-              <NotificationSystem ref={(c) => { this.notificationSystem = c; }} />
-              <br />
-            </div>
-            <div className={classnames({
-              'col-md-12': isHorizontalOrientation,
-              'col-md-4': !isHorizontalOrientation,
-            })}>
-              <div className="timetable-action-row text-xs-right">
-                <button type="button"
-                  className={classnames('btn', { 'btn-outline-primary': !isNormalMode }, {
-                    'btn-primary': isNormalMode,
-                  })}
-                  onClick={() => this.props.switchMode(this.props.semester, '')}
-                >
-                  Normal Mode
-                </button>
-                <button type="button"
-                  className={classnames('btn', { 'btn-outline-primary': !isLockingMode }, {
-                    'btn-primary': isLockingMode,
-                  })}
-                  onClick={() => this.props.switchMode(this.props.semester, 'lock')}
-                >
-                  Lock Mode
-                </button>
-                <button type="button"
-                  className={classnames('btn', { 'btn-outline-primary': !isUnlockingMode }, {
-                    'btn-primary': isUnlockingMode,
-                  })}
-                  onClick={() => this.props.switchMode(this.props.semester, 'unlock')}
-                >
-                  Unlock Mode
-                </button>
-                {/* <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={this.props.startJoyride}
-                >
-                  Start Tour
-                </button>*/}
-                <button type="button"
-                  className="btn btn-outline-primary"
-                  onClick={this.props.toggleTimetableOrientation}
-                >
-                  <i className={classnames('fa', 'fa-exchange', {
-                    'fa-rotate-90': isHorizontalOrientation,
-                  })} />
-                </button>
+          />
+          <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
+            if (this.props.activeLesson) {
+              this.props.cancelModifyLesson();
+            }
+          }}>
+            <div className="row">
+              <div className={classnames('timetable-wrapper', {
+                'col-md-12': isHorizontalOrientation,
+                'col-md-8': !isHorizontalOrientation,
+              })}>
+                <Timetable lessons={arrangedLessonsWithModifiableFlag}
+                  horizontalOrientation={isHorizontalOrientation}
+                  onModifyCell={modifyFunction}
+                  ref={r => (this.timetableDom = r && r.timetableDom)}
+                  lockedLessons={this.props.autobuild.lockedLessons}
+                  id="timetable"
+                />
+                <NotificationSystem ref={(c) => { this.notificationSystem = c; }} />
+                <br />
               </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <ModulesContainer moduleList={this.props.semModuleListAutobuild}
-                    onChange={(moduleCode) => {
-                      this.props.addModuleAutobuildComp(this.props.semester, moduleCode.value);
-                    }}
-                    placeholder="Add compuslory module to timetable"
-                    modules={
-                      Object.keys(_.pickBy(this.props.autobuild, isCompMod)).sort((a, b) => {
-                        return a.localeCompare(b);
-                      }).map((moduleCode) => {
-                        const module = this.props.modules[moduleCode] || {};
-                        // Inject color index.
-                        module.colorIndex = this.props.autobuildcolors[moduleCode];
-                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                        return module;
-                      })}
-                    horizontalOrientation={isHorizontalOrientation}
-                    semester={this.props.semester}
-                    onRemoveModule={(moduleCode) => {
-                      this.props.removeModuleAutobuild(this.props.semester, moduleCode);
-                    }}
-                    m_id="compMods"
-                    addStep={this.props.addStep}
-                  />
+              <div className={classnames({
+                'col-md-12': isHorizontalOrientation,
+                'col-md-4': !isHorizontalOrientation,
+              })}>
+                <div className="timetable-action-row text-xs-right">
+                  <button type="button"
+                    className={classnames('btn', { 'btn-outline-primary': !isNormalMode }, {
+                      'btn-primary': isNormalMode,
+                    })}
+                    onClick={() => this.props.switchMode(this.props.semester, '')}
+                  >
+                    Normal Mode
+                  </button>
+                  <button type="button"
+                    className={classnames('btn', { 'btn-outline-primary': !isLockingMode }, {
+                      'btn-primary': isLockingMode,
+                    })}
+                    onClick={() => this.props.switchMode(this.props.semester, 'lock')}
+                  >
+                    Lock Mode
+                  </button>
+                  <button type="button"
+                    className={classnames('btn', { 'btn-outline-primary': !isUnlockingMode }, {
+                      'btn-primary': isUnlockingMode,
+                    })}
+                    onClick={() => this.props.switchMode(this.props.semester, 'unlock')}
+                  >
+                    Unlock Mode
+                  </button>
+                  {/* <button type="button"
+                    className="btn btn-outline-primary"
+                    onClick={this.props.startJoyride}
+                  >
+                    Start Tour
+                  </button>*/}
+                  <button type="button"
+                    className="btn btn-outline-primary"
+                    onClick={this.props.toggleTimetableOrientation}
+                  >
+                    <i className={classnames('fa', 'fa-exchange', {
+                      'fa-rotate-90': isHorizontalOrientation,
+                    })} />
+                  </button>
                 </div>
-                <div className="col-md-6">
-                  <ModulesContainer moduleList={this.props.semModuleListAutobuild}
-                    onChange={(moduleCode) => {
-                      this.props.addModuleAutobuildOpt(this.props.semester, moduleCode.value);
-                    }}
-                    placeholder="Add optional module to timetable"
-                    modules={
-                      Object.keys(_.pickBy(this.props.autobuild, isOptMod)).sort((a, b) => {
-                        return a.localeCompare(b);
-                      }).map((moduleCode) => {
-                        const module = this.props.modules[moduleCode] || {};
-                        // Inject color index.
-                        module.colorIndex = this.props.colors[moduleCode];
-                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                        return module;
-                      })}
-                    horizontalOrientation={isHorizontalOrientation}
-                    semester={this.props.semester}
-                    onRemoveModule={(moduleCode) => {
-                      this.props.removeModuleAutobuild(this.props.semester, moduleCode);
-                    }}
-                    isOptTable
-                    m_id="optMods"
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  Intended Workload (number of modules):
-                </div>
-                <div className="col-md-2">
-                  <AutobuildSelect onChange={(selectedWorkload) => {
-                    this.props.changeWorkloadAutobuild(this.props.semester, selectedWorkload);
-                  }}
-                    value={this.props.autobuild.workload}
-                    name="workloadSelect"
-                    placeholder={workloadString}
-                    options={workloadOptions}
-                    id="workloadSelect"
+                <div className="row">
+                  <div className="col-md-6">
+                    <ModulesContainer moduleList={this.props.semModuleListAutobuild}
+                      onChange={(moduleCode) => {
+                        this.props.addModuleAutobuildComp(this.props.semester, moduleCode.value);
+                      }}
+                      placeholder="Add compuslory module to timetable"
+                      modules={
+                        Object.keys(_.pickBy(this.props.autobuild, isCompMod)).sort((a, b) => {
+                          return a.localeCompare(b);
+                        }).map((moduleCode) => {
+                          const module = this.props.modules[moduleCode] || {};
+                          // Inject color index.
+                          module.colorIndex = this.props.autobuildcolors[moduleCode];
+                          module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
+                          return module;
+                        })}
+                      horizontalOrientation={isHorizontalOrientation}
+                      semester={this.props.semester}
+                      onRemoveModule={(moduleCode) => {
+                        this.props.removeModuleAutobuild(this.props.semester, moduleCode);
+                      }}
+                      m_id="compMods"
+                      addStep={this.props.addStep}
                     />
+                  </div>
+                  <div className="col-md-6">
+                    <ModulesContainer moduleList={this.props.semModuleListAutobuild}
+                      onChange={(moduleCode) => {
+                        this.props.addModuleAutobuildOpt(this.props.semester, moduleCode.value);
+                      }}
+                      placeholder="Add optional module to timetable"
+                      modules={
+                        Object.keys(_.pickBy(this.props.autobuild, isOptMod)).sort((a, b) => {
+                          return a.localeCompare(b);
+                        }).map((moduleCode) => {
+                          const module = this.props.modules[moduleCode] || {};
+                          // Inject color index.
+                          module.colorIndex = this.props.colors[moduleCode];
+                          module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
+                          return module;
+                        })}
+                      horizontalOrientation={isHorizontalOrientation}
+                      semester={this.props.semester}
+                      onRemoveModule={(moduleCode) => {
+                        this.props.removeModuleAutobuild(this.props.semester, moduleCode);
+                      }}
+                      isOptTable
+                      m_id="optMods"
+                    />
+                  </div>
                 </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    Intended Workload (number of modules):
+                  </div>
+                  <div className="col-md-2">
+                    <AutobuildSelect onChange={(selectedWorkload) => {
+                      this.props.changeWorkloadAutobuild(this.props.semester, selectedWorkload);
+                    }}
+                      value={this.props.autobuild.workload}
+                      name="workloadSelect"
+                      placeholder={workloadString}
+                      options={workloadOptions}
+                      id="workloadSelect"
+                      />
+                  </div>
 
-              </div>
-              <br />
-              <MoreOptions addStep={this.props.addStep}
-                m_id="moreOptions"
-              />
-              <br />
-              <div className="row">
-                <button type="button" className="btn btn-info"
-                  onClick={() => {
-                    this.props.storeState(this.props.semester);
-                    this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester, this.addNotification);
-                  }}>Generate Timetable</button>
-                <span className="divider" style={{ width: '5px',
-                  height: 'auto',
-                  display: 'inline-block',
-                }} />
-                <button type="button" className="btn btn-success"
-                  onClick={() => {
-                    this.addNotification(LOAD_PREVIOUS_OPTIONS_SUCCESSFUL_NOTIFICATION);
-                    this.props.loadState(this.props.semester);
-                  }}>Load Previous Options</button>
-                <span className="divider" style={{ width: '5px',
-                  height: 'auto',
-                  display: 'inline-block',
-                }} />
-                <button type="button" className="btn btn-failure"
-                  onClick={() => {
-                    this.props.portTimetableToMain(this.props.semester);
-                    this.addNotification(PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION);
-                  }}>Port Timetable to Mainpage</button>
+                </div>
+                <br />
+                <MoreOptions addStep={this.props.addStep}
+                  m_id="moreOptions"
+                />
+                <br />
+                <div className="row">
+                  <button type="button" className="btn btn-info"
+                    onClick={() => {
+                      this.props.storeState(this.props.semester);
+                      this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester, this.addNotification);
+                    }}>Generate Timetable</button>
+                  <span className="divider" style={{ width: '5px',
+                    height: 'auto',
+                    display: 'inline-block',
+                  }} />
+                  <button type="button" className="btn btn-success"
+                    onClick={() => {
+                      this.addNotification(LOAD_PREVIOUS_OPTIONS_SUCCESSFUL_NOTIFICATION);
+                      this.props.loadState(this.props.semester);
+                    }}>Load Previous Options</button>
+                  <span className="divider" style={{ width: '5px',
+                    height: 'auto',
+                    display: 'inline-block',
+                  }} />
+                  <button type="button" className="btn btn-failure"
+                    onClick={() => {
+                      this.props.portTimetableToMain(this.props.semester);
+                      this.addNotification(PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION);
+                    }}>Port Timetable to Mainpage</button>
+                </div>
               </div>
             </div>
           </div>
