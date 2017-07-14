@@ -24,6 +24,7 @@ type Props = {
   horizontalOrientation: boolean,
   onModifyCell: Function,
   lockedLessons?: Object,
+  id?: String,
 };
 
 class Timetable extends Component {
@@ -63,7 +64,9 @@ class Timetable extends Component {
       <div className={classnames('timetable-container', {
         'horizontal-mode': this.props.horizontalOrientation,
         'vertical-mode': !this.props.horizontalOrientation,
-      })}>
+      })}
+        id={this.props.id}
+      >
         <style>{`
           .vertical-mode .timetable-inner-container { height: ${timetableHeight}rem; }
           .timetable-cell { ${orientationStyleProp}: ${value}%; }

@@ -48,13 +48,48 @@ export const testStep = {
 export const testDefaults = {
   title: 'Second Step',
   text: 'Testing Default Options',
-  selector: '#moreOptions',
+  selector: '#optMods',
   position: 'bottom-left',
 };
 
-const allSteps = [
-  testStep,
-  testDefaults,
-];
+export const compModsStep = {
+  title: 'Compulsory Modules',
+  text: 'Start using the <strong>joyride</strong>',
+  selector: '#compMods',
+  position: 'bottom-left',
+};
+
+export const timetableStep = {
+  title: 'Compulsory Modules',
+  text: 'Start using the <strong>blablaride</strong>',
+  selector: '#optMods',
+  position: 'bottom-left',
+  isFixed: true,
+};
+
+export const introStep = {
+  title: 'Compulsory Modules',
+  text: 'Start using the <strong>introride</strong>',
+  selector: '#compMods',
+  position: 'bottom-left',
+  isFixed: true,
+};
+
+export const a = {
+  title: 'Second Step',
+  text: 'Testing Default Options',
+  selector: '#timetable',
+  position: 'bottom-left',
+  isFixed: true,
+};
+
+export const b = {
+  title: 'Second Step',
+  text: 'Testing Default Options',
+  selector: '#timetable',
+  position: 'bottom-left',
+};
+
+const allSteps = [a, testDefaults, compModsStep, b, timetableStep, introStep];
 
 export default allSteps;

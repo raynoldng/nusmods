@@ -27,13 +27,13 @@ export default class extends Component {
     autobind(this);
   }
 
-  componentDidMount() {
+  /* componentDidMount() {
     if (this.props.step) {
       setTimeout(() => {
         this.props.addStep(this.props.step);
       }, 500);
     }
-  }
+  } */
 
   render() {
     return (

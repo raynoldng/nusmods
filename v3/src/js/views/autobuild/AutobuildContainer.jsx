@@ -64,10 +64,6 @@ import { isCompMod,
          isLessonLocked,
 } from 'utils/autobuild';
 import {
-  testStep,
-  testDefaults,
-} from 'utils/autobuild-tour';
-import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
   arrangeLessonsForWeek,
@@ -81,6 +77,7 @@ import {
   LOAD_PREVIOUS_OPTIONS_SUCCESSFUL_NOTIFICATION,
 } from 'utils/autobuild-notifications';
 import Collapsible from 'react-collapsible';
+import allSteps from 'utils/autobuild-tour';
 
 import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
@@ -130,11 +127,12 @@ export class AutobuildContainer extends Component {
     autobind(this);
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     setTimeout(() => {
       this.props.addStep(allSteps);
+      this.props.startJoyride();
     }, 500);
-  } */
+  }
 
   componentWillUnmount() {
     this.props.cancelModifyLesson();
@@ -273,7 +271,9 @@ export class AutobuildContainer extends Component {
           <Joyride ref={(c) => { this.joyride = c; }}
             steps={this.props.joyride.steps || []}
             run={this.props.joyride.isRunning} // or some other boolean for when you want to start it
-            // run
+            showSkipButton
+            showStepsProgress
+            type="continuous"
             debug
             />
           <div className="row">
@@ -286,6 +286,7 @@ export class AutobuildContainer extends Component {
                 onModifyCell={modifyFunction}
                 ref={r => (this.timetableDom = r && r.timetableDom)}
                 lockedLessons={this.props.autobuild.lockedLessons}
+                id="timetable"
               />
               <NotificationSystem ref={(c) => { this.notificationSystem = c; }} />
               <br />
@@ -319,12 +320,12 @@ export class AutobuildContainer extends Component {
                 >
                   Unlock Mode
                 </button>
-                <button type="button"
+                {/* <button type="button"
                   className="btn btn-outline-primary"
                   onClick={this.props.startJoyride}
                 >
                   Start Tour
-                </button>
+                </button>*/}
                 <button type="button"
                   className="btn btn-outline-primary"
                   onClick={this.props.toggleTimetableOrientation}
@@ -358,7 +359,6 @@ export class AutobuildContainer extends Component {
                     }}
                     m_id="compMods"
                     addStep={this.props.addStep}
-                    step={testStep}
                   />
                 </div>
                 <div className="col-md-6">
@@ -405,8 +405,7 @@ export class AutobuildContainer extends Component {
 
               </div>
               <br />
-              <MoreOptions step={testDefaults}
-                addStep={this.props.addStep}
+              <MoreOptions addStep={this.props.addStep}
                 m_id="moreOptions"
               />
               <br />
