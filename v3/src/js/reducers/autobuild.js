@@ -76,18 +76,46 @@ function semTimetable(state = {}, action) {
       }
       return _.omit(state, 'noLessonsAfter');
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
+      if (state.freeday) {
+        return {
+          ...state,
+          freeday: !state.freeday,
+          Mon: false,
+          Tue: false,
+          Wed: false,
+          Thu: false,
+          Fri: false,
+          Any: false,
+        };
+      }
       return {
         ...state,
         freeday: !state.freeday,
       };
     case TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD:
-      console.log(state);
-      const newState = {
-        ...state,
-        [action.payload.weekday]: !state[action.payload.weekday],
-      };
-      console.log('new state:');
-      console.log(newState);
+      // console.log(state);
+      let newState;
+      if (action.payload.weekday === 'Any') {
+        newState = {
+          ...state,
+          [action.payload.weekday]: !state[action.payload.weekday],
+          Mon: false,
+          Tue: false,
+          Wed: false,
+          Thu: false,
+          Fri: false,
+          freeday: true,
+        };
+      } else {
+        newState = {
+          ...state,
+          [action.payload.weekday]: !state[action.payload.weekday],
+          Any: false,
+          freeday: true,
+        };
+      }
+      // console.log('new state:');
+      // console.log(newState);
       return newState;
     case TOGGLE_BEFORE_OPTION:
       return {
