@@ -287,8 +287,9 @@ export class AutobuildContainer extends Component {
               <div className={classnames({
                 'col-md-12': isHorizontalOrientation,
                 'col-md-4': !isHorizontalOrientation,
-              })}>
-                <div className="timetable-action-row text-xs-right">
+              })}
+              >
+                <div className="timetable-action-row text-xs-right" id="mode-switch">
                   <button type="button"
                     className={classnames('btn', { 'btn-outline-primary': !isNormalMode }, {
                       'btn-primary': isNormalMode,
@@ -380,7 +381,7 @@ export class AutobuildContainer extends Component {
                     />
                   </div>
                 </div>
-                <div className="row">
+                <div className="row" id="workloadSelect">
                   <div className="col-md-12">
                     Intended Workload (number of modules):
                   </div>
@@ -392,22 +393,23 @@ export class AutobuildContainer extends Component {
                       name="workloadSelect"
                       placeholder={workloadString}
                       options={workloadOptions}
-                      id="workloadSelect"
                       />
                   </div>
 
                 </div>
                 <br />
-                <MoreOptions addStep={this.props.addStep}
-                  m_id="moreOptions"
-                />
+                <div id="moreOptions">
+                  <MoreOptions />
+                </div>
                 <br />
                 <div className="row">
                   <button type="button" className="btn btn-info"
                     onClick={() => {
                       this.props.storeState(this.props.semester);
                       this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester, this.addNotification);
-                    }}>Generate Timetable</button>
+                    }}
+                    id="generateTimetable"
+                  >Generate Timetable</button>
                   <span className="divider" style={{ width: '5px',
                     height: 'auto',
                     display: 'inline-block',

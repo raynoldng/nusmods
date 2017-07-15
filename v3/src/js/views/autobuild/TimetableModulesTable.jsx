@@ -55,7 +55,7 @@ class TimetableModulesTable extends Component {
     return (
       <button className="btn-link btn-remove" onClick={() =>
         this.props.optToCompMod(this.props.semester, moduleCode)}>
-        <i className="fa fa-arrow-up" />
+        <i className="fa fa-arrow-left" />
       </button>
     );
   }
@@ -64,7 +64,7 @@ class TimetableModulesTable extends Component {
     return (
       <button className="btn-link btn-remove" onClick={() =>
         this.props.compToOptMod(this.props.semester, moduleCode)}>
-        <i className="fa fa-arrow-down" />
+        <i className="fa fa-arrow-right" />
       </button>
     );
   }

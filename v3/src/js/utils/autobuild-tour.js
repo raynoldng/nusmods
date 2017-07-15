@@ -1,4 +1,3 @@
-
 export const testStep = {
   title: 'First Step',
   text: 'Start using the <strong>joyride</strong>',
@@ -45,57 +44,87 @@ export const testStep = {
   parent: 'MyComponentName',
 };
 
-export const testDefaults = {
-  step: 2,
-  title: 'Second Step',
-  text: 'Testing Default Options',
-  selector: '#optMods',
-  position: 'bottom-left',
+export const introStep = {
+  title: 'Welcome to NUSMods Auto-Build Feature!',
+  text: `The auto-build feature is meant to help NUS students automatically build the perfect timetable for the next
+  semester, based on factors like core modules, GE/UE modules, workload etc. that the user can specify.`,
+  selector: '#autobuild-link',
+  position: 'right',
 };
 
 export const compModsStep = {
-  step: 3,
   title: 'Compulsory Modules',
-  text: 'Start using the <strong>joyride</strong>',
+  text: `First, specify your compuslory modules here. These are the modules you definitely want to include
+  in your timetable next semester (e.g. modules offered only in specific semesters that you don't want to
+  postpone.`,
   selector: '#compMods',
+  position: 'bottom-left',
+};
+
+export const optModsStep = {
+  title: 'Optional Modules',
+  text: `Next, specify your optional modules. You can add as many optional modules as you want - these are
+  modules you potentially want to take next semester, but are not sure whether they can fit in your perfect
+  timetable (e.g. GE/UE modules)`,
+  selector: '#optMods',
   position: 'bottom-left',
 };
 
 export const timetableStep = {
-  step: 5,
-  title: 'Compulsory Modules',
-  text: 'Start using the <strong>blablaride</strong>',
-  selector: '#optMods',
-  position: 'bottom-left',
-  isFixed: true,
-};
-
-export const introStep = {
-  step: 6,
-  title: 'Compulsory Modules',
-  text: 'Start using the <strong>introride</strong>',
-  selector: '#compMods',
-  position: 'bottom-left',
-  isFixed: true,
-};
-
-export const a = {
-  step: 1,
-  title: 'Second Step',
-  text: 'Testing Default Options',
-  selector: '#timetable',
-  position: 'bottom-left',
-  isFixed: true,
-};
-
-export const b = {
-  step: 4,
-  title: 'Second Step',
-  text: 'Testing Default Options',
+  title: 'Timetable',
+  text: `The timetable displays your compulsory modules only. Here, you can lock certain lesson slots of
+  specified compulsory modules, useful if you want to go for a certain tutor's tutorials, or go for particular
+  tutorials/sectionals with your group of friends!`,
   selector: '#timetable',
   position: 'bottom-left',
 };
 
-const allSteps = [a, testDefaults, compModsStep, b, timetableStep, introStep];
+export const switchModesStep = {
+  title: 'Switch Modes',
+  text: `You can switch between various modes here! Normal Mode allows you to shift lesson slots around,
+  Lock Mode allows you to lock slots in place, and Unlock Mode allows you to unlock them! Just tap/click
+  to interact! Interactable slots are marked with a round border.`,
+  selector: '#mode-switch',
+  position: 'left',
+};
+
+export const workloadStep = {
+  title: 'Workload',
+  text: `We're nearing the end now! Select the workload you would like to have next 
+  semester`,
+  selector: '#workloadSelect',
+  position: 'top-left',
+};
+
+export const moreOptionsStep = {
+  title: 'Additional Options',
+  text: `You can also select additional options in the collapisible below. Just click to expand
+  and see the range of options! You can request for a free day in your timetable, or dictate that
+  you don't want lessons to start before or end after certain times!`,
+  selector: '#moreOptions',
+  position: 'top-left',
+};
+
+export const generateStep = {
+  title: 'Generate Timetable',
+  text: `And we're done! Click this button to generate your timetable! The timetable generated
+  for you will be displayed in the timetable above, and the optional modules we have selected
+  for you shifted to the compulsory section. If you aren't satisfied with your timetable,
+  you can Load Previous Options are try again; if you are, you can Port Timetable to Mainpage
+  and export it from there!`,
+  selector: '#generateTimetable',
+  position: 'top-left',
+};
+
+const allSteps = [
+  introStep,
+  compModsStep,
+  optModsStep,
+  timetableStep,
+  switchModesStep,
+  workloadStep,
+  moreOptionsStep,
+  generateStep,
+];
 
 export default allSteps;
