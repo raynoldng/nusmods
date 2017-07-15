@@ -6,9 +6,17 @@ import React, { Component } from 'react';
 import { routerShape, Link } from 'react-router';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
+import Joyride from 'react-joyride';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
+
+import {
+  addStep,
+  startJoyride,
+} from 'actions/joyride';
+
+// import allSteps from 'utils/autobuild-tour';
 
 import ModulesSelect from './components/ModulesSelect';
 import Footer from './layout/Footer';
@@ -21,6 +29,9 @@ type Props = {
   moduleSelectList: ModuleSelectList,
   timetables: TimetableConfig,
   fetchModuleListRequest: FetchRequest,
+  addStep: Function,
+  startJoyride: Function,
+  joyride: Object,
 };
 
 // Put outside render because this only needs to computed on page load.
@@ -47,14 +58,28 @@ export class AppContainer extends Component {
         this.props.loadModule(moduleCode);
       });
     }
+    /* setTimeout(() => {
+      this.props.addStep(allSteps);
+      this.props.startJoyride();
+    }, 500); */
   }
 
   props: Props;
+
+  joyride;
 
   /* eslint-disable jsx-a11y/anchor-has-content */
   render() {
     return (
       <div className="app-container">
+        <Joyride ref={(c) => { this.joyride = c; }}
+          steps={this.props.joyride.steps || []}
+          run={this.props.joyride.isRunning} // or some other boolean for when you want to start it
+          showSkipButton
+          showStepsProgress
+          type="continuous"
+          debug
+        />
         <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
           <Link className="navbar-brand nm-navbar-brand" to="/" title="Home" />
           <form className="hidden-xs-down"
@@ -143,6 +168,7 @@ function mapStateToProps(state) {
     moduleSelectList: state.entities.moduleBank.moduleSelectList,
     timetables: state.timetables,
     fetchModuleListRequest: state.requests.fetchModuleListRequest || {},
+    joyride: state.joyride || {},
   };
 }
 
@@ -151,5 +177,7 @@ export default connect(
   {
     fetchModuleList,
     loadModule,
+    addStep,
+    startJoyride,
   },
 )(AppContainer);

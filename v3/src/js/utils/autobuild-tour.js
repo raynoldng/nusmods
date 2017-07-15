@@ -46,6 +46,7 @@ export const testStep = {
 };
 
 export const testDefaults = {
+  step: 2,
   title: 'Second Step',
   text: 'Testing Default Options',
   selector: '#optMods',
@@ -53,6 +54,7 @@ export const testDefaults = {
 };
 
 export const compModsStep = {
+  step: 3,
   title: 'Compulsory Modules',
   text: 'Start using the <strong>joyride</strong>',
   selector: '#compMods',
@@ -60,6 +62,7 @@ export const compModsStep = {
 };
 
 export const timetableStep = {
+  step: 5,
   title: 'Compulsory Modules',
   text: 'Start using the <strong>blablaride</strong>',
   selector: '#optMods',
@@ -68,6 +71,7 @@ export const timetableStep = {
 };
 
 export const introStep = {
+  step: 6,
   title: 'Compulsory Modules',
   text: 'Start using the <strong>introride</strong>',
   selector: '#compMods',
@@ -76,6 +80,7 @@ export const introStep = {
 };
 
 export const a = {
+  step: 1,
   title: 'Second Step',
   text: 'Testing Default Options',
   selector: '#timetable',
@@ -84,6 +89,7 @@ export const a = {
 };
 
 export const b = {
+  step: 4,
   title: 'Second Step',
   text: 'Testing Default Options',
   selector: '#timetable',

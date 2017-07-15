@@ -264,14 +264,6 @@ export class AutobuildContainer extends Component {
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
         <div>
-          <Joyride ref={(c) => { this.joyride = c; }}
-            steps={this.props.joyride.steps || []}
-            run={this.props.joyride.isRunning} // or some other boolean for when you want to start it
-            showSkipButton
-            showStepsProgress
-            type="continuous"
-            debug
-          />
           <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
             if (this.props.activeLesson) {
               this.props.cancelModifyLesson();
