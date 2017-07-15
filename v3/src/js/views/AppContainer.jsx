@@ -74,11 +74,11 @@ export class AppContainer extends Component {
       <div className="app-container">
         <Joyride ref={(c) => { this.joyride = c; }}
           steps={this.props.joyride.steps || []}
+          autoStart
           run={this.props.joyride.isRunning} // or some other boolean for when you want to start it
           showSkipButton
           showStepsProgress
           type="continuous"
-          debug
         />
         <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
           <Link className="navbar-brand nm-navbar-brand" to="/" title="Home" />
