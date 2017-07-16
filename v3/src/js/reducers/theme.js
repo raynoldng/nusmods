@@ -16,7 +16,6 @@ import { SELECT_THEME,
 } from 'actions/theme';
 import { ADD_MODULE_AUTOBUILD,
          REMOVE_MODULE_AUTOBUILD,
-         UPDATE_AUTOBUILD_TIMETABLE,
          STORE_STATE,
          LOAD_STATE,
          PORT_TIMETABLE,
@@ -110,19 +109,6 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         ...state,
         timetableOrientation: state.timetableOrientation === VERTICAL ? HORIZONTAL : VERTICAL,
       };
-    case UPDATE_AUTOBUILD_TIMETABLE:
-      {
-        const obj = {};
-        Object.keys(action.payload.state).forEach(
-          (curVal, index) => {
-            obj[curVal] = index % 8;
-          },
-        );
-        return {
-          ...state,
-          autobuildcolors: obj,
-        };
-      }
     case STORE_STATE:
       return {
         ...state,
