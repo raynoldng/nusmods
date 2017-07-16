@@ -1,15 +1,9 @@
 // @flow
-/* eslint no-unused-vars: 0 */
-/* eslint-disable no-console */
-/* eslint-disable no-alert */
 /* eslint-disable no-undef */
-/* eslint-disable no-param-reassign */
-/* eslint-disable func-names */
-/* eslint-disable prefer-template */
 /* eslint-disable consistent-return */
+/* eslint-disable no-param-reassign */
 
-import fetch from 'isomorphic-fetch';
-
+// import fetch from 'isomorphic-fetch';
 import NUSModsPlannerApi from 'apis/nusmodsplanner';
 import type {
 Module,
@@ -20,7 +14,7 @@ RawLesson,
 } from 'types/modules';
 
 import {
-  lessonSlotStringToObject,
+  // lessonSlotStringToObject,
   isCompMod,
   isOptMod,
   isOptModWithoutLessons,
@@ -29,7 +23,7 @@ import {
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import { parseOutput, slotsFromModel } from 'utils/smtSolver';
+import { slotsFromModel } from 'utils/smtSolver';
 import {
   NOT_ENOUGH_MODULES_NOTIFICATION,
   UNSAT_NOTIFICATION,
@@ -108,14 +102,14 @@ export function toggleModuleStatusAutobuild(semester: Semester, moduleCode: Modu
 }
 
 export function optToCompMod(semester: Semester, moduleCode: ModuleCode): FSA {
-  return (dispatch: Function, getState: Function) => {
+  return (dispatch: Function) => {
     dispatch(removeModuleAutobuild(semester, moduleCode));
     return dispatch(addModuleAutobuildComp(semester, moduleCode));
   };
 }
 
 export function compToOptMod(semester: Semester, moduleCode: ModuleCode): FSA {
-  return (dispatch: Function, getState: Function) => {
+  return (dispatch: Function) => {
     dispatch(removeModuleAutobuild(semester, moduleCode));
     return dispatch(addModuleAutobuildOpt(semester, moduleCode));
   };
@@ -312,11 +306,13 @@ export function moveToCompAutobuild(semester: Semester, moduleCode: ModuleCode):
 
 function solve(boolector, query) {
   let output = '';
-  boolector.print = function (x) {
-    output += x + '\n';
+  boolector.print = function foo(x) {
+    output = `${output}${x}\n`;
+    // output += x + '\n';
   };
-  boolector.printErr = function (x) {
-    output += x + '\n';
+  boolector.printErr = function bar(x) {
+    output = `${output}${x}\n`;
+    // output += x + '\n';
   };
   const solveString = boolector.cwrap('solve_string', 'string', ['string', 'number']);
   const result = solveString(query, 2);
@@ -324,15 +320,7 @@ function solve(boolector, query) {
   return outcome;
 }
 
-function solveQuery(query, boolectorarray) {
-  /* for (let i = 0; i < boolectorarray.length; i += 1) {
-    const outcome1 = solve(boolectorarray[i], query);
-    if (outcome1[0] !== 'ERROR') {
-      return outcome1;
-    }
-  }
-  const n = boolectorarray.push(createBoolector());
-  return solve(boolectorarray[n - 1], query); */
+function solveQuery(query) {
   const newBoolector = createBoolector();
   return solve(newBoolector, query);
 }
@@ -343,10 +331,9 @@ function syncQuery(url) {
   request.send(null);
 
   if (request.status === 200) {
-    // console.log(request.responseText);
     const data2 = JSON.parse(request.responseText);
     const smtlib2 = data2[0];
-    const mapping = data2[1]; // not really needed
+    const mapping = data2[1];
     const outcome = solveQuery(smtlib2, BoolectorModuleArray);
     return [outcome, mapping];
   }
@@ -370,12 +357,11 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   const options = {};
 
   if (autobuild.freeday) {
-    const fullWeedayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
+    const fullWeekdayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
     const freedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return autobuild[day]; })
-      .map(d => fullWeedayMapping[d]);
+      .map(d => fullWeekdayMapping[d]);
     const numFreedays = freedays.length;
 
-    console.log(`freedays: ${freedays}, num: ${numFreedays}`);
     options.numFreedays = numFreedays;
     options.freedays = freedays;
   }
@@ -404,17 +390,13 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
 
   const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload, semester);
 
-  console.log(url);
-
-  return (dispatch: Function, getState: Function) => {
+  return (dispatch: Function) => {
     const retVal = syncQuery(url);
     const outcome = retVal[0];
     const moduleMapping = retVal[1];
-    console.log(outcome);
     const model = outcome[1];
     const result = outcome[0];
     const timetable = slotsFromModel(model, compMods, optMods, workload, moduleMapping);
-    console.log(timetable);
 
     const obj = {};
 
@@ -439,7 +421,6 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     const curTimetableLength = Object.keys(obj).length;
     if (curTimetableLength !== workload) {
       const optModsWithoutLessons = Object.keys(_.pickBy(autobuild, isOptModWithoutLessons));
-      console.log(optModsWithoutLessons);
       for (let i = 0; i < workload - curTimetableLength; i += 1) {
         obj[optModsWithoutLessons[i]] = {
           status: 'comp',

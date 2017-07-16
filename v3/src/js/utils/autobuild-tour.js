@@ -1,3 +1,5 @@
+// @flow
+
 export const testStep = {
   title: 'First Step',
   text: 'Start using the <strong>joyride</strong>',

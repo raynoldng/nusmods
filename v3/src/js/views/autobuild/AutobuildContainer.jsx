@@ -1,13 +1,5 @@
 // @flow
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable no-alert */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 
-import Checkbox from 'react-checkbox';
-import NumericInput from 'react-numeric-input';
-import Joyride from 'react-joyride';
-// import storage from 'storage';
 import type {
   ThemeState,
   TimetableOrientation,
@@ -70,16 +62,13 @@ import {
   areOtherClassesAvailable,
   lessonsForLessonType,
 } from 'utils/timetables';
-import ModulesSelect from 'views/components/ModulesSelect';
 import AutobuildSelect from 'views/components/AutobuildSelect';
 import {
   PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION,
   LOAD_PREVIOUS_OPTIONS_SUCCESSFUL_NOTIFICATION,
 } from 'utils/autobuild-notifications';
-import Collapsible from 'react-collapsible';
 import allSteps from 'utils/autobuild-tour';
 
-import TimetableModulesTable from './TimetableModulesTable';
 import Timetable from './Timetable';
 import MoreOptions from './MoreOptions';
 import ModulesContainer from './ModulesContainer';
@@ -258,8 +247,6 @@ export class AutobuildContainer extends Component {
       { label: '8', value: 8 },
       { label: '9', value: 9 },
     ];
-
-    console.log(this.props.joyride.isRunning);
 
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
