@@ -12,3 +12,5 @@ npm-debug.log
 *.swp
 tmp/
 v3/.idea
+.idea
+v3/src/js/actions/.tern-port
