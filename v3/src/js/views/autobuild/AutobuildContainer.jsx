@@ -37,7 +37,6 @@ import {
   changeLessonAutobuild,
   lockLessonAutobuild,
   unlockLessonAutobuild,
-  switchMode,
   fetchAndSolveQuery,
   storeState,
   loadState,
@@ -48,7 +47,6 @@ import {
   addStep,
   startJoyride,
 } from 'actions/joyride';
-import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import { isCompMod,
          isOptMod,
@@ -69,6 +67,7 @@ import {
 } from 'utils/autobuild-notifications';
 import allSteps from 'utils/autobuild-tour';
 
+import ModeButtons from './ModeButtons';
 import Timetable from './Timetable';
 import MoreOptions from './MoreOptions';
 import ModulesContainer from './ModulesContainer';
@@ -87,7 +86,6 @@ type Props = {
   lockLessonAutobuild: Function,
   unlockLessonAutobuild: Function,
   cancelModifyLesson: Function,
-  toggleTimetableOrientation: Function,
   addModuleAutobuildComp: Function,
   addModuleAutobuildOpt: Function,
   autobuild: Object,
@@ -96,7 +94,6 @@ type Props = {
   changeWorkloadAutobuild: Function,
   semModuleListAutobuild: Array<Object>,
   semTimetableWithLessonsAutobuild: SemTimetableConfig,
-  switchMode: Function,
   fetchAndSolveQuery: Function,
   storeState: Function,
   loadState: Function,
@@ -120,7 +117,7 @@ export class AutobuildContainer extends Component {
     setTimeout(() => {
       this.props.addStep(allSteps);
       this.props.startJoyride();
-    }, 500);
+    }, 200);
   }
 
   componentWillUnmount() {
@@ -276,46 +273,7 @@ export class AutobuildContainer extends Component {
                 'col-md-4': !isHorizontalOrientation,
               })}
               >
-                <div className="timetable-action-row text-xs-right" id="mode-switch">
-                  <button type="button"
-                    className={classnames('btn', { 'btn-outline-primary': !isNormalMode }, {
-                      'btn-primary': isNormalMode,
-                    })}
-                    onClick={() => this.props.switchMode(this.props.semester, '')}
-                  >
-                    Normal Mode
-                  </button>
-                  <button type="button"
-                    className={classnames('btn', { 'btn-outline-primary': !isLockingMode }, {
-                      'btn-primary': isLockingMode,
-                    })}
-                    onClick={() => this.props.switchMode(this.props.semester, 'lock')}
-                  >
-                    Lock Mode
-                  </button>
-                  <button type="button"
-                    className={classnames('btn', { 'btn-outline-primary': !isUnlockingMode }, {
-                      'btn-primary': isUnlockingMode,
-                    })}
-                    onClick={() => this.props.switchMode(this.props.semester, 'unlock')}
-                  >
-                    Unlock Mode
-                  </button>
-                  {/* <button type="button"
-                    className="btn btn-outline-primary"
-                    onClick={this.props.startJoyride}
-                  >
-                    Start Tour
-                  </button>*/}
-                  <button type="button"
-                    className="btn btn-outline-primary"
-                    onClick={this.props.toggleTimetableOrientation}
-                  >
-                    <i className={classnames('fa', 'fa-exchange', {
-                      'fa-rotate-90': isHorizontalOrientation,
-                    })} />
-                  </button>
-                </div>
+                <ModeButtons />
                 <div className="row">
                   <div className="col-md-6">
                     <ModulesContainer moduleList={this.props.semModuleListAutobuild}
@@ -464,13 +422,11 @@ export default connect(
     modifyLesson,
     changeLessonAutobuild,
     cancelModifyLesson,
-    toggleTimetableOrientation,
     addModuleAutobuildComp,
     addModuleAutobuildOpt,
     removeModuleAutobuild,
     changeNumFreedays,
     changeWorkloadAutobuild,
-    switchMode,
     lockLessonAutobuild,
     unlockLessonAutobuild,
     fetchAndSolveQuery,

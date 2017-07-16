@@ -58,10 +58,6 @@ export class AppContainer extends Component {
         this.props.loadModule(moduleCode);
       });
     }
-    /* setTimeout(() => {
-      this.props.addStep(allSteps);
-      this.props.startJoyride();
-    }, 500); */
   }
 
   props: Props;

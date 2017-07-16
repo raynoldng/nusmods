@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-console */
 
 // import fetch from 'isomorphic-fetch';
 import NUSModsPlannerApi from 'apis/nusmodsplanner';
@@ -360,7 +361,7 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     const fullWeekdayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
     const freedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return autobuild[day]; })
       .map(d => fullWeekdayMapping[d]);
-    const numFreedays = freedays.length;
+    const numFreedays = freedays.length || 1;
 
     options.numFreedays = numFreedays;
     options.freedays = freedays;
@@ -389,6 +390,7 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   }
 
   const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload, semester);
+  console.log(url);
 
   return (dispatch: Function) => {
     const retVal = syncQuery(url);

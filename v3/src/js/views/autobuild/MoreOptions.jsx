@@ -32,8 +32,6 @@ type Props = {
   changeBeforeTime: Function,
   changeAfterTime: Function,
   semester: Number,
-  step?: Object,
-  addStep: Function,
 };
 
 class MoreOptions extends Component {
@@ -41,14 +39,6 @@ class MoreOptions extends Component {
   constructor(props: Props) {
     super(props);
     autobind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.step) {
-      setTimeout(() => {
-        this.props.addStep(this.props.step);
-      }, 500);
-    }
   }
 
   render() {
