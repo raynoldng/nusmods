@@ -35,7 +35,3 @@ declare module 'react-numeric-input' {
 declare module 'react-select' {
   declare module.exports: any;
 }
-
-declare module 'react-user-tour' {
-  declare module.exports: any;
-}
