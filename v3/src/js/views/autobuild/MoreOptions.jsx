@@ -1,8 +1,4 @@
 // @flow
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable no-alert */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -21,11 +17,15 @@ import {
   changeAfterTime,
 } from 'actions/autobuild';
 
+import type {
+  Autobuild,
+} from 'types/autobuild';
+
 import config from 'config';
 import PreferenceCheckbox from './PreferenceCheckbox';
 
 type Props = {
-  autobuild: Object,
+  autobuild: Autobuild,
   toggleBeforeOption: Function,
   toggleAfterOption: Function,
   toggleFreedayAutobuild: Function,
