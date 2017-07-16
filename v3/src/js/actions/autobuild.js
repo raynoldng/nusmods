@@ -31,6 +31,8 @@ import {
   ERROR_NOTIFICATION,
   TOO_MANY_COMP_MODULES_NOTIFICATION,
   SAT_NOTIFICATION,
+  RELAXED_SAT_NOTIFICATION,
+  DOUBLE_UNSAT_NOTIFICATION,
   // TEST_NOTIFICATION,
 } from 'utils/autobuild-notifications';
 import _ from 'lodash';
@@ -323,12 +325,13 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   const options = {};
   const preferences = autobuild.freedayPreferences || {};
 
+  // dem code smells...
   if (autobuild.freeday) {
     options.freeday = true;
     const fullWeekdayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
     const possibleFreedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return preferences[day]; })
       .map(d => fullWeekdayMapping[d]);
-    if (possibleFreedays.length > 0) { options.possibleFreedays = possibleFreedays; }
+    options.possibleFreedays = possibleFreedays;
   }
 
   if (compMods.length + optMods.length < workload) {
@@ -354,16 +357,21 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   }
 
   const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload, semester);
-  console.log(url);
 
-  return (dispatch: Function) => {
-    const retVal = syncQuery(url);
+  function getResultAndTimetableFromQuery(queryUrl) {
+    const retVal = syncQuery(queryUrl);
     const outcome = retVal[0];
     const moduleMapping = retVal[1];
     const model = outcome[1];
     const result = outcome[0];
     const timetable = slotsFromModel(model, compMods, optMods, workload, moduleMapping);
 
+    return { result, timetable };
+  }
+
+  return (dispatch: Function) => {
+    let finalTimetable;
+    const { result, timetable } = getResultAndTimetableFromQuery(url);
     const obj = {};
 
     if (result === 'ERROR') {
@@ -371,12 +379,42 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
       window.location.reload();
       return {};
     } else if (timetable.length === 0) { // UNSAT
-      notificationGenerator(UNSAT_NOTIFICATION);
-      return {};
+      // try again with relaxed constraints
+      if (options.possibleFreedays && options.possibleFreedays.length > 0) {
+        const relaxedOptions = {
+          ...options,
+          possibleFreedays: [],
+        };
+        const relaxedUrl = NUSModsPlannerApi.plannerQueryUrl(semester, relaxedOptions, compMods, optMods, workload,
+          semester);
+        const outcome = getResultAndTimetableFromQuery(relaxedUrl);
+        const relaxedResult = outcome.result;
+        const relaxedTimetable = outcome.timetable;
+
+        if (relaxedResult === 'ERROR') {
+          notificationGenerator(ERROR_NOTIFICATION);
+          window.location.reload();
+          return {};
+        }
+
+        if (relaxedTimetable.length === 0) {
+          notificationGenerator(DOUBLE_UNSAT_NOTIFICATION);
+          return {};
+        }
+
+        finalTimetable = relaxedTimetable;
+        notificationGenerator(RELAXED_SAT_NOTIFICATION);
+      } else {
+        // vanilla unsat notification
+        notificationGenerator(UNSAT_NOTIFICATION);
+        return {};
+      }
+    } else { // SAT
+      notificationGenerator(SAT_NOTIFICATION);
+      finalTimetable = timetable;
     }
 
-    console.log(timetable);
-    timetable.forEach((string) => {
+    finalTimetable.forEach((string) => {
       const arr = string.split('_');
       obj[arr[0]] = {
         ...obj[arr[0]],
@@ -384,7 +422,6 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
         status: 'comp',
       };
     });
-
     const curTimetableLength = Object.keys(obj).length;
     if (curTimetableLength !== workload) {
       const optModsWithoutLessons = Object.keys(_.pickBy(autobuild, isOptModWithoutLessons));
@@ -395,7 +432,6 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
       }
     }
 
-    notificationGenerator(SAT_NOTIFICATION);
     return dispatch({
       type: UPDATE_AUTOBUILD_TIMETABLE,
       payload: {

@@ -8,6 +8,11 @@ export const NOT_ENOUGH_MODULES_NOTIFICATION = {
   level: 'error',
 };
 
+export const DOUBLE_UNSAT_NOTIFICATION = {
+  message: 'Sorry, a free day is simply not possible with your workload',
+  level: 'error',
+};
+
 export const UNSAT_NOTIFICATION = {
   message: 'Sorry, there is no timetable that meets your specified constraints',
   level: 'error',
@@ -44,8 +49,14 @@ export const TOO_MANY_COMP_MODULES_NOTIFICATION = {
   level: 'error',
 };
 
+export const RELAXED_SAT_NOTIFICATION = {
+  message: 'Timetable generated successfully, but we were unable to meet your preferred free days. ' +
+  'We have moved the modules in your timetable to the compulsory section',
+  level: 'info',
+};
+
 export const SAT_NOTIFICATION = {
-  message: 'Timetable generated successfully! We have moved the modules in your' +
+  message: 'Timetable generated successfully! We have moved the modules in your ' +
   'timetable to the compulsory section',
   level: 'success',
 };
