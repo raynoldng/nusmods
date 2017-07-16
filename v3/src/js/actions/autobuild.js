@@ -328,8 +328,7 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     const fullWeekdayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
     const possibleFreedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return preferences[day]; })
       .map(d => fullWeekdayMapping[d]);
-    console.log(possibleFreedays);
-    options.possibleFreedays = possibleFreedays;
+    if (possibleFreedays.length > 0) { options.possibleFreedays = possibleFreedays; }
   }
 
   if (compMods.length + optMods.length < workload) {
