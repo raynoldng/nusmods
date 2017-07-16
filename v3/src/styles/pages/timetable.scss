@@ -261,7 +261,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     .cell-module-lesson-type,
     .cell-module-group,
     .cell-module-class,
-    .cell-module-venue {
+    .cell-module-venue,
+    .cell-module-week, {
       font-size: $font-size-xxs;
     }
 
@@ -271,7 +272,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       .cell-module-lesson-type,
       .cell-module-group,
       .cell-module-class,
-      .cell-module-venue {
+      .cell-module-venue,
+      .cell-module-week, {
         font-size: 0.55rem;
         line-height: 0.5rem;
       }

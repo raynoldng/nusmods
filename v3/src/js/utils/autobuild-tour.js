@@ -56,7 +56,7 @@ export const compModsStep = {
   title: 'Compulsory Modules',
   text: `First, specify your compuslory modules here. These are the modules you definitely want to include
   in your timetable next semester (e.g. modules offered only in specific semesters that you don't want to
-  postpone.`,
+  postpone).`,
   selector: '#compMods',
   position: 'bottom-left',
 };
@@ -91,7 +91,7 @@ export const switchModesStep = {
 export const workloadStep = {
   title: 'Workload',
   text: `We're nearing the end now! Select the workload you would like to have next 
-  semester`,
+  semester:`,
   selector: '#workloadSelect',
   position: 'top-left',
 };
@@ -110,7 +110,7 @@ export const generateStep = {
   text: `And we're done! Click this button to generate your timetable! The timetable generated
   for you will be displayed in the timetable above, and the optional modules we have selected
   for you shifted to the compulsory section. If you aren't satisfied with your timetable,
-  you can Load Previous Options are try again; if you are, you can Port Timetable to Mainpage
+  you can Load Previous Options and try again; if you are, you can Port Timetable to Mainpage
   and export it from there!`,
   selector: '#generateTimetable',
   position: 'top-left',

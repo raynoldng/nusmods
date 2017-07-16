@@ -23,9 +23,9 @@ function TimetableCell(props: Props) {
   if (props.size && props.styleProp) {
     style[props.styleProp] = `${props.size}%`;
   }
-
   if (lesson) {
     const lockSignifier = isLessonLocked(lesson, props.lockedLessons) ? ' (Locked)' : '';
+    const weekText = lesson.WeekText === 'Every Week' ? '' : lesson.WeekText;
     cell = (
       <div className={classnames('timetable-module-cell', {
         'is-modifiable': lesson.isModifiable,
@@ -46,6 +46,7 @@ function TimetableCell(props: Props) {
           <span className="cell-module-class">{' '}[{lesson.ClassNo}]</span>
         </div>
         <div><span className="cell-module-venue">{lesson.Venue}</span></div>
+        <div><span className="cell-module-week">{weekText}</span></div>
       </div>
     );
   }
