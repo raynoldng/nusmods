@@ -324,13 +324,12 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   const preferences = autobuild.freedayPreferences || {};
 
   if (autobuild.freeday) {
+    options.freeday = true;
     const fullWeekdayMapping = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
-    const freedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return preferences[day]; })
+    const possibleFreedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return preferences[day]; })
       .map(d => fullWeekdayMapping[d]);
-    const numFreedays = freedays.length || 1;
-
-    options.numFreedays = numFreedays;
-    options.freedays = freedays;
+    console.log(possibleFreedays);
+    options.possibleFreedays = possibleFreedays;
   }
 
   if (compMods.length + optMods.length < workload) {

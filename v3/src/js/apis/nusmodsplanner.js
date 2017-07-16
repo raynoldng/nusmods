@@ -6,7 +6,7 @@ import type { ModuleCode } from 'types/modules';
 // import config from 'config/app-config.json';
 import config from 'config/app-config-temp.json';
 
-const plannerBaseUrl: string = config.live ? 'https://modsplanner.tk/api' : 'http://localhost/api';
+const plannerBaseUrl: string = config.live ? 'https://modsplanner.tk/api' : 'http://localhost:3001/api';
 
 function shuffle(a) {
   for (let i = a.length; i; i -= 1) {
