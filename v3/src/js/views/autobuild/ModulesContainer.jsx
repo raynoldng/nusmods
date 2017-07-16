@@ -27,26 +27,20 @@ export default class extends Component {
     autobind(this);
   }
 
-  /* componentDidMount() {
-    if (this.props.step) {
-      setTimeout(() => {
-        this.props.addStep(this.props.step);
-      }, 500);
-    }
-  } */
-
   render() {
+    const placeholder = this.props.isOptTable ?
+      'Add optional module to timetable' : 'Add compuslory module to timetable';
+    const id = this.props.isOptTable ?
+      'optMods' : 'compMods';
     return (
-      <div id={this.props.m_id}>
+      <div id={id}>
         <ModulesSelect moduleList={this.props.moduleList}
           onChange={this.props.onChange}
-          placeholder={this.props.placeholder}
+          placeholder={placeholder}
         />
         <br />
         <TimetableModulesTable modules={this.props.modules}
           horizontalOrientation={this.props.isHorizontalOrientation}
-          semester={this.props.semester}
-          onRemoveModule={this.props.onRemoveModule}
           isOptTable={this.props.isOptTable}
         />
       </div>

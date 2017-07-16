@@ -22,6 +22,7 @@ import {
 } from 'actions/autobuild';
 
 import config from 'config';
+import PreferenceCheckbox from './PreferenceCheckbox';
 
 type Props = {
   autobuild: Object,
@@ -89,20 +90,12 @@ class MoreOptions extends Component {
                 this.props.toggleFreedayAutobuild(this.props.semester);
               }}
             />&nbsp;I want a free day, preferably on these days:&nbsp;
-            {/* Should create a component for this, a lot of code duplication */}
-            <Checkbox checked={this.props.autobuild.Mon} onChange={() =>
-              this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Mon')} />&nbsp;Mon &nbsp;
-            <Checkbox checked={this.props.autobuild.Tue} onChange={() =>
-              this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Tue')} />&nbsp;Tue &nbsp;
-            <Checkbox checked={this.props.autobuild.Wed} onChange={() =>
-              this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Wed')} />&nbsp;Wed &nbsp;
-            <Checkbox checked={this.props.autobuild.Thu} onChange={() =>
-              this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Thu')} />&nbsp;Thurs &nbsp;
-            <Checkbox checked={this.props.autobuild.Fri} onChange={() =>
-              this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Fri')} />&nbsp;Fri &nbsp;
-            <Checkbox checked={this.props.autobuild.Any} onChange={() =>
-              this.props.toggleFreeWeekdayAutobuild(this.props.semester, 'Any')} />
-            &nbsp;No Preference (default) &nbsp;
+            <PreferenceCheckbox day="Mon" />&nbsp;Mon&nbsp;
+            <PreferenceCheckbox day="Tue" />&nbsp;Tue&nbsp;
+            <PreferenceCheckbox day="Wed" />&nbsp;Wed&nbsp;
+            <PreferenceCheckbox day="Thu" />&nbsp;Thu&nbsp;
+            <PreferenceCheckbox day="Fri" />&nbsp;Fri&nbsp;
+            <PreferenceCheckbox day="Any" />&nbsp;No Preference (default)&nbsp;
           </div>
         </div>
       </Collapsible>

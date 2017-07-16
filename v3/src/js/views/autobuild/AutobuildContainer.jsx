@@ -278,7 +278,6 @@ export class AutobuildContainer extends Component {
                       onChange={(moduleCode) => {
                         this.props.addModuleAutobuild(this.props.semester, moduleCode.value, 'comp');
                       }}
-                      placeholder="Add compuslory module to timetable"
                       modules={
                         Object.keys(_.pickBy(this.props.autobuild, isCompMod)).sort((a, b) => {
                           return a.localeCompare(b);
@@ -289,11 +288,6 @@ export class AutobuildContainer extends Component {
                           return module;
                         })}
                       horizontalOrientation={isHorizontalOrientation}
-                      semester={this.props.semester}
-                      onRemoveModule={(moduleCode) => {
-                        this.props.removeModuleAutobuild(this.props.semester, moduleCode);
-                      }}
-                      m_id="compMods"
                     />
                   </div>
                   <div className="col-md-6">
@@ -301,7 +295,6 @@ export class AutobuildContainer extends Component {
                       onChange={(moduleCode) => {
                         this.props.addModuleAutobuild(this.props.semester, moduleCode.value, 'opt');
                       }}
-                      placeholder="Add optional module to timetable"
                       modules={
                         Object.keys(_.pickBy(this.props.autobuild, isOptMod)).sort((a, b) => {
                           return a.localeCompare(b);
@@ -312,12 +305,7 @@ export class AutobuildContainer extends Component {
                           return module;
                         })}
                       horizontalOrientation={isHorizontalOrientation}
-                      semester={this.props.semester}
-                      onRemoveModule={(moduleCode) => {
-                        this.props.removeModuleAutobuild(this.props.semester, moduleCode);
-                      }}
                       isOptTable
-                      m_id="optMods"
                     />
                   </div>
                 </div>

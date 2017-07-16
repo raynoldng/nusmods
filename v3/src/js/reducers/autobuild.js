@@ -77,14 +77,8 @@ function semTimetable(state = {}, action) {
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
       if (state.freeday) {
         return {
-          ...state,
+          ..._.omit(state, 'freedayPreferences'),
           freeday: !state.freeday,
-          Mon: false,
-          Tue: false,
-          Wed: false,
-          Thu: false,
-          Fri: false,
-          Any: false,
         };
       }
       return {
@@ -92,30 +86,33 @@ function semTimetable(state = {}, action) {
         freeday: !state.freeday,
       };
     case TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD:
-      // console.log(state);
-      let newState;
-      if (action.payload.weekday === 'Any') {
-        newState = {
+      const day = action.payload.weekday;
+      if (day === 'Any') {
+        return {
           ...state,
-          [action.payload.weekday]: !state[action.payload.weekday],
-          Mon: false,
-          Tue: false,
-          Wed: false,
-          Thu: false,
-          Fri: false,
+          freedayPreferences: {
+            Any: true,
+          },
           freeday: true,
         };
-      } else {
-        newState = {
+      } else if (state.freedayPreferences) {
+        return {
           ...state,
-          [action.payload.weekday]: !state[action.payload.weekday],
-          Any: false,
+          freedayPreferences: {
+            ...state.freedayPreferences,
+            [day]: !state.freedayPreferences[day],
+            Any: false,
+          },
           freeday: true,
         };
       }
-      // console.log('new state:');
-      // console.log(newState);
-      return newState;
+      return {
+        ...state,
+        freedayPreferences: {
+          [day]: true,
+        },
+        freeday: true,
+      };
     case TOGGLE_BEFORE_OPTION:
       return {
         ...state,

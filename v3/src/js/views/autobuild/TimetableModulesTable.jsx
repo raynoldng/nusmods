@@ -8,10 +8,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import ColorPicker from 'views/components/color-picker/ColorPicker';
+import config from 'config';
 
 import { selectModuleColorAutobuild, modifyModuleColorAutobuild, cancelModifyModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
-import { toggleModuleStatusAutobuild } from 'actions/autobuild';
+import {
+  toggleModuleStatusAutobuild,
+  removeModuleAutobuild,
+} from 'actions/autobuild';
+
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
 type Props = {
@@ -22,6 +27,7 @@ type Props = {
   cancelModifyModuleColor: Function,
   hideLessonInTimetable: Function,
   showLessonInTimetable: Function,
+  removeModuleAutobuild: Function,
   semester: number,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
@@ -112,7 +118,7 @@ class TimetableModulesTable extends Component {
                         {module.ModuleCredit} MCs
                         &nbsp;&middot;
                         <button className="btn-link btn-remove" onClick={() => {
-                          this.props.onRemoveModule(module.ModuleCode);
+                          this.props.removeModuleAutobuild(this.props.semester, module.ModuleCode);
                         }}>
                           Remove
                         </button>
@@ -140,6 +146,7 @@ class TimetableModulesTable extends Component {
 function mapStateToProps(state) {
   return {
     activeModule: state.app.activeModule,
+    semester: config.semester,
   };
 }
 
@@ -152,5 +159,6 @@ export default connect(
     hideLessonInTimetable,
     showLessonInTimetable,
     toggleModuleStatusAutobuild,
+    removeModuleAutobuild,
   },
 )(TimetableModulesTable);
