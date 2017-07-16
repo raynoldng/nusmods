@@ -11,13 +11,14 @@ import ColorPicker from 'views/components/color-picker/ColorPicker';
 
 import { selectModuleColorAutobuild, modifyModuleColorAutobuild, cancelModifyModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
-import { optToCompMod, compToOptMod } from 'actions/autobuild';
+import { toggleModuleStatusAutobuild } from 'actions/autobuild';
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
 type Props = {
   activeModule: ModuleCode,
   selectModuleColorAutobuild: Function,
   modifyModuleColorAutobuild: Function,
+  toggleModuleStatusAutobuild: Function,
   cancelModifyModuleColor: Function,
   hideLessonInTimetable: Function,
   showLessonInTimetable: Function,
@@ -26,8 +27,6 @@ type Props = {
   onRemoveModule: Function,
   horizontalOrientation: boolean,
   isOptTable?: Boolean,
-  optToCompMod: Function,
-  compToOptMod: Function,
 };
 
 class TimetableModulesTable extends Component {
@@ -54,7 +53,7 @@ class TimetableModulesTable extends Component {
   moveToCompButton(moduleCode) {
     return (
       <button className="btn-link btn-remove" onClick={() =>
-        this.props.optToCompMod(this.props.semester, moduleCode)}>
+        this.props.toggleModuleStatusAutobuild(this.props.semester, moduleCode)}>
         <i className="fa fa-arrow-left" />
       </button>
     );
@@ -63,7 +62,7 @@ class TimetableModulesTable extends Component {
   moveToOptButton(moduleCode) {
     return (
       <button className="btn-link btn-remove" onClick={() =>
-        this.props.compToOptMod(this.props.semester, moduleCode)}>
+        this.props.toggleModuleStatusAutobuild(this.props.semester, moduleCode)}>
         <i className="fa fa-arrow-right" />
       </button>
     );
@@ -152,7 +151,6 @@ export default connect(
     cancelModifyModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
-    optToCompMod,
-    compToOptMod,
+    toggleModuleStatusAutobuild,
   },
 )(TimetableModulesTable);

@@ -110,6 +110,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       .timetable {
         .timetable-row {
           height: $timetable-row-height;
+          margin-bottom: 1rem;
 
           &:not(:first-child) {
             margin-top: $timetable-row-margin;
@@ -180,6 +181,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
         .timetable-day-rows {
           height: $timetable-day-rows-height;
+          margin-bottom: 1rem;
         }
 
         .timetable-row {

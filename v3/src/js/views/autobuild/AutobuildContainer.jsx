@@ -30,8 +30,7 @@ import {
   modifyLesson,
 } from 'actions/timetables';
 import {
-  addModuleAutobuildComp,
-  addModuleAutobuildOpt,
+  addModuleAutobuild,
   removeModuleAutobuild,
   changeWorkloadAutobuild,
   changeLessonAutobuild,
@@ -86,8 +85,7 @@ type Props = {
   lockLessonAutobuild: Function,
   unlockLessonAutobuild: Function,
   cancelModifyLesson: Function,
-  addModuleAutobuildComp: Function,
-  addModuleAutobuildOpt: Function,
+  addModuleAutobuild: Function,
   autobuild: Object,
   freedays: Object,
   removeModuleAutobuild: Function,
@@ -278,7 +276,7 @@ export class AutobuildContainer extends Component {
                   <div className="col-md-6">
                     <ModulesContainer moduleList={this.props.semModuleListAutobuild}
                       onChange={(moduleCode) => {
-                        this.props.addModuleAutobuildComp(this.props.semester, moduleCode.value);
+                        this.props.addModuleAutobuild(this.props.semester, moduleCode.value, 'comp');
                       }}
                       placeholder="Add compuslory module to timetable"
                       modules={
@@ -286,7 +284,6 @@ export class AutobuildContainer extends Component {
                           return a.localeCompare(b);
                         }).map((moduleCode) => {
                           const module = this.props.modules[moduleCode] || {};
-                          // Inject color index.
                           module.colorIndex = this.props.autobuildcolors[moduleCode];
                           module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
                           return module;
@@ -297,13 +294,12 @@ export class AutobuildContainer extends Component {
                         this.props.removeModuleAutobuild(this.props.semester, moduleCode);
                       }}
                       m_id="compMods"
-                      addStep={this.props.addStep}
                     />
                   </div>
                   <div className="col-md-6">
                     <ModulesContainer moduleList={this.props.semModuleListAutobuild}
                       onChange={(moduleCode) => {
-                        this.props.addModuleAutobuildOpt(this.props.semester, moduleCode.value);
+                        this.props.addModuleAutobuild(this.props.semester, moduleCode.value, 'opt');
                       }}
                       placeholder="Add optional module to timetable"
                       modules={
@@ -311,7 +307,6 @@ export class AutobuildContainer extends Component {
                           return a.localeCompare(b);
                         }).map((moduleCode) => {
                           const module = this.props.modules[moduleCode] || {};
-                          // Inject color index.
                           module.colorIndex = this.props.colors[moduleCode];
                           module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
                           return module;
@@ -422,8 +417,7 @@ export default connect(
     modifyLesson,
     changeLessonAutobuild,
     cancelModifyLesson,
-    addModuleAutobuildComp,
-    addModuleAutobuildOpt,
+    addModuleAutobuild,
     removeModuleAutobuild,
     changeNumFreedays,
     changeWorkloadAutobuild,

@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-case-declarations */
 
-import { ADD_MODULE_AUTOBUILD_COMP,
-         ADD_MODULE_AUTOBUILD_OPT,
+import { ADD_MODULE_AUTOBUILD,
          REMOVE_MODULE_AUTOBUILD,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
          TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD,
@@ -156,20 +155,12 @@ function semTimetable(state = {}, action) {
   }
   const moduleCode = action.payload.moduleCode;
   switch (action.type) {
-    case ADD_MODULE_AUTOBUILD_COMP:
+    case ADD_MODULE_AUTOBUILD:
       return {
         ...state,
         [moduleCode]: {
           ...action.payload.moduleLessonConfig,
-          status: 'comp',
-        },
-      };
-    case ADD_MODULE_AUTOBUILD_OPT:
-      return {
-        ...state,
-        [moduleCode]: {
-          ...action.payload.moduleLessonConfig,
-          status: 'opt',
+          status: action.payload.status,
         },
       };
     case REMOVE_MODULE_AUTOBUILD:
@@ -218,8 +209,7 @@ function semTimetable(state = {}, action) {
 
 function autobuild(state = {}, action) {
   switch (action.type) {
-    case ADD_MODULE_AUTOBUILD_COMP:
-    case ADD_MODULE_AUTOBUILD_OPT:
+    case ADD_MODULE_AUTOBUILD:
     case REMOVE_MODULE_AUTOBUILD:
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
     case TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD:

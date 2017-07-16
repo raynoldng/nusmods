@@ -36,8 +36,8 @@ import {
 import _ from 'lodash';
 
 
-export const ADD_MODULE_AUTOBUILD_COMP: string = 'ADD_MODULE_AUTOBUILD_COMP';
-export function addModuleAutobuildComp(semester: Semester, moduleCode: ModuleCode) {
+export const ADD_MODULE_AUTOBUILD: string = 'ADD_MODULE_AUTOBUILD';
+export function addModuleAutobuild(semester: Semester, moduleCode: ModuleCode, status) {
   return (dispatch: Function, getState: Function) => {
     return dispatch(loadModule(moduleCode)).then(() => {
       const module: Module = getState().entities.moduleBank.modules[moduleCode];
@@ -47,33 +47,12 @@ export function addModuleAutobuildComp(semester: Semester, moduleCode: ModuleCod
         moduleLessonConfig = randomModuleLessonConfig(lessons);
       }
       return dispatch({
-        type: ADD_MODULE_AUTOBUILD_COMP,
+        type: ADD_MODULE_AUTOBUILD,
         payload: {
           semester,
           moduleCode,
           moduleLessonConfig,
-        },
-      });
-    });
-  };
-}
-
-export const ADD_MODULE_AUTOBUILD_OPT: string = 'ADD_MODULE_AUTOBUILD_OPT';
-export function addModuleAutobuildOpt(semester: Semester, moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: Function) => {
-    return dispatch(loadModule(moduleCode)).then(() => {
-      const module: Module = getState().entities.moduleBank.modules[moduleCode];
-      const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
-      let moduleLessonConfig: ModuleLessonConfig = {};
-      if (lessons) { // Module may not have lessons.
-        moduleLessonConfig = randomModuleLessonConfig(lessons);
-      }
-      return dispatch({
-        type: ADD_MODULE_AUTOBUILD_OPT,
-        payload: {
-          semester,
-          moduleCode,
-          moduleLessonConfig,
+          status,
         },
       });
     });
@@ -99,20 +78,6 @@ export function toggleModuleStatusAutobuild(semester: Semester, moduleCode: Modu
       semester,
       moduleCode,
     },
-  };
-}
-
-export function optToCompMod(semester: Semester, moduleCode: ModuleCode): FSA {
-  return (dispatch: Function) => {
-    dispatch(removeModuleAutobuild(semester, moduleCode));
-    return dispatch(addModuleAutobuildComp(semester, moduleCode));
-  };
-}
-
-export function compToOptMod(semester: Semester, moduleCode: ModuleCode): FSA {
-  return (dispatch: Function) => {
-    dispatch(removeModuleAutobuild(semester, moduleCode));
-    return dispatch(addModuleAutobuildOpt(semester, moduleCode));
   };
 }
 

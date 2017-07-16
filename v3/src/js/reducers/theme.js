@@ -14,7 +14,7 @@ import { SELECT_THEME,
          TOGGLE_TIMETABLE_ORIENTATION,
          SELECT_MODULE_COLOR_AUTOBUILD,
 } from 'actions/theme';
-import { ADD_MODULE_AUTOBUILD_COMP,
+import { ADD_MODULE_AUTOBUILD,
          REMOVE_MODULE_AUTOBUILD,
          UPDATE_AUTOBUILD_TIMETABLE,
          STORE_STATE,
@@ -62,7 +62,7 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
   }
   switch (action.type) {
     case ADD_MODULE:
-    case ADD_MODULE_AUTOBUILD_COMP:
+    case ADD_MODULE_AUTOBUILD:
       return {
         ...state,
         [action.payload.moduleCode]: getNewColor(_.values(state)),
@@ -93,7 +93,7 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         ...state,
         colors: colors(state.colors, action),
       };
-    case ADD_MODULE_AUTOBUILD_COMP:
+    case ADD_MODULE_AUTOBUILD:
     case REMOVE_MODULE_AUTOBUILD:
     case SELECT_MODULE_COLOR_AUTOBUILD:
       return {
