@@ -114,24 +114,28 @@ export class AppContainer extends Component {
                     <span className="nm-link-title"> Settings</span>
                   </Link>
                 </li>
+                { /*
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/projectdescription">
                     <i className="fa fa-fw fa-lg fa-file-pdf-o" />
                     <span className="nm-link-title"> Project Description</span>
                   </Link>
                 </li>
+              */}
                 <li role="presentation" className="nm-nav-item" id="autobuild-link">
                   <Link className="nav-link" activeClassName="active" to="/autobuild">
                     <i className="fa fa-fw fa-lg fa-table" />
                     <span className="nm-link-title"> Auto-Build Timetable</span>
                   </Link>
                 </li>
+                { /*
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/autobuild-guide">
                     <i className="fa fa-fw fa-lg fa-book" />
                     <span className="nm-link-title"> Auto-Build Guide</span>
                   </Link>
                 </li>
+              */}
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/autobuild-faq">
                     <i className="fa fa-fw fa-lg fa-question-circle-o" />

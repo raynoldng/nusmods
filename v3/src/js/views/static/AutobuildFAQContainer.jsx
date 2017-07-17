@@ -71,8 +71,9 @@ export default function FaqContainer() {
           <p>
             In summary, proposed features are sometimes not implemented due to design tradeoffs, lack of computational
             power, and priorities. If you think you have some feature that is feasible and useful to a large
-            proportion of the student population, feel free to email bayweiheng@gmail.com or raynold.ng24@gmail.com
-            (include NUSMods Auto-build in the subject).
+            proportion of the student population, feel free to send us feedback (see below).
+            {// email bayweiheng@gmail.com or raynold.ng24@gmail.com (include NUSMods Auto-build in the subject).
+            }
           </p>
           {/* <h4>Here&#39;s what we <em>have</em> implemented:</h4>
           <ul>
@@ -85,6 +86,14 @@ export default function FaqContainer() {
           <p>
             WELL WE LIKE THIS ONE BETTER SO NO. Just kidding, you can change the color scheme in the Settings
             section.
+          </p>
+
+          <h4>Where can I send user feedback?</h4>
+          <p>
+            You can send us feedback by filling up the form <a href="https://goo.gl/forms/De2QjKTLPDf2Jt653">here</a>.
+            We will
+            review the responses periodically so any proposed features might not be immediate even if they are
+            really good.
           </p>
 
           <hr />
