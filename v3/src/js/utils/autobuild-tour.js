@@ -109,8 +109,9 @@ export const moreOptionsStep = {
 
 export const generateStep = {
   title: 'Generate Timetable',
-  text: `And we're done! Click this button to generate your timetable! The timetable generated
-  for you will be displayed in the timetable above, and the optional modules we have selected
+  text: `And we're done! Click this button to generate your timetable (please be patient - it takes
+  1-2 seconds). The timetable generated for you will be displayed in the timetable above, and the
+  optional modules we have selected
   for you shifted to the compulsory section. If you aren't satisfied with your timetable,
   you can Load Previous Options and try again; if you are, you can Port Timetable to Mainpage
   and export it from there!`,

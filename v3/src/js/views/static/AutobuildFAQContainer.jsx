@@ -87,16 +87,6 @@ export default function FaqContainer() {
             section.
           </p>
 
-          <h4>What features are you working on now?</h4>
-          <p>
-            Actually no one ever asked this question so it&#39;s far from an FAQ, but...
-          </p>
-          <ul>
-            <li><p>Introduce new users to the auto-build feature by taking them on a tour</p></li>
-            <li><p>Looking into whether minimisation of travel time is possible</p></li>
-          </ul>
-
-
           <hr />
         </div>
       </div>

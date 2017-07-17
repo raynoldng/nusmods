@@ -100,12 +100,14 @@ export class AppContainer extends Component {
                     <span className="nm-link-title"> Timetable</span>
                   </Link>
                 </li>
-                <li role="presentation" className="nm-nav-item">
-                  <Link className="nav-link" activeClassName="active" to="/modules">
-                    <i className="fa fa-fw fa-lg fa-list" />
-                    <span className="nm-link-title"> Browse</span>
-                  </Link>
-                </li>
+                { /*
+                  <li role="presentation" className="nm-nav-item">
+                    <Link className="nav-link" activeClassName="active" to="/modules">
+                      <i className="fa fa-fw fa-lg fa-list" />
+                      <span className="nm-link-title"> Browse</span>
+                    </Link>
+                  </li>
+                */}
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/settings">
                     <i className="fa fa-fw fa-lg fa-gear" />
