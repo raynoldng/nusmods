@@ -1,6 +1,5 @@
 // @flow
 /* eslint-disable no-param-reassign */
-
 import type { ModuleCode } from 'types/modules';
 // TODO migrate url to config
 // import config from 'config/app-config.json';
