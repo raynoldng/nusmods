@@ -21,7 +21,7 @@ request.open('GET', 'https://modsplanner.tk/static/boolector.js', false);
 request.send(null);
 boolector = request.responseText;
 function createBoolector() {
-  eval(boolector)
+  eval(boolector);
   return Module;
 }
 var BoolectorModuleArray = [createBoolector(), createBoolector()];
@@ -30,5 +30,5 @@ var BoolectorModuleArray = [createBoolector(), createBoolector()];
 <body>
   <div id="app"></div>
   
-<script type="text/javascript" src="vendor.dbfe1defe6a9ea3c5542.js"></script><script type="text/javascript" src="app.c88e52b50a83223715fb.js"></script></body>
+<script type="text/javascript" src="app.c88e52b50a83223715fb.js"></script></body>
 </html>

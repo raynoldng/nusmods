@@ -24,7 +24,7 @@ import {
 import { loadModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import { slotsFromModel } from 'utils/smtSolver';
+import { resultAndtimetableBuilder } from 'utils/smtSolver';
 import {
   NOT_ENOUGH_MODULES_NOTIFICATION,
   UNSAT_NOTIFICATION,
@@ -272,47 +272,32 @@ export function moveToCompAutobuild(semester: Semester, moduleCode: ModuleCode):
   };
 }
 
-function solve(boolector, query) {
-  let output = '';
-  boolector.print = function foo(x) {
-    output = `${output}${x}\n`;
-    // output += x + '\n';
-  };
-  boolector.printErr = function bar(x) {
-    output = `${output}${x}\n`;
-    // output += x + '\n';
-  };
-  const solveString = boolector.cwrap('solve_string', 'string', ['string', 'number']);
-  const result = solveString(query, 2);
-  const outcome = [result, output];
-  return outcome;
-}
-
-function solveQuery(query) {
-  const newBoolector = createBoolector();
-  return solve(newBoolector, query);
-}
-
-function syncQuery(url) {
-  const request = new XMLHttpRequest();
-  request.open('GET', url, false);  // `false` makes the request synchronous
-  request.send(null);
-
-  if (request.status === 200) {
-    const data2 = JSON.parse(request.responseText);
-    const smtlib2 = data2[0];
-    const mapping = data2[1];
-    const outcome = solveQuery(smtlib2, BoolectorModuleArray);
-    return [outcome, mapping];
-  }
-
-  return ['UNABLE TO GET QUERY STRING', null];
-}
-
 function flatten(arr) {
   return arr.reduce((flat, toFlatten) => {
     return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
   }, []);
+}
+
+function getResultAndTimetable(semester, options, compMods, optMods, workload) {
+  const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload);
+  console.log(url);
+
+  const request = new XMLHttpRequest();
+  request.open('GET', url, false);  // `false` makes the request synchronous
+  request.send(null);
+
+  let smtQuery;
+  let moduleMapping;
+
+  if (request.status === 200) {
+    const data = JSON.parse(request.responseText);
+    smtQuery = data[0];
+    moduleMapping = data[1];
+  } else {
+    return [];
+  }
+
+  return resultAndtimetableBuilder(smtQuery, moduleMapping, workload, options);
 }
 
 export const FETCH_AND_SOLVE_QUERY: string = 'FETCH_QUERY';
@@ -320,8 +305,8 @@ export const UPDATE_AUTOBUILD_TIMETABLE: string = 'UPDATE_AUTOBUILD_TIMETABLE';
 export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   // first filter the mods
   const compMods = Object.keys(_.pickBy(autobuild, isCompMod));
-  const optMods = Object.keys(_.pickBy(autobuild, isOptMod));
   const workload = autobuild.workload ? autobuild.workload : 5;
+  const optMods = (compMods.length < workload) ? Object.keys(_.pickBy(autobuild, isOptMod)) : [];
   const options = {};
   const preferences = autobuild.freedayPreferences || {};
 
@@ -356,22 +341,12 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     options.lockedLessonSlots = flatten(lockedLessons);
   }
 
-  const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload, semester);
-
-  function getResultAndTimetableFromQuery(queryUrl) {
-    const retVal = syncQuery(queryUrl);
-    const outcome = retVal[0];
-    const moduleMapping = retVal[1];
-    const model = outcome[1];
-    const result = outcome[0];
-    const timetable = slotsFromModel(model, compMods, optMods, workload, moduleMapping);
-
-    return { result, timetable };
-  }
+  // const url = NUSModsPlannerApi.plannerQueryUrl(semester, options, compMods, optMods, workload);
+  // console.log(url);
 
   return (dispatch: Function) => {
     let finalTimetable;
-    const { result, timetable } = getResultAndTimetableFromQuery(url);
+    const { result, timetable } = getResultAndTimetable(semester, options, compMods, optMods, workload);
     const obj = {};
 
     if (result === 'ERROR') {
@@ -385,9 +360,7 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
           ...options,
           possibleFreedays: [],
         };
-        const relaxedUrl = NUSModsPlannerApi.plannerQueryUrl(semester, relaxedOptions, compMods, optMods, workload,
-          semester);
-        const outcome = getResultAndTimetableFromQuery(relaxedUrl);
+        const outcome = getResultAndTimetable(semester, relaxedOptions, compMods, optMods, workload);
         const relaxedResult = outcome.result;
         const relaxedTimetable = outcome.timetable;
 
@@ -414,6 +387,7 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
       finalTimetable = timetable;
     }
 
+    console.log(finalTimetable);
     finalTimetable.forEach((string) => {
       const arr = string.split('_');
       obj[arr[0]] = {

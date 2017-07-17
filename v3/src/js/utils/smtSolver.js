@@ -6,6 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-template */
 /* eslint-disable no-eval */
+/* eslint-disable no-param-reassign */
 
 import _ from 'lodash';
 // import { getModuleTimetable } from 'utils/modules';
@@ -23,6 +24,65 @@ export function parseOutput(output: String) {
     result[key] = parseInt(value, 2);
   }
   return result;
+}
+
+function solve(boolector, query) {
+  let output = '';
+  boolector.print = function foo(x) {
+    output = `${output}${x}\n`;
+    // output += x + '\n';
+  };
+  boolector.printErr = function bar(x) {
+    output = `${output}${x}\n`;
+    // output += x + '\n';
+  };
+  const solveString = boolector.cwrap('solve_string', 'string', ['string', 'number']);
+  const result = solveString(query, 2);
+  const outcome = [result, output];
+  return outcome;
+}
+
+function solveQuery(query) {
+  const newBoolector = createBoolector();
+  return solve(newBoolector, query);
+}
+
+export function resultAndtimetableBuilder(smtQuery, moduleMapping, numMods, options) {
+  const output = solveQuery(smtQuery);
+  const result = output[0];
+  const modelOutput = output[1];
+
+  let newNumMods = numMods;
+
+  if (options.freeday) { // need to account for mock module added
+    newNumMods += 1;
+  }
+
+  const model = parseOutput(modelOutput);
+  let timetable = [];
+
+  if (result === 'SAT') {
+    const choosenMods = _.range(0, newNumMods).forEach((i) => {
+      const modIndex = model[`x_${i}`];
+      const module = moduleMapping[modIndex];
+
+      const moduleCode = module[0];
+      const lessonsMap = module[1];
+
+      Object.keys(lessonsMap).forEach((lesson) => {
+        const choosenSlotIndex = model[`${moduleCode}_${lesson}`];
+        const choosenSlotName = lessonsMap[lesson][choosenSlotIndex];
+        timetable.push(`${moduleCode}_${lesson}_${choosenSlotName}`);
+      });
+    });
+  }
+
+  console.log('timetable before filter:');
+  console.log(timetable);
+
+  timetable = timetable.filter(l => !l.includes('FREEDAY'));
+
+  return { result, timetable };
 }
 
 export function slotsFromModel(output: String, compModuleCodes: Array<ModuleCode>,
