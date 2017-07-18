@@ -143,6 +143,15 @@ export class AppContainer extends Component {
                     <span className="nm-link-title"> Auto-Build FAQ</span>
                   </Link>
                 </li>
+
+                <li role="presentation" className="nm-nav-item">
+                  <a className="nav-link" href="https://goo.gl/forms/De2QjKTLPDf2Jt653" target="_blank"
+                    rel="noopener noreferrer">
+                    <i className="fa fa-fw fa fa-comments-o" />
+                    <span className="nm-link-title"> Give Feedback</span>
+                  </a>
+                </li>
+
               </ul>
             </div>
             <div className="col-md-10 main-content">
