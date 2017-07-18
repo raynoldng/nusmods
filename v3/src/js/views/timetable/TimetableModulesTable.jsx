@@ -4,13 +4,14 @@ import type { ColorIndex } from 'types/reducers';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import classnames from 'classnames';
 import ColorPicker from 'views/components/color-picker/ColorPicker';
 
 import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
-import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
+// import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
+import { getModuleSemExamDate } from 'utils/modules';
 
 type Props = {
   activeModule: ModuleCode,
@@ -80,9 +81,13 @@ class TimetableModulesTable extends Component {
                     }
                   </div>
                   <div className="module-details-column">
-                    <Link to={modulePagePath(module.ModuleCode)}>
+                    {/* <Link to={modulePagePath(module.ModuleCode)}>*/}
+                    {/* {module.ModuleCode} {module.ModuleTitle}*/}
+                    {/* </Link>*/}
+                    <a href={`http://v3.nusmods.com/modules/${module.ModuleCode}`} target="_blank"
+                      rel="noopener noreferrer">
                       {module.ModuleCode} {module.ModuleTitle}
-                    </Link>
+                    </a>
                     <div>
                       <small>
                         Exam: {getModuleSemExamDate(module, this.props.semester)}

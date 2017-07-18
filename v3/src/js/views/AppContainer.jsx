@@ -80,13 +80,14 @@ export class AppContainer extends Component {
           <Link className="navbar-brand nm-navbar-brand" to="/" title="Home" />
           <form className="hidden-xs-down"
             style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
-          >
+           >
             <ModulesSelect moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
-                this.context.router.push(`/modules/${moduleCode.value}`);
+                // this.context.router.push(`/modules/${moduleCode.value}`);
+                window.open(`http://v3.nusmods.com/modules/${moduleCode.value}`, '_blank');
               }}
               placeholder="Search modules"
-            />
+           />
           </form>
           <p className="pull-xs-right hidden-xs-down"><small>{weekText}</small></p>
         </nav>
