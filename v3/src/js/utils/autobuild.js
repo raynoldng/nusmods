@@ -16,9 +16,9 @@ export function isOptMod(obj) {
   return false;
 }
 
-export function isOptModWithoutLessons(obj) {
+export function isModWithoutLessons(obj) {
   if (obj) {
-    return _.isEqual(obj, { status: 'opt' });
+    return _.isEqual(obj, { status: 'opt' }) || _.isEqual(obj, { status: 'comp' });
   }
   return false;
 }

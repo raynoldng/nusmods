@@ -100,7 +100,7 @@ export const workloadStep = {
 
 export const moreOptionsStep = {
   title: 'Additional Options',
-  text: `You can also select additional options in the collapisible below. Just click to expand
+  text: `You can also select additional options in the collapsible below. Just click to expand
   and see the range of options! You can request for a free day in your timetable, or dictate that
   you don't want lessons to start before or end after certain times!`,
   selector: '#moreOptions',

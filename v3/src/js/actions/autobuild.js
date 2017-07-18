@@ -18,7 +18,7 @@ import {
   // lessonSlotStringToObject,
   isCompMod,
   isOptMod,
-  isOptModWithoutLessons,
+  isModWithoutLessons,
 } from 'utils/autobuild';
 
 import { loadModule } from 'actions/moduleBank';
@@ -398,9 +398,9 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     });
     const curTimetableLength = Object.keys(obj).length;
     if (curTimetableLength !== workload) {
-      const optModsWithoutLessons = Object.keys(_.pickBy(autobuild, isOptModWithoutLessons));
+      const modsWithoutLessons = Object.keys(_.pickBy(autobuild, isModWithoutLessons));
       for (let i = 0; i < workload - curTimetableLength; i += 1) {
-        obj[optModsWithoutLessons[i]] = {
+        obj[modsWithoutLessons[i]] = {
           status: 'comp',
         };
       }
