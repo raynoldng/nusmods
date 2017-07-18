@@ -161,8 +161,24 @@ function semTimetable(state = {}, action) {
         },
       };
     case REMOVE_MODULE_AUTOBUILD:
+      if (state.lockedLessons) {
+        return {
+          ..._.omit(state, [moduleCode]),
+          lockedLessons: _.omit(state.lockedLessons, [moduleCode]),
+        };
+      }
       return _.omit(state, [moduleCode]);
     case TOGGLE_MODULE_STATUS_AUTOBUILD:
+      if (state.lockedLessons) {
+        return {
+          ...state,
+          [moduleCode]: {
+            ...state[moduleCode],
+            status: state[moduleCode].status === 'comp' ? 'opt' : 'comp',
+          },
+          lockedLessons: _.omit(state.lockedLessons, [moduleCode]),
+        };
+      }
       return {
         ...state,
         [moduleCode]: {
