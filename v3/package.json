@@ -102,7 +102,8 @@
     "react-virtualized-select": "^2.1.0",
     "redux": "^3.5.2",
     "redux-logger": "^3.0.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "worker-loader": "^0.8.1"
   },
   "browserslist": [
     "last 2 versions",

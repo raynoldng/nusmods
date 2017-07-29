@@ -345,6 +345,9 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   // console.log(url);
 
   return (dispatch: Function) => {
+    console.log('bbbbbb');
+    window.worker.postMessage({ hello: 'abc' });
+    console.log('ccccc');
     let finalTimetable;
     const { result, timetable } = getResultAndTimetable(semester, options, compMods, optMods, workload);
     const obj = {};

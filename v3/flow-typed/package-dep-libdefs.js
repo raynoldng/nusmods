@@ -35,3 +35,7 @@ declare module 'react-numeric-input' {
 declare module 'react-select' {
   declare module.exports: any;
 }
+
+declare module 'worker-loader' {
+  declare module.exports: any;
+}

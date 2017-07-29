@@ -1,3 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-webpack-loader-syntax */
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import { useRouterHistory } from 'react-router';
@@ -8,7 +13,11 @@ import configureStore from 'stores/configure-store';
 import routes from 'routes';
 import storage from 'storage';
 
+import Worker from 'worker-loader!utils/worker';
+
 import '../manifest.json';
+
+window.worker = new Worker();
 
 require('main.scss');
 
