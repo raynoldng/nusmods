@@ -6,4 +6,5 @@
 onmessage = function (event) {
   console.log('wowzies');
   console.log(event.data.hello);
+  postMessage('hohoho');
 };

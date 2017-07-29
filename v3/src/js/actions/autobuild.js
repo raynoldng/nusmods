@@ -3,6 +3,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
+/* eslint-disable func-names */
 
 // import fetch from 'isomorphic-fetch';
 import NUSModsPlannerApi from 'apis/nusmodsplanner';
@@ -345,9 +346,19 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
   // console.log(url);
 
   return (dispatch: Function) => {
-    console.log('bbbbbb');
-    window.worker.postMessage({ hello: 'abc' });
-    console.log('ccccc');
+    window.worker.onmessage = function (event) {
+      dispatch({
+        type: 'UPDATE_AUTOBUILD_TIMETABLE_HOHOHO',
+        payload: {
+          semester,
+          options,
+          data: event.data,
+        },
+      });
+    };
+    window.worker.postMessage({
+      hello: 'abc',
+    });
     let finalTimetable;
     const { result, timetable } = getResultAndTimetable(semester, options, compMods, optMods, workload);
     const obj = {};

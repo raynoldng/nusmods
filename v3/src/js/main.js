@@ -2,6 +2,7 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
+/* eslint-disable func-names */
 
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
