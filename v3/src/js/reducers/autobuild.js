@@ -4,6 +4,7 @@
 import { ADD_MODULE_AUTOBUILD,
          REMOVE_MODULE_AUTOBUILD,
          TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD,
+         TOGGLE_LUNCH_CHECKBOX_AUTOBUILD,
          TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD,
          TOGGLE_BEFORE_OPTION,
          TOGGLE_AFTER_OPTION,
@@ -84,6 +85,11 @@ function semTimetable(state = {}, action) {
       return {
         ...state,
         freeday: !state.freeday,
+      };
+    case TOGGLE_LUNCH_CHECKBOX_AUTOBUILD:
+      return {
+        ...state,
+        lunchOption: !state.lunchOption,
       };
     case TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD:
       const day = action.payload.weekday;
@@ -225,6 +231,7 @@ function autobuild(state = {}, action) {
     case ADD_MODULE_AUTOBUILD:
     case REMOVE_MODULE_AUTOBUILD:
     case TOGGLE_FREEDAY_CHECKBOX_AUTOBUILD:
+    case TOGGLE_LUNCH_CHECKBOX_AUTOBUILD:
     case TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD:
     case TOGGLE_AFTER_OPTION:
     case TOGGLE_BEFORE_OPTION:

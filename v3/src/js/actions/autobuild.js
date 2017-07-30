@@ -95,6 +95,16 @@ export function toggleFreedayAutobuild(semester: Semester): FSA {
   };
 }
 
+export const TOGGLE_LUNCH_CHECKBOX_AUTOBUILD: string = 'TOGGLE_LUNCH_CHECKBOX_AUTOBUILD';
+export function toggleLunchAutobuild(semester: Semester): FSA {
+  return {
+    type: TOGGLE_LUNCH_CHECKBOX_AUTOBUILD,
+    payload: {
+      semester,
+    },
+  };
+}
+
 export const TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD: string = 'TOGGLE_FREE_WEEKDAY_CHECKBOX_AUTOBUILD';
 export function toggleFreeWeekdayAutobuild(semester: Semester, weekday: String): FSA {
   return {
@@ -319,6 +329,10 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
     const possibleFreedays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].filter((day) => { return preferences[day]; })
       .map(d => fullWeekdayMapping[d]);
     options.possibleFreedays = possibleFreedays;
+  }
+
+  if (autobuild.lunchOption) {
+    options.lunchBreak = true;
   }
 
   if (compMods.length + optMods.length < workload) {

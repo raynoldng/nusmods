@@ -12,6 +12,7 @@ import {
   toggleBeforeOption,
   toggleAfterOption,
   toggleFreedayAutobuild,
+  toggleLunchAutobuild,
   toggleFreeWeekdayAutobuild,
   changeBeforeTime,
   changeAfterTime,
@@ -29,6 +30,7 @@ type Props = {
   toggleBeforeOption: Function,
   toggleAfterOption: Function,
   toggleFreedayAutobuild: Function,
+  toggleLunchAutobuild: Function,
   toggleFreeWeekdayAutobuild: Function,
   changeBeforeTime: Function,
   changeAfterTime: Function,
@@ -98,6 +100,15 @@ class MoreOptions extends Component {
             <PreferenceCheckbox day="Any" />&nbsp;No Preference (default)&nbsp;
           </div>
         </div>
+        <div className="row">
+          <div className="col-md-12">
+            <Checkbox checked={this.props.autobuild.lunchOption}
+              onChange={() => {
+                this.props.toggleLunchAutobuild(this.props.semester);
+              }}
+            />&nbsp;I want a lunch hour every day!&nbsp;
+          </div>
+        </div>
       </Collapsible>
     );
   }
@@ -119,6 +130,7 @@ export default connect(
     toggleBeforeOption,
     toggleAfterOption,
     toggleFreedayAutobuild,
+    toggleLunchAutobuild,
     toggleFreeWeekdayAutobuild,
     changeBeforeTime,
     changeAfterTime,
