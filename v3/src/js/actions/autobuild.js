@@ -4,6 +4,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 /* eslint-disable func-names */
+/* eslint-disable no-unused-vars */
 
 // import fetch from 'isomorphic-fetch';
 import NUSModsPlannerApi from 'apis/nusmodsplanner';
@@ -347,19 +348,84 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
 
   return (dispatch: Function) => {
     window.worker.onmessage = function (event) {
-      dispatch({
-        type: 'UPDATE_AUTOBUILD_TIMETABLE_HOHOHO',
+      let finalTimetable;
+      const { result, timetable } = event.data;
+      const obj = {};
+      if (result === 'ERROR') {
+        notificationGenerator(ERROR_NOTIFICATION);
+        window.location.reload();
+        return {};
+      } else if (timetable.length === 0) { // UNSAT
+        // try again with relaxed constraints
+        const falsy = false;
+        if (falsy && options.possibleFreedays && options.possibleFreedays.length > 0) {
+          const relaxedOptions = {
+            ...options,
+            possibleFreedays: [],
+          };
+          const outcome = getResultAndTimetable(semester, relaxedOptions, compMods, optMods, workload);
+          const relaxedResult = outcome.result;
+          const relaxedTimetable = outcome.timetable;
+
+          if (relaxedResult === 'ERROR') {
+            notificationGenerator(ERROR_NOTIFICATION);
+            window.location.reload();
+            return {};
+          }
+
+          if (relaxedTimetable.length === 0) {
+            notificationGenerator(DOUBLE_UNSAT_NOTIFICATION);
+            return {};
+          }
+
+          finalTimetable = relaxedTimetable;
+          notificationGenerator(RELAXED_SAT_NOTIFICATION);
+        } else {
+          // vanilla unsat notification
+          notificationGenerator(UNSAT_NOTIFICATION);
+          return {};
+        }
+      } else { // SAT
+        notificationGenerator(SAT_NOTIFICATION);
+        finalTimetable = timetable;
+      }
+      finalTimetable.forEach((string) => {
+        const arr = string.split('_');
+        obj[arr[0]] = {
+          ...obj[arr[0]],
+          [arr[1]]: arr[2],
+          status: 'comp',
+        };
+      });
+      const curTimetableLength = Object.keys(obj).length;
+      if (curTimetableLength !== workload) {
+        const modsWithoutLessons = Object.keys(_.pickBy(autobuild, isModWithoutLessons));
+        for (let i = 0; i < workload - curTimetableLength; i += 1) {
+          obj[modsWithoutLessons[i]] = {
+            status: 'comp',
+          };
+        }
+      }
+
+      return dispatch({
+        type: UPDATE_AUTOBUILD_TIMETABLE,
         payload: {
           semester,
-          options,
-          data: event.data,
+          state: obj,
         },
       });
     };
     window.worker.postMessage({
       hello: 'abc',
+      semester,
+      options,
+      compMods,
+      optMods,
+      workload,
+      boolector,
+      numTimes: 1,
     });
-    let finalTimetable;
+    /* let finalTimetable;
     const { result, timetable } = getResultAndTimetable(semester, options, compMods, optMods, workload);
     const obj = {};
 
@@ -401,7 +467,7 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
       finalTimetable = timetable;
     }
 
-    console.log(finalTimetable);
+    // console.log(finalTimetable);
     finalTimetable.forEach((string) => {
       const arr = string.split('_');
       obj[arr[0]] = {
@@ -426,6 +492,6 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
         semester,
         state: obj,
       },
-    });
+    }); */
   };
 }
