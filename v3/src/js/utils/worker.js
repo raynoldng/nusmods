@@ -99,8 +99,8 @@ function resultAndtimetableBuilder(smtQuery, moduleMapping, numMods, options) {
     });
   }
 
-  console.log('timetable before filter:');
-  console.log(timetable);
+  // console.log('timetable before filter:');
+  // console.log(timetable);
 
   timetable = timetable.filter(l => !l.includes('FREEDAY'));
 
@@ -118,17 +118,17 @@ function solve(boolector, query) {
     // output += x + '\n';
   };
   const solveString = boolector.cwrap('solve_string', 'string', ['string', 'number']);
-  console.log(solveString);
+  // console.log(solveString);
   const result = solveString(query, 2);
   const outcome = [result, output];
-  console.log(result);
-  console.log(output);
+  // console.log(result);
+  // console.log(output);
   return outcome;
 }
 
 function solveQuery(query) {
-  console.log('bmodule is:');
-  console.log(bmodule);
+  // console.log('bmodule is:');
+  // console.log(bmodule);
   return solve(bmodule, query);
 }
 

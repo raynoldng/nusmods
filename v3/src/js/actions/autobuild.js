@@ -348,48 +348,81 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
 
   return (dispatch: Function) => {
     window.worker.onmessage = function (event) {
-      let finalTimetable;
+      if (event.data.numTimes === 1) {
+        let finalTimetable;
+        const { result, timetable } = event.data;
+        const obj = {};
+        if (result === 'ERROR') {
+          notificationGenerator(ERROR_NOTIFICATION);
+          window.location.reload();
+          return {};
+        } else if (timetable.length === 0) { // UNSAT
+          // try again with relaxed constraints
+          if (options.possibleFreedays && options.possibleFreedays.length > 0) {
+            const relaxedOptions = {
+              ...options,
+              possibleFreedays: [],
+            };
+            window.worker.postMessage({
+              semester,
+              options: relaxedOptions,
+              compMods,
+              optMods,
+              workload,
+              boolector,
+              numTimes: 2,
+            });
+          } else {
+            // vanilla unsat notification
+            notificationGenerator(UNSAT_NOTIFICATION);
+            return {};
+          }
+        } else { // SAT
+          notificationGenerator(SAT_NOTIFICATION);
+          finalTimetable = timetable;
+        }
+        finalTimetable.forEach((string) => {
+          const arr = string.split('_');
+          obj[arr[0]] = {
+            ...obj[arr[0]],
+            [arr[1]]: arr[2],
+            status: 'comp',
+          };
+        });
+        const curTimetableLength = Object.keys(obj).length;
+        if (curTimetableLength !== workload) {
+          const modsWithoutLessons = Object.keys(_.pickBy(autobuild, isModWithoutLessons));
+          for (let i = 0; i < workload - curTimetableLength; i += 1) {
+            obj[modsWithoutLessons[i]] = {
+              status: 'comp',
+            };
+          }
+        }
+
+        return dispatch({
+          type: UPDATE_AUTOBUILD_TIMETABLE,
+          payload: {
+            semester,
+            state: obj,
+          },
+        });
+      }
+      // numTimes = 2
       const { result, timetable } = event.data;
       const obj = {};
+
       if (result === 'ERROR') {
         notificationGenerator(ERROR_NOTIFICATION);
         window.location.reload();
         return {};
-      } else if (timetable.length === 0) { // UNSAT
-        // try again with relaxed constraints
-        const falsy = false;
-        if (falsy && options.possibleFreedays && options.possibleFreedays.length > 0) {
-          const relaxedOptions = {
-            ...options,
-            possibleFreedays: [],
-          };
-          const outcome = getResultAndTimetable(semester, relaxedOptions, compMods, optMods, workload);
-          const relaxedResult = outcome.result;
-          const relaxedTimetable = outcome.timetable;
-
-          if (relaxedResult === 'ERROR') {
-            notificationGenerator(ERROR_NOTIFICATION);
-            window.location.reload();
-            return {};
-          }
-
-          if (relaxedTimetable.length === 0) {
-            notificationGenerator(DOUBLE_UNSAT_NOTIFICATION);
-            return {};
-          }
-
-          finalTimetable = relaxedTimetable;
-          notificationGenerator(RELAXED_SAT_NOTIFICATION);
-        } else {
-          // vanilla unsat notification
-          notificationGenerator(UNSAT_NOTIFICATION);
-          return {};
-        }
-      } else { // SAT
-        notificationGenerator(SAT_NOTIFICATION);
-        finalTimetable = timetable;
       }
-      finalTimetable.forEach((string) => {
+
+      if (timetable.length === 0) {
+        notificationGenerator(DOUBLE_UNSAT_NOTIFICATION);
+        return {};
+      }
+      notificationGenerator(RELAXED_SAT_NOTIFICATION);
+      timetable.forEach((string) => {
         const arr = string.split('_');
         obj[arr[0]] = {
           ...obj[arr[0]],
