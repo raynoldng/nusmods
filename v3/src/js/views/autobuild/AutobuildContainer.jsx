@@ -41,6 +41,7 @@ import {
   loadState,
   portTimetableToMain,
   changeNumFreedays,
+  unlockGenerateTimetable,
 } from 'actions/autobuild';
 import {
   addStep,
@@ -84,6 +85,7 @@ type Props = {
   changeLessonAutobuild: Function,
   lockLessonAutobuild: Function,
   unlockLessonAutobuild: Function,
+  unlockGenerateTimetable: Function,
   cancelModifyLesson: Function,
   addModuleAutobuild: Function,
   autobuild: Object,
@@ -115,7 +117,8 @@ export class AutobuildContainer extends Component {
     setTimeout(() => {
       this.props.addStep(allSteps);
       this.props.startJoyride();
-    }, 200);
+    }, 100);
+    this.props.unlockGenerateTimetable(this.props.semester);
   }
 
   componentWillUnmount() {
@@ -243,6 +246,19 @@ export class AutobuildContainer extends Component {
       { label: '9', value: 9 },
     ];
 
+    const generateTimetableButton = (<button type="button"
+      className="btn btn-info"
+      onClick={() => {
+        this.props.storeState(this.props.semester);
+        this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester, this.addNotification);
+      }}
+      id="generateTimetable"
+    >Generate Timetable</button>);
+
+    const generatingButton = (<button type="button"
+      className="btn btn-info"
+    >Please Wait... Generating Timetable</button>);
+
     return (
       <DocumentTitle title={`Auto-build - ${config.brandName}`}>
         <div>
@@ -331,13 +347,7 @@ export class AutobuildContainer extends Component {
                 </div>
                 <br />
                 <div className="row">
-                  <button type="button" className="btn btn-info"
-                    onClick={() => {
-                      this.props.storeState(this.props.semester);
-                      this.props.fetchAndSolveQuery(this.props.autobuild, this.props.semester, this.addNotification);
-                    }}
-                    id="generateTimetable"
-                  >Generate Timetable</button>
+                  {this.props.autobuild.lockedGen ? generatingButton : generateTimetableButton}
                   <span className="divider" style={{ width: '5px',
                     height: 'auto',
                     display: 'inline-block',
@@ -411,6 +421,7 @@ export default connect(
     changeWorkloadAutobuild,
     lockLessonAutobuild,
     unlockLessonAutobuild,
+    unlockGenerateTimetable,
     fetchAndSolveQuery,
     storeState,
     loadState,

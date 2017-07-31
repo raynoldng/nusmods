@@ -171,6 +171,28 @@ export function changeBeforeTime(semester: Semester, timing): FSA {
   };
 }
 
+export const LOCK_GENERATE_TIMETABLE: string = 'LOCK_GENERATE_TIMETABLE';
+export function lockGenerateTimetable(semester: Semester, timing): FSA {
+  return {
+    type: LOCK_GENERATE_TIMETABLE,
+    payload: {
+      semester,
+      noLessonsBefore: timing,
+    },
+  };
+}
+
+export const UNLOCK_GENERATE_TIMETABLE: string = 'UNLOCK_GENERATE_TIMETABLE';
+export function unlockGenerateTimetable(semester: Semester, timing): FSA {
+  return {
+    type: UNLOCK_GENERATE_TIMETABLE,
+    payload: {
+      semester,
+      noLessonsBefore: timing,
+    },
+  };
+}
+
 export const CHANGE_AFTER_TIME: string = 'CHANGE_AFTER_TIME';
 export function changeAfterTime(semester: Semester, timing): FSA {
   return {
@@ -366,9 +388,15 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
         let finalTimetable;
         const { result, timetable } = event.data;
         const obj = {};
+
         if (result === 'ERROR') {
           notificationGenerator(ERROR_NOTIFICATION);
-          window.location.reload();
+          dispatch({
+            type: UNLOCK_GENERATE_TIMETABLE,
+            payload: {
+              semester,
+            },
+          });
           return {};
         } else if (timetable.length === 0) { // UNSAT
           // try again with relaxed constraints
@@ -389,6 +417,12 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
           } else {
             // vanilla unsat notification
             notificationGenerator(UNSAT_NOTIFICATION);
+            dispatch({
+              type: UNLOCK_GENERATE_TIMETABLE,
+              payload: {
+                semester,
+              },
+            });
             return {};
           }
         } else { // SAT
@@ -412,6 +446,12 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
             };
           }
         }
+        dispatch({
+          type: UNLOCK_GENERATE_TIMETABLE,
+          payload: {
+            semester,
+          },
+        });
 
         return dispatch({
           type: UPDATE_AUTOBUILD_TIMETABLE,
@@ -424,7 +464,12 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
       // numTimes = 2
       const { result, timetable } = event.data;
       const obj = {};
-
+      dispatch({
+        type: UNLOCK_GENERATE_TIMETABLE,
+        payload: {
+          semester,
+        },
+      });
       if (result === 'ERROR') {
         notificationGenerator(ERROR_NOTIFICATION);
         window.location.reload();
@@ -462,8 +507,13 @@ export function fetchAndSolveQuery(autobuild, semester, notificationGenerator) {
         },
       });
     };
+    dispatch({
+      type: LOCK_GENERATE_TIMETABLE,
+      payload: {
+        semester,
+      },
+    });
     window.worker.postMessage({
-      hello: 'abc',
       semester,
       options,
       compMods,

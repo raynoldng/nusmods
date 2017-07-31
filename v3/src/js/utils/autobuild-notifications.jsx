@@ -40,7 +40,8 @@ export const PORT_TIMETABLE_SUCCESSFUL_NOTIFICATION = {
 };
 
 export const ERROR_NOTIFICATION = {
-  message: 'Please wait a while before resending your request',
+  message: `We have encountered an unknown error. Please refresh the page and kindly send us feedback
+  detailing which modules and options you selected, so we may fix the problem`,
   level: 'error',
 };
 

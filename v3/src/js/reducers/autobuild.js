@@ -12,6 +12,8 @@ import { ADD_MODULE_AUTOBUILD,
          CHANGE_LESSON_AUTOBUILD,
          LOCK_LESSON_AUTOBUILD,
          UNLOCK_LESSON_AUTOBUILD,
+         LOCK_GENERATE_TIMETABLE,
+         UNLOCK_GENERATE_TIMETABLE,
          SWITCH_MODE,
          CHANGE_AFTER_TIME,
          CHANGE_BEFORE_TIME,
@@ -54,6 +56,16 @@ function semTimetable(state = {}, action) {
     return state;
   }
   switch (action.type) {
+    case LOCK_GENERATE_TIMETABLE:
+      return {
+        ...state,
+        lockedGen: true,
+      };
+    case UNLOCK_GENERATE_TIMETABLE:
+      return {
+        ...state,
+        lockedGen: false,
+      };
     case CHANGE_WORKLOAD_AUTOBUILD:
       return {
         ...state,
@@ -239,6 +251,8 @@ function autobuild(state = {}, action) {
     case CHANGE_LESSON_AUTOBUILD:
     case LOCK_LESSON_AUTOBUILD:
     case UNLOCK_LESSON_AUTOBUILD:
+    case LOCK_GENERATE_TIMETABLE:
+    case UNLOCK_GENERATE_TIMETABLE:
     case SWITCH_MODE:
     case CHANGE_BEFORE_TIME:
     case CHANGE_AFTER_TIME:
