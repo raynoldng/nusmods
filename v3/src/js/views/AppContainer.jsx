@@ -74,6 +74,7 @@ export class AppContainer extends Component {
           run={this.props.joyride.isRunning} // or some other boolean for when you want to start it
           showSkipButton
           showStepsProgress
+          scrollToSteps={false}
           type="continuous"
         />
         <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
