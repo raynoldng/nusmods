@@ -1,6 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 /* eslint-disable no-duplicate-imports */
+/* eslint-disable no-console */
 import type {
   ColorIndex,
   ColorMapping,
@@ -19,6 +20,7 @@ import { ADD_MODULE_AUTOBUILD,
          STORE_STATE,
          LOAD_STATE,
          PORT_TIMETABLE,
+         UPDATE_AUTOBUILD_TIMETABLE,
 } from 'actions/autobuild';
 
 import {
@@ -56,6 +58,16 @@ function getNewColor(currentColorIndices: Array<ColorIndex>): number {
 }
 
 function colors(state: ColorMapping, action: FSA): ColorMapping {
+  if (action.type === UPDATE_AUTOBUILD_TIMETABLE) {
+    const obj = {};
+    Object.keys(action.payload.state).forEach((module, index) => {
+      obj[module] = index % 8;
+    });
+    return {
+      ...state,
+      ...obj,
+    };
+  }
   if (!(action.payload && action.payload.moduleCode)) {
     return state;
   }
@@ -95,6 +107,7 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
     case ADD_MODULE_AUTOBUILD:
     case REMOVE_MODULE_AUTOBUILD:
     case SELECT_MODULE_COLOR_AUTOBUILD:
+    case UPDATE_AUTOBUILD_TIMETABLE:
       return {
         ...state,
         autobuildcolors: colors(state.autobuildcolors, action),
