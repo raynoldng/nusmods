@@ -96,6 +96,12 @@ export class AppContainer extends Component {
           <div className="row">
             <div className="col-md-2">
               <ul className="nm-nav-tabs">
+                <li role="presentation" className="nm-nav-item" id="autobuild-link">
+                  <Link className="nav-link" activeClassName="active" to="/autobuild">
+                    <i className="fa fa-fw fa-lg fa-table" />
+                    <span className="nm-link-title"> Auto-Build Timetable</span>
+                  </Link>
+                </li>
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/timetable">
                     <i className="fa fa-fw fa-lg fa-table" />
@@ -124,12 +130,6 @@ export class AppContainer extends Component {
                   </Link>
                 </li>
               */}
-                <li role="presentation" className="nm-nav-item" id="autobuild-link">
-                  <Link className="nav-link" activeClassName="active" to="/autobuild">
-                    <i className="fa fa-fw fa-lg fa-table" />
-                    <span className="nm-link-title"> Auto-Build Timetable</span>
-                  </Link>
-                </li>
                 { /*
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/autobuild-guide">

@@ -4,20 +4,8 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="nm-footer text-muted">
-      <div className="container">
-        <ul className="nm-footer-links">
-          Forked from <li><a href="https://github.com/nusmodifications/nusmods">NUSMods</a></li>
-          { /*
-            <li><a href="https://www.facebook.com/nusmods">Facebook</a></li>
-            <li><a href="https://twitter.com/nusmods">Twitter</a></li>
-            <li><a href="http://blog.nusmods.com/">Blog</a></li>
-            <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/team">Team</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
-          */ }
-        </ul>
+    <footer className="nm-footer">
+      <div className="container text-muted">
         {/* TODO: Change team to link to internal page. */}
         {/* TODO: Change contributors link to internal page */}
         {/* TODO: Add last updated timestamp */}
@@ -46,6 +34,35 @@ function Footer() {
             @raynoldng
           </a> as part of NUS Orbital 2017.
         </p>
+        <br />
+      </div>
+      <div className="container">
+        <h3>Please come down to{' '}
+          <a href="https://www.facebook.com/events/1931919233747777/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'blue' }}
+          >
+            Splashdown
+          </a> on 23 August 2017 to support our project by voting for it! Our project ID is
+          144 (nusmods-planner). Thank you!
+        </h3>
+      </div>
+      <br />
+      <div className="container text-muted">
+        <ul className="nm-footer-links">
+          Forked from <li><a href="https://github.com/nusmodifications/nusmods">NUSMods</a></li>
+          { /*
+            <li><a href="https://www.facebook.com/nusmods">Facebook</a></li>
+            <li><a href="https://twitter.com/nusmods">Twitter</a></li>
+            <li><a href="http://blog.nusmods.com/">Blog</a></li>
+            <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/team">Team</Link></li>
+            <li><Link to="/faq">FAQ</Link></li>
+          */ }
+        </ul>
+
         <p>© Copyright 2017. All rights reserved.</p>
       </div>
     </footer>
