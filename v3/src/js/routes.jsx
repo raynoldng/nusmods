@@ -30,7 +30,7 @@ export default function ({ store, history }) {
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={AppContainer}>
-          <IndexRedirect to="/timetable" />
+          <IndexRedirect to="/autobuild" />
           { /*
           <Route path="/about" component={AboutContainer} />
           <Route path="/faq" component={FaqContainer} />
