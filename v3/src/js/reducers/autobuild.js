@@ -22,7 +22,14 @@ import { ADD_MODULE_AUTOBUILD,
          LOAD_STATE,
          TOGGLE_MODULE_STATUS_AUTOBUILD,
          CHANGE_NUM_FREEDAYS,
+         REMOVE_ALL_OPT_MODULES_AUTOBUILD,
+         REMOVE_ALL_COMP_MODULES_AUTOBUILD,
 } from 'actions/autobuild';
+
+import {
+  isCompMod,
+  isOptMod,
+} from 'utils/autobuild';
 
 import _ from 'lodash';
 
@@ -56,6 +63,12 @@ function semTimetable(state = {}, action) {
     return state;
   }
   switch (action.type) {
+    case REMOVE_ALL_COMP_MODULES_AUTOBUILD:
+      const compMods = Object.keys(_.pickBy(state, isCompMod));
+      return _.omit(state, compMods);
+    case REMOVE_ALL_OPT_MODULES_AUTOBUILD:
+      const optMods = Object.keys(_.pickBy(state, isOptMod));
+      return _.omit(state, optMods);
     case LOCK_GENERATE_TIMETABLE:
       return {
         ...state,
@@ -261,6 +274,8 @@ function autobuild(state = {}, action) {
     case LOAD_STATE:
     case CHANGE_NUM_FREEDAYS:
     case TOGGLE_MODULE_STATUS_AUTOBUILD:
+    case REMOVE_ALL_COMP_MODULES_AUTOBUILD:
+    case REMOVE_ALL_OPT_MODULES_AUTOBUILD:
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),

@@ -74,6 +74,26 @@ export function removeModuleAutobuild(semester: Semester, moduleCode: ModuleCode
   };
 }
 
+export const REMOVE_ALL_OPT_MODULES_AUTOBUILD: string = 'REMOVE_ALL_OPT_MODULES_AUTOBUILD';
+export function removeAllOptModulesAutobuild(semester: Semester): FSA {
+  return {
+    type: REMOVE_ALL_OPT_MODULES_AUTOBUILD,
+    payload: {
+      semester,
+    },
+  };
+}
+
+export const REMOVE_ALL_COMP_MODULES_AUTOBUILD: string = 'REMOVE_ALL_COMP_MODULES_AUTOBUILD';
+export function removeAllCompModulesAutobuild(semester: Semester): FSA {
+  return {
+    type: REMOVE_ALL_COMP_MODULES_AUTOBUILD,
+    payload: {
+      semester,
+    },
+  };
+}
+
 export const TOGGLE_MODULE_STATUS_AUTOBUILD: string = 'TOGGLE_MODULE_STATUS_AUTOBUILD';
 export function toggleModuleStatusAutobuild(semester: Semester, moduleCode: ModuleCode): FSA {
   return {

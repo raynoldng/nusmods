@@ -6,6 +6,8 @@ import autobind from 'react-autobind';
 
 import {
   switchMode,
+  removeAllOptModulesAutobuild,
+  removeAllCompModulesAutobuild,
 } from 'actions/autobuild';
 
 import type {
@@ -25,6 +27,8 @@ type Props = {
   toggleTimetableOrientation: Function,
   semester: Number,
   timetableOrientation: TimetableOrientation,
+  removeAllOptModulesAutobuild: Function,
+  removeAllCompModulesAutobuild: Function,
 };
 
 class ModeButtons extends Component {
@@ -68,6 +72,24 @@ class ModeButtons extends Component {
         </button>
         <button type="button"
           className="btn btn-outline-primary"
+          onClick={() => {
+            this.props.removeAllCompModulesAutobuild(this.props.semester);
+          }
+          }
+        >
+          <i className="fa fa-trash" /> Compulsory
+        </button>
+        <button type="button"
+          className="btn btn-outline-primary"
+          onClick={() => {
+            this.props.removeAllOptModulesAutobuild(this.props.semester);
+          }
+          }
+        >
+          <i className="fa fa-trash" /> Optional
+        </button>
+        <button type="button"
+          className="btn btn-outline-primary"
           onClick={this.props.toggleTimetableOrientation}
         >
           <i className={classnames('fa', 'fa-exchange', {
@@ -96,5 +118,7 @@ export default connect(
   {
     toggleTimetableOrientation,
     switchMode,
+    removeAllOptModulesAutobuild,
+    removeAllCompModulesAutobuild,
   },
 )(ModeButtons);
